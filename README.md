@@ -49,3 +49,10 @@ from the Base44 account if account access is retained.
 
 `servicedesk.frankai.online` and `openwa.frankai.online` are independent existing services and
 must remain unchanged during the landing-site cutover.
+
+## Repository history
+
+The `kuhnseelmee/Frank-2.0` repository previously published standalone API policy documents
+through GitHub Pages. The files `frank_privacy_policy.md`, `frank_terms_of_service.md` and
+`_config.yml` are retained in that repository for historical link continuity; they are not the
+implementation of this website. Website notices are served from `/privacy` and `/terms`.
