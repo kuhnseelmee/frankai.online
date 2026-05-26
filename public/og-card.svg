@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <rect width="1200" height="630" fill="#071217"/>
+  <path d="M0 530C240 405 412 590 650 466s320-164 550-82v246H0z" fill="#102d32"/>
+  <rect x="72" y="76" width="74" height="74" rx="18" fill="#102d32"/>
+  <path d="M91 94h42v10h-30v12h25v10h-25v23H91z" fill="#55e7c4"/>
+  <circle cx="131" cy="143" r="5" fill="#f4bc5c"/>
+  <text x="174" y="129" fill="#eff8f5" font-family="Arial, sans-serif" font-size="47" font-weight="700">FrankAI</text>
+  <text x="72" y="288" fill="#eff8f5" font-family="Arial, sans-serif" font-size="74" font-weight="700">Intelligence that</text>
+  <text x="72" y="372" fill="#55e7c4" font-family="Arial, sans-serif" font-size="74" font-weight="700">moves work forward.</text>
+  <text x="74" y="456" fill="#aac3bd" font-family="Arial, sans-serif" font-size="26">Strategic assistance. Operational workflows. Controlled automation.</text>
+</svg>

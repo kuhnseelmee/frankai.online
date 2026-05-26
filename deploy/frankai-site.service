@@ -1,0 +1,21 @@
+[Unit]
+Description=FrankAI first-party website
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+WorkingDirectory=/root/frankai-site
+Environment=NODE_ENV=production
+Environment=HOSTNAME=127.0.0.1
+Environment=PORT=4300
+ExecStart=/usr/bin/node /root/frankai-site/.next/standalone/server.js
+Restart=always
+RestartSec=5
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ReadWritePaths=/root/frankai-site/.next
+
+[Install]
+WantedBy=multi-user.target
