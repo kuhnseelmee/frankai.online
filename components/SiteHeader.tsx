@@ -12,6 +12,7 @@ export function SiteHeader() {
         <nav className="nav-links" aria-label="Main navigation">
           <Link href="/solutions">Solutions</Link>
           <Link href="/platform">Platform</Link>
+          <Link href="/trust">Trust</Link>
           <Link href="/contact">Contact</Link>
         </nav>
         <Link className="button button-small" href="/start">

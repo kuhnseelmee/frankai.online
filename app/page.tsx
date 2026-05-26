@@ -124,6 +124,7 @@ export default function Home() {
             <div><h3>Your data remains entrusted territory.</h3><p>Privacy and ownership are treated as obligations, not marketing decoration.</p></div>
             <div><h3>Consequential actions stay deliberate.</h3><p>External communication, access and irreversible steps require appropriate control.</p></div>
             <div><h3>Systems should leave evidence.</h3><p>Operational workflows are built to be inspectable, accountable and maintainable.</p></div>
+            <Link className="text-link" href="/trust">See the governance model <span aria-hidden="true">-&gt;</span></Link>
           </div>
         </div>
       </section>

@@ -11,6 +11,7 @@ export function SiteFooter() {
         <div className="footer-links">
           <Link href="/solutions">Solutions</Link>
           <Link href="/platform">Platform</Link>
+          <Link href="/trust">Trust</Link>
           <Link href="/contact">Contact</Link>
           <Link href="/privacy">Privacy</Link>
           <Link href="/terms">Terms</Link>
