@@ -4,8 +4,8 @@ preview.frankai.online {
 	reverse_proxy 127.0.0.1:4300
 }
 
-# Replace the preview host with the block below at final cutover, after DNS changes.
-# frankai.online, www.frankai.online {
-# 	encode gzip zstd
-# 	reverse_proxy 127.0.0.1:4300
-# }
+# Production hostnames applied after final DNS cutover.
+frankai.online, www.frankai.online {
+	encode gzip zstd
+	reverse_proxy 127.0.0.1:4300
+}

@@ -35,17 +35,17 @@ cp -a public/. .next/standalone/public/
 systemctl restart frankai-site.service
 ```
 
-## Staged cutover
+## Deployment state
 
-The existing apex domain must not be changed until this replacement has been reviewed.
+The first-party replacement was published on 26 May 2026:
 
-1. Create a Hostinger DNS record for a staging host such as `preview.frankai.online` pointing
-   to the VPS public address.
-2. Add a Caddy route for that staging hostname to `127.0.0.1:4300` and verify HTTPS/routes.
-3. After approval, point `frankai.online` and `www.frankai.online` at the VPS and add their
-   Caddy route.
-4. Remove the obsolete Base44 domain/project association after traffic is confirmed on the
-   first-party deployment.
+- `https://frankai.online` and `https://www.frankai.online` resolve to the VPS and proxy
+  through Caddy to `127.0.0.1:4300`.
+- `https://preview.frankai.online` remains available as the verified preview route.
+- Public route, asset, security header and TLS validation passed after cutover.
+
+Remaining external cleanup: disconnect or delete the retired Base44 project/domain association
+from the Base44 account if account access is retained.
 
 `servicedesk.frankai.online` and `openwa.frankai.online` are independent existing services and
 must remain unchanged during the landing-site cutover.
