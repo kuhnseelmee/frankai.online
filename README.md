@@ -57,7 +57,7 @@ npm run deploy:production
 ```
 
 The script runs lint, builds the standalone output, restarts `frankai-site.service`, waits
-for the local service to answer, then runs the live readiness check with
+for the local `/api/health` endpoint to answer, then runs the live readiness check with
 `READINESS_ENV_FILE=/etc/frankai-site.env`.
 
 For manual recovery, `npm run build` also copies the generated static and public assets into

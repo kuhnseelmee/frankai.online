@@ -11,6 +11,14 @@ const envValues = readLocalEnv(envFile)
 const memoryToken = process.env[TOKEN_ENV_NAME] || envValues[TOKEN_ENV_NAME]
 const results = []
 
+const healthResponse = await request('/api/health')
+assertStatus(healthResponse, [200], '/api/health endpoint')
+assertContentType(healthResponse, 'application/json', '/api/health endpoint')
+const health = await healthResponse.json()
+if (health?.ok !== true || health?.service !== 'frankai-site') {
+  throw new Error('/api/health returned an unexpected payload')
+}
+
 for (const path of PAGE_PATHS) {
   const response = await request(path)
   assertStatus(response, [200], `${path} page`)

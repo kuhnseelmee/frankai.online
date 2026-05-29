@@ -2,7 +2,7 @@
 set -euo pipefail
 
 SERVICE_NAME="${SERVICE_NAME:-frankai-site.service}"
-LOCAL_URL="${LOCAL_URL:-http://127.0.0.1:4300}"
+LOCAL_URL="${LOCAL_URL:-http://127.0.0.1:4300/api/health}"
 READINESS_BASE_URL="${READINESS_BASE_URL:-https://frankai.online}"
 READINESS_ENV_FILE="${READINESS_ENV_FILE:-/etc/frankai-site.env}"
 
