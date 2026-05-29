@@ -1,9 +1,10 @@
-import { timingSafeEqual } from 'node:crypto'
 import { NextResponse } from 'next/server'
+import { getMaxPayloadBytes, readJsonPayload, requireBearerToken } from '@/lib/memory/auth'
+import { appendMemoryEvent } from '@/lib/memory/store'
 
 export const runtime = 'nodejs'
 
-const MAX_PAYLOAD_BYTES = 128 * 1024
+const DEFAULT_MAX_PAYLOAD_BYTES = 128 * 1024
 const SUPPORTED_EVENT = 'message.received'
 
 type WebhookEnvelope = {
@@ -15,55 +16,22 @@ type WebhookEnvelope = {
   timestamp?: unknown
 }
 
-function constantTimeMatches(received: string, expected: string): boolean {
-  const receivedBytes = Buffer.from(received)
-  const expectedBytes = Buffer.from(expected)
-
-  if (receivedBytes.length !== expectedBytes.length) {
-    return false
-  }
-
-  return timingSafeEqual(receivedBytes, expectedBytes)
-}
-
-function unauthorised() {
-  return NextResponse.json({ error: 'Unauthorised' }, { status: 401 })
-}
-
 export async function POST(request: Request) {
-  const secret = process.env.HOSTINGER_MAIL_WEBHOOK_SECRET
-  if (!secret) {
-    console.error('Hostinger Mail webhook unavailable: HOSTINGER_MAIL_WEBHOOK_SECRET is not configured')
-    return NextResponse.json({ error: 'Webhook is not configured' }, { status: 503 })
+  const auth = requireBearerToken(request, process.env.HOSTINGER_MAIL_WEBHOOK_SECRET)
+  if (!auth.ok) {
+    if (!process.env.HOSTINGER_MAIL_WEBHOOK_SECRET) {
+      console.error('Hostinger Mail webhook unavailable: HOSTINGER_MAIL_WEBHOOK_SECRET is not configured')
+    }
+    return auth.response
   }
 
-  const authorization = request.headers.get('authorization')
-  if (!authorization?.startsWith('Bearer ')) {
-    return unauthorised()
+  const maxPayloadBytes = getMaxPayloadBytes('HOSTINGER_MAIL_WEBHOOK_MAX_BYTES', DEFAULT_MAX_PAYLOAD_BYTES)
+  const parsed = await readJsonPayload<WebhookEnvelope>(request, maxPayloadBytes)
+  if (!parsed.ok) {
+    return parsed.response
   }
 
-  const token = authorization.slice('Bearer '.length)
-  if (!constantTimeMatches(token, secret)) {
-    return unauthorised()
-  }
-
-  const declaredSize = Number(request.headers.get('content-length') || '0')
-  if (Number.isFinite(declaredSize) && declaredSize > MAX_PAYLOAD_BYTES) {
-    return NextResponse.json({ error: 'Payload too large' }, { status: 413 })
-  }
-
-  const rawPayload = await request.text()
-  if (Buffer.byteLength(rawPayload, 'utf8') > MAX_PAYLOAD_BYTES) {
-    return NextResponse.json({ error: 'Payload too large' }, { status: 413 })
-  }
-
-  let payload: WebhookEnvelope
-  try {
-    payload = JSON.parse(rawPayload) as WebhookEnvelope
-  } catch {
-    return NextResponse.json({ error: 'Invalid JSON payload' }, { status: 400 })
-  }
-
+  const payload = parsed.payload
   if (!payload || typeof payload !== 'object' || Array.isArray(payload)) {
     return NextResponse.json({ error: 'Invalid payload' }, { status: 400 })
   }
@@ -90,6 +58,19 @@ export async function POST(request: Request) {
     eventId,
     receivedAt: new Date().toISOString()
   })
+
+  if (process.env.MEMORY_INGEST_FROM_HOSTINGER_MAIL === 'true') {
+    await appendMemoryEvent({
+      source: 'hostinger-mail',
+      kind: 'message.received',
+      externalId: eventId,
+      occurredAt: typeof payload.timestamp === 'string' ? payload.timestamp : undefined,
+      privacy: 'private',
+      metadata: {
+        event: typeof suppliedEvent === 'string' ? suppliedEvent : SUPPORTED_EVENT
+      }
+    })
+  }
 
   return NextResponse.json({ received: true }, { status: 200 })
 }

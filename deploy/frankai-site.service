@@ -6,7 +6,7 @@ Wants=network-online.target
 [Service]
 Type=simple
 WorkingDirectory=/root/frankai-site
-EnvironmentFile=-/etc/frankai-site-webhook.env
+EnvironmentFile=-/etc/frankai-site.env
 Environment=NODE_ENV=production
 Environment=HOSTNAME=127.0.0.1
 Environment=PORT=4300
@@ -16,7 +16,7 @@ RestartSec=5
 NoNewPrivileges=true
 PrivateTmp=true
 ProtectSystem=strict
-ReadWritePaths=/root/frankai-site/.next
+ReadWritePaths=/root/frankai-site/.next /var/lib/frankai-site
 
 [Install]
 WantedBy=multi-user.target
