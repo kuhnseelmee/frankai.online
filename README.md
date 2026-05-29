@@ -24,14 +24,11 @@ The staged production service runs on localhost port `4300`.
 
 ## Production build
 
-The `systemd` deployment runs Next.js standalone output. After each production build, copy
-the static and public assets into the standalone directory before restarting:
+The `systemd` deployment runs Next.js standalone output. `npm run build` also copies
+the generated static and public assets into the standalone directory before restart:
 
 ```bash
 npm run build
-mkdir -p .next/standalone/.next .next/standalone/public
-cp -a .next/static .next/standalone/.next/
-cp -a public/. .next/standalone/public/
 systemctl restart frankai-site.service
 ```
 
