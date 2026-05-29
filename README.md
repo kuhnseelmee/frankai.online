@@ -22,6 +22,24 @@ npm run dev
 
 The staged production service runs on localhost port `4300`.
 
+## Readiness check
+
+Run the deployment readiness check after production builds or restarts:
+
+```bash
+npm run readiness
+```
+
+The check verifies the live homepage, platform documentation pages and detected `_next` CSS
+assets. If `MEMORY_INGEST_SECRET` is available through the process environment or local `.env`
+file, it also verifies the authenticated memory search endpoint and the ingest endpoint's
+authenticated validation path without writing a memory event. Override the target with
+`READINESS_BASE_URL`, for example:
+
+```bash
+READINESS_BASE_URL=http://127.0.0.1:4300 npm run readiness
+```
+
 ## Production build
 
 The `systemd` deployment runs Next.js standalone output. `npm run build` also copies
