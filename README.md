@@ -40,14 +40,33 @@ authenticated validation path without writing a memory event. Override the targe
 READINESS_BASE_URL=http://127.0.0.1:4300 npm run readiness
 ```
 
+For production checks on the VPS, use the service environment file so authenticated memory
+endpoints are verified without copying secrets into the repository:
+
+```bash
+READINESS_ENV_FILE=/etc/frankai-site.env npm run readiness
+```
+
 ## Production build
 
-The `systemd` deployment runs Next.js standalone output. `npm run build` also copies
-the generated static and public assets into the standalone directory before restart:
+The `systemd` deployment runs Next.js standalone output. Use the guarded production deploy
+script for normal releases:
+
+```bash
+npm run deploy:production
+```
+
+The script runs lint, builds the standalone output, restarts `frankai-site.service`, waits
+for the local service to answer, then runs the live readiness check with
+`READINESS_ENV_FILE=/etc/frankai-site.env`.
+
+For manual recovery, `npm run build` also copies the generated static and public assets into
+the standalone directory before restart:
 
 ```bash
 npm run build
 systemctl restart frankai-site.service
+npm run readiness
 ```
 
 ## Deployment state

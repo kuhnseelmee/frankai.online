@@ -8,6 +8,7 @@
     "postbuild": "node scripts/prepare-standalone-assets.mjs",
     "start": "next start -H 127.0.0.1 -p 4300",
     "lint": "eslint .",
+    "deploy:production": "bash scripts/deploy-production.sh",
     "readiness": "node scripts/readiness-check.mjs",
     "memory:rebuild-index": "node scripts/rebuild-memory-index.mjs"
   },
