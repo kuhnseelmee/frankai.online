@@ -16,3 +16,31 @@ export type StoredMemoryEvent = MemoryIngestPayload & {
   id: string
   receivedAt: string
 }
+
+export type MemoryIndexEntry = {
+  id: string
+  receivedAt: string
+  source: string
+  kind: string
+  occurredAt?: string
+  externalId?: string
+  privacy?: MemoryIngestPayload['privacy']
+  text?: string
+  metadata?: JsonObject
+  searchableText: string
+  terms: Record<string, number>
+}
+
+export type MemoryIndex = {
+  version: 1
+  builtAt: string
+  sourceFile: string
+  eventCount: number
+  skippedCount: number
+  entries: MemoryIndexEntry[]
+}
+
+export type MemorySearchPayload = {
+  query: string
+  limit?: number
+}

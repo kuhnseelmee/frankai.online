@@ -6,7 +6,8 @@
     "dev": "next dev -H 127.0.0.1 -p 4300",
     "build": "next build",
     "start": "next start -H 127.0.0.1 -p 4300",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "memory:rebuild-index": "node scripts/rebuild-memory-index.mjs"
   },
   "dependencies": {
     "next": "16.2.6",

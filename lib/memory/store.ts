@@ -82,6 +82,10 @@ export function getMemoryIngestDir(): string {
   return process.env.MEMORY_INGEST_DIR || DEFAULT_MEMORY_INGEST_DIR
 }
 
+export function getMemoryEventsFile(): string {
+  return join(getMemoryIngestDir(), EVENT_FILE)
+}
+
 export async function appendMemoryEvent(payload: MemoryIngestPayload): Promise<StoredMemoryEvent> {
   const event: StoredMemoryEvent = {
     id: randomUUID(),
@@ -91,7 +95,7 @@ export async function appendMemoryEvent(payload: MemoryIngestPayload): Promise<S
 
   const ingestDir = getMemoryIngestDir()
   await mkdir(ingestDir, { recursive: true, mode: 0o750 })
-  await appendFile(join(ingestDir, EVENT_FILE), `${JSON.stringify(event)}\n`, {
+  await appendFile(getMemoryEventsFile(), `${JSON.stringify(event)}\n`, {
     encoding: 'utf8',
     mode: 0o600
   })

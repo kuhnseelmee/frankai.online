@@ -73,6 +73,34 @@ using the form shown in `deploy/frankai-site-webhook.env.example`, restrict that
 with mode `600`, restart `frankai-site.service`, then use Hostinger's **Test** action to
 confirm a `200` response. Do not load the application's broad `.env` file into systemd.
 
+## Memory ingest and search
+
+The first-party memory ingest endpoint is:
+
+```text
+POST https://frankai.online/api/memory/ingest
+```
+
+It requires `Authorization: Bearer $MEMORY_INGEST_SECRET`, rejects oversized or invalid JSON,
+and appends accepted events to `/var/lib/frankai-site/memory-ingest/events.jsonl` by default.
+
+Rebuild the local lexical search index from the append-only queue after ingesting events:
+
+```bash
+npm run memory:rebuild-index
+```
+
+The authenticated retrieval endpoint is:
+
+```text
+POST https://frankai.online/api/memory/search
+```
+
+It uses the same Bearer token as ingest and accepts JSON shaped like
+`{"query":"production smoke","limit":5}`. Results include bounded excerpts plus sanitized
+source metadata/citations. Sensitive metadata fields such as raw body, HTML, content and text
+are not returned.
+
 ## Repository history
 
 The `kuhnseelmee/Frank-2.0` repository previously published standalone API policy documents
