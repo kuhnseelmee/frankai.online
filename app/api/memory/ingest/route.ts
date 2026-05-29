@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server'
 import { getMaxPayloadBytes, readJsonPayload, requireBearerToken } from '@/lib/memory/auth'
+import { rebuildMemoryIndex } from '@/lib/memory/index'
 import { appendMemoryEvent, validateMemoryIngestPayload } from '@/lib/memory/store'
 
 export const runtime = 'nodejs'
@@ -27,13 +28,25 @@ export async function POST(request: Request) {
   }
 
   const event = await appendMemoryEvent(validated.value)
+  let indexed = false
+
+  try {
+    await rebuildMemoryIndex()
+    indexed = true
+  } catch (error) {
+    console.error('Memory ingest accepted but index rebuild failed', {
+      id: event.id,
+      error
+    })
+  }
 
   console.info('Memory ingest event accepted', {
     id: event.id,
     source: event.source,
     kind: event.kind,
-    receivedAt: event.receivedAt
+    receivedAt: event.receivedAt,
+    indexed
   })
 
-  return NextResponse.json({ received: true, id: event.id }, { status: 202 })
+  return NextResponse.json({ received: true, indexed, id: event.id }, { status: 202 })
 }
