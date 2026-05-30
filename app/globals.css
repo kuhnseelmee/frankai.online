@@ -768,6 +768,114 @@ h1, h2, h3 {
   padding-top: 22px;
 }
 
+.admin-summary {
+  display: grid;
+  gap: 16px;
+  grid-template-columns: repeat(3, 1fr);
+  margin-bottom: 28px;
+}
+
+.admin-summary article,
+.admin-meta,
+.admin-console,
+.approval-panel {
+  background: rgba(16, 38, 43, 0.76);
+  border: 1px solid var(--line);
+  border-radius: 18px;
+}
+
+.admin-summary article {
+  padding: 22px;
+}
+
+.admin-summary span,
+.admin-editor span {
+  color: var(--muted);
+  display: block;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+}
+
+.admin-summary strong {
+  display: block;
+  font-size: 42px;
+  line-height: 1;
+}
+
+.admin-console {
+  padding: 24px;
+}
+
+.admin-meta {
+  display: grid;
+  gap: 12px;
+  grid-template-columns: repeat(3, 1fr);
+  margin-bottom: 18px;
+  padding: 18px;
+}
+
+.admin-meta p,
+.approval-panel p {
+  color: var(--muted);
+  font-size: 14px;
+}
+
+.admin-alert {
+  border-radius: 14px;
+  margin-bottom: 18px;
+  padding: 14px 16px;
+}
+
+.admin-alert-ok {
+  background: rgba(85, 231, 196, 0.1);
+  border: 1px solid rgba(85, 231, 196, 0.28);
+  color: #cbfff0;
+}
+
+.admin-alert-error {
+  background: rgba(255, 88, 88, 0.1);
+  border: 1px solid rgba(255, 88, 88, 0.28);
+  color: #ffd0d0;
+}
+
+.admin-editor {
+  display: grid;
+  gap: 18px;
+}
+
+.admin-editor textarea,
+.approval-panel textarea,
+.approval-panel input {
+  background: rgba(7, 18, 23, 0.92);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  color: var(--text);
+  font: 13px/1.5 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  outline: none;
+  padding: 14px;
+  width: 100%;
+}
+
+.admin-editor textarea {
+  min-height: 210px;
+  resize: vertical;
+}
+
+.approval-panel {
+  display: grid;
+  gap: 14px;
+  margin-top: 24px;
+  padding: 22px;
+}
+
+.approval-panel textarea {
+  min-height: 96px;
+  resize: vertical;
+}
+
 .site-footer {
   border-top: 1px solid var(--line);
   padding: 48px 0 31px;
@@ -813,7 +921,8 @@ h1, h2, h3 {
   .trust-grid,
   .trust-evidence,
   .operating-levels,
-  .memory-boundary {
+  .memory-boundary,
+  .admin-meta {
     grid-template-columns: 1fr;
   }
 
@@ -821,7 +930,8 @@ h1, h2, h3 {
   .pillar-grid,
   .contact-grid,
   .trust-principles,
-  .loop-grid {
+  .loop-grid,
+  .admin-summary {
     grid-template-columns: repeat(2, 1fr);
   }
 
@@ -871,8 +981,9 @@ h1, h2, h3 {
   .priority-row,
   .loop-grid,
   .start-grid,
-  .contact-grid,
-  .trust-principles {
+    .contact-grid,
+    .trust-principles,
+    .admin-summary {
     grid-template-columns: 1fr;
   }
 

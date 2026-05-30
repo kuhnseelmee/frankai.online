@@ -135,6 +135,31 @@ It uses the same Bearer token as ingest and accepts JSON shaped like
 source metadata/citations. Sensitive metadata fields such as raw body, HTML, content and text
 are not returned.
 
+## Platform operator console
+
+The private FrankAI platform console is available at:
+
+```text
+https://frankai.online/admin/platform
+```
+
+It is protected by HTTP Basic authentication. Set `FRANKAI_PLATFORM_ADMIN_TOKEN`
+in `/etc/frankai-site.env`; if omitted, the console falls back to
+`MEMORY_INGEST_SECRET`. The console edits a validated, file-backed platform
+configuration stored at `/var/lib/frankai-site/platform/config.json` by default.
+
+The backing API is:
+
+```text
+GET/PUT/POST https://frankai.online/api/admin/platform
+```
+
+It accepts Basic auth from the browser console or `Authorization: Bearer
+$FRANKAI_PLATFORM_ADMIN_TOKEN` for direct API use. Draft saves validate platform
+stages, capabilities, agent registry entries, governance checklist items and
+operating notes. Publishing requires the exact phrase
+`APPROVE FRANKAI PLATFORM CHANGES` plus a review note.
+
 ## Repository history
 
 The `kuhnseelmee/Frank-2.0` repository previously published standalone API policy documents

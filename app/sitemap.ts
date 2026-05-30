@@ -5,6 +5,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     '',
     '/solutions',
     '/platform',
+    '/admin/platform',
     '/governance',
     '/rollout',
     '/release-cycle',
