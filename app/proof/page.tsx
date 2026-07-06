@@ -1,0 +1,211 @@
+import type { Metadata } from 'next'
+import Link from 'next/link'
+import { SectionIntro } from '@/components/SectionIntro'
+import styles from './proof.module.css'
+
+export const metadata: Metadata = {
+  title: 'Proof',
+  description: 'Working FrankAI systems, capability status and operational proof points.'
+}
+
+const proofPoints = [
+  {
+    title: 'Frank ServiceDesk',
+    status: 'Live',
+    text: 'Customer intake, booking, staff job handling, diagnostics, quote approval, invoice flow and repair status tracking are implemented as a working operations product.',
+    href: 'https://servicedesk.frankai.online'
+  },
+  {
+    title: 'Messaging bridge',
+    status: 'Live',
+    text: 'OpenWA is connected through a signed webhook bridge, proving that assistant events can move through real communication infrastructure with controlled routing.',
+    href: 'https://openwa.frankai.online'
+  },
+  {
+    title: 'Platform console',
+    status: 'Staged',
+    text: 'The first-party platform surface includes health, memory, governance and approval concepts that turn capability into something reviewable.'
+  },
+  {
+    title: 'Inspect Pro',
+    status: 'Staged',
+    text: 'A property inspection and operations application has been staged on the VPS, pending DNS completion and further production hardening.'
+  }
+]
+
+const deploymentProofs = [
+  {
+    name: 'MultiStream',
+    url: 'https://multistream.hnrhardhouse.online',
+    category: 'Broadcast Infrastructure / Streaming Automation',
+    status: 'In Development / Deployment Proof',
+    description:
+      'A broadcast and multi-platform streaming control project designed to manage live broadcast distribution from a central interface.',
+    purpose:
+      'Provides a controlled streaming platform capable of receiving a live broadcast and distributing it across multiple configured platforms.',
+    significance:
+      'Demonstrates applied infrastructure design, dashboard-driven operational control, creator tooling, streaming workflow automation, and future AI-assisted broadcast management.'
+  },
+  {
+    name: 'SignalLedger',
+    url: 'https://signalledger.frankai.online',
+    category: 'Compliance / Evidence / Audit Infrastructure',
+    status: 'Active Build / Strategic Platform',
+    description:
+      'A secure evidence, audit, and compliance platform focused on preserving operational integrity through append-only records, evidence verification, tenant-aware controls, and proof-of-care style workflows.',
+    purpose:
+      'Creates a defensible record of operational events, incidents, documents, and compliance signals.',
+    significance:
+      'Demonstrates full-stack architecture, multi-tenant system design, evidence verification, audit logging, compliance workflows, secure document handling, and governance-focused platform design.'
+  },
+  {
+    name: 'TraderBot',
+    url: 'https://traderbot.frankai.online',
+    category: 'Trading Automation / Secure Dashboard Platform',
+    status: 'Prototype / Secure Platform Build',
+    description:
+      'A secure trading-bot dashboard concept designed for authenticated user management, API configuration, role-based access, bot control, public landing pages, and exchange integration readiness.',
+    purpose:
+      'Provides a secure management interface for trading automation infrastructure, including future support for Pionex API integration and controlled user access.',
+    significance:
+      'Demonstrates financial automation architecture, secure dashboard design, role-based access planning, API credential governance, risk-aware platform thinking, and production-style SaaS structure.'
+  }
+]
+
+const workflow = [
+  ['01', 'Conversation or intake captures the request without asking for passwords or unnecessary private material.'],
+  ['02', 'Frank structures the issue into risk, priority, recommended next step and operational record.'],
+  ['03', 'A human operator reviews the record, assigns work, requests approval or rejects unsafe action.'],
+  ['04', 'The system preserves status, notes, decisions and customer-visible progress.']
+]
+
+const readiness = [
+  ['Live', 'First-party public site, governance pages, ServiceDesk MVP and messaging bridge.'],
+  ['Staged', 'Frank Dispatch approval flow, Inspect Pro deployment, memory search and platform console.'],
+  ['Locked', 'Broad autonomous action, unreviewed outbound communication and unrestricted mailbox ingestion.'],
+  ['Planned', 'Case-study screenshots, public roadmap, production database migration and incident response policy.']
+]
+
+function DeploymentProofCard({
+  name,
+  url,
+  category,
+  status,
+  description,
+  purpose,
+  significance
+}: (typeof deploymentProofs)[number]) {
+  return (
+    <article className={styles.deploymentProofCard}>
+      <div className={styles.deploymentProofTop}>
+        <div>
+          <p className={styles.proofCategory}>{category}</p>
+          <h3>{name}</h3>
+        </div>
+        <span>{status}</span>
+      </div>
+      <p className={styles.deploymentProofDescription}>{description}</p>
+      <div className={styles.deploymentProofDetails}>
+        <div>
+          <p className={styles.deploymentProofLabel}>Purpose</p>
+          <p>{purpose}</p>
+        </div>
+        <div>
+          <p className={styles.deploymentProofLabel}>Technical significance</p>
+          <p>{significance}</p>
+        </div>
+      </div>
+      <a
+        className={`button button-secondary ${styles.deploymentProofLink}`}
+        href={url}
+        rel="noopener noreferrer"
+        target="_blank"
+      >
+        Visit live deployment
+      </a>
+    </article>
+  )
+}
+
+export default function ProofPage() {
+  return (
+    <section className="page-section">
+      <div className="container">
+        <SectionIntro
+          eyebrow="Operational proof"
+          title="FrankAI is built through working systems, not pitch-deck capability."
+          text="The platform thesis is simple: conversations should become controlled workflows, approvals, records and accountable action."
+        />
+        <div className="proof-directory">
+          {proofPoints.map((point) => (
+            <article className="proof-card" key={point.title}>
+              <div className="proof-head">
+                <h2>{point.title}</h2>
+                <span>{point.status}</span>
+              </div>
+              <p>{point.text}</p>
+              {point.href ? (
+                <a
+                  className="text-link"
+                  href={point.href}
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Open system <span aria-hidden="true">-&gt;</span>
+                </a>
+              ) : null}
+            </article>
+          ))}
+        </div>
+        <section className={styles.deploymentProofSection}>
+          <SectionIntro
+            eyebrow="Deployment proof"
+            title="Live Deployment Proofs"
+            text="These deployments represent live proof-of-work across broadcast infrastructure, compliance-grade evidence systems and secure trading automation. Each project shows applied architecture, deployment capability and the ability to turn strategic concepts into working public infrastructure."
+          />
+          <div className={styles.deploymentProofGrid}>
+            {deploymentProofs.map((proof) => (
+              <DeploymentProofCard key={proof.name} {...proof} />
+            ))}
+          </div>
+        </section>
+        <div className="proof-workflow">
+          <div>
+            <p className="eyebrow">Workflow pattern</p>
+            <h2>From conversation to controlled work.</h2>
+            <p>
+              FrankAI is strongest when the assistant does not merely answer. It turns intent into
+              structured work that can be reviewed, actioned and audited.
+            </p>
+          </div>
+          <div className="timeline">
+            {workflow.map(([number, text]) => (
+              <div className="timeline-item compact" key={number}>
+                <span className="pillar-number">{number}</span>
+                <p>{text}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+        <div className="trust-evidence">
+          <div>
+            <p className="eyebrow">Readiness register</p>
+            <h2>What can be trusted today, and what remains deliberately gated.</h2>
+          </div>
+          <div className="capability-list">
+            {readiness.map(([status, description]) => (
+              <div className="capability-row" key={description}>
+                <span className={`capability-status status-${status.toLowerCase()}`}>{status}</span>
+                <p>{description}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+        <div className="inline-cta">
+          <p>Have a workflow that needs governed AI assistance?</p>
+          <Link className="text-link" href="/contact">Send a controlled enquiry <span aria-hidden="true">-&gt;</span></Link>
+        </div>
+      </div>
+    </section>
+  )
+}
