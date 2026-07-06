@@ -26,6 +26,9 @@ const capability = [
   ['Live', 'First-party frankai.online presence and controlled public information routes.'],
   ['Live', 'Frank ServiceDesk operational workflow environment.'],
   ['Live', 'Signed messaging integration bridge for controlled assistant events.'],
+  ['Live', 'Public deployment proof for MultiStream streaming automation.'],
+  ['Staged', 'SignalLedger evidence and audit platform in active build.'],
+  ['Staged', 'TraderBot secure dashboard platform prototype.'],
   ['Staged', 'Frank Dispatch mission, approval and action receipt workflow using safe fixture intake.'],
   ['Locked', 'Inbound email ingestion pending webhook credential activation and operational hardening.']
 ]
@@ -54,7 +57,8 @@ export default function TrustPage() {
             <h2>What is live, staged and deliberately locked.</h2>
             <p className="trust-evidence-lead">
               Honest status is part of the product. A capability is not represented as active until
-              the access, safety and delivery path are actually verified.
+              the access, safety and delivery path are actually verified, including the public proof
+              deployments now operating across streaming, audit and trading infrastructure.
             </p>
           </div>
           <div className="capability-list">

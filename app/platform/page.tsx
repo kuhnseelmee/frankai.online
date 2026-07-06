@@ -18,7 +18,8 @@ const platformLinks = [
   ['/governance', 'Governance controls', 'Approval gates, policy boundaries and evidence requirements.'],
   ['/rollout', 'Staged rollout', 'How capability moves from foundation to pilot to first release.'],
   ['/release-cycle', 'Execution priorities', 'The practical worklist for the first platform release cycle.'],
-  ['/memory', 'Memory architecture', 'How FrankAI turns history into retrievable operating context.']
+  ['/memory', 'Memory architecture', 'How FrankAI turns history into retrievable operating context.'],
+  ['/proof', 'Operational proof portfolio', 'Public deployments across streaming automation, evidence infrastructure and secure trading dashboards.']
 ]
 
 export default function PlatformPage() {
@@ -28,7 +29,7 @@ export default function PlatformPage() {
         <SectionIntro
           eyebrow="Platform direction"
           title="A practical intelligence layer for action."
-          text="FrankAI is evolving from a public assistant presence into an enterprise AI-agent platform: memory, governance, execution and release control held together as one operating layer."
+          text="FrankAI is evolving from a public assistant presence into an enterprise AI-agent platform: memory, governance, execution, release control and a growing proof portfolio held together as one operating layer."
         />
         <div className="pillar-grid">
           {pillars.map(([title, text], index) => (

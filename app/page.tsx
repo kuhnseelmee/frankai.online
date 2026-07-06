@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import { SectionIntro } from '@/components/SectionIntro'
+import { deploymentProofs } from '@/lib/deployment-proofs'
 
 const pathways = [
   {
@@ -35,6 +36,12 @@ const proof = [
     text: 'A signed messaging bridge supporting controlled assistant events and operational integration.',
     href: 'https://openwa.frankai.online'
   },
+  ...deploymentProofs.map((item) => ({
+    title: item.name,
+    status: item.status,
+    text: item.description,
+    href: item.url
+  })),
   {
     title: 'Governed assistance',
     status: 'Core principle',
@@ -43,9 +50,29 @@ const proof = [
   }
 ]
 
+const structuredData = {
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  name: 'FrankAI',
+  url: 'https://frankai.online',
+  description:
+    'FrankAI builds governed AI systems that turn conversations into controlled workflows, approvals, records, deployment proofs and operational action.',
+  sameAs: [
+    'https://servicedesk.frankai.online',
+    'https://openwa.frankai.online',
+    'https://multistream.hnrhardhouse.online',
+    'https://signalledger.frankai.online',
+    'https://traderbot.frankai.online'
+  ]
+}
+
 export default function Home() {
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+      />
       <section className="hero">
         <div className="container hero-grid">
           <div>
@@ -54,12 +81,12 @@ export default function Home() {
               Intelligence that <span>moves work forward.</span>
             </h1>
             <p className="hero-lead">
-              FrankAI combines strategic assistance, operational workflows and controlled automation
-              for people and organisations building what comes next.
+              FrankAI builds governed AI systems that turn conversations into controlled workflows,
+              approvals, records and operational action.
             </p>
             <div className="hero-actions">
               <Link className="button" href="/start">Talk to Frank</Link>
-              <Link className="button button-secondary" href="/solutions">Explore solutions</Link>
+              <Link className="button button-secondary" href="/proof">See proof</Link>
             </div>
           </div>
           <div className="control-panel" aria-label="FrankAI operating principles">
@@ -110,6 +137,7 @@ export default function Home() {
               </article>
             ))}
           </div>
+          <Link className="button button-secondary proof-button" href="/proof">View the proof layer</Link>
         </div>
       </section>
 

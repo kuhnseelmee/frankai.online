@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { SectionIntro } from '@/components/SectionIntro'
+import { deploymentProofs } from '@/lib/deployment-proofs'
 
 export const metadata: Metadata = {
   title: 'Solutions',
@@ -39,6 +40,33 @@ export default function SolutionsPage() {
             <p>Build purpose-fit tools where AI augments judgement rather than replacing accountability.</p>
           </article>
         </div>
+        <section className="proof-section">
+          <SectionIntro
+            eyebrow="Operational proof portfolio"
+            title="Live and emerging deployments."
+            text="These public deployments show the current execution footprint across broadcast infrastructure, evidence systems and secure trading automation."
+          />
+          <div className="proof-directory">
+            {deploymentProofs.map((proof) => (
+              <article className="proof-card" key={proof.name}>
+                <div className="proof-head">
+                  <h3>{proof.name}</h3>
+                  <span>{proof.status}</span>
+                </div>
+                <p>{proof.category}</p>
+                <p>{proof.description}</p>
+                <a
+                  className="text-link"
+                  href={proof.url}
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Visit live deployment <span aria-hidden="true">-&gt;</span>
+                </a>
+              </article>
+            ))}
+          </div>
+        </section>
         <div className="inline-cta">
           <p>Have a process that is slow, fragmented or hard to control?</p>
           <Link className="text-link" href="/contact">Discuss a workflow <span aria-hidden="true">-&gt;</span></Link>
