@@ -18,9 +18,11 @@ Hostinger token rotation remains outstanding.
 - Pinned Gitleaks v8.24.2 finds no leaks in Git history. The raw working-tree
   scan also inspected ignored local `.env` and `.next` files and reported only
   those local/generated artifacts; those files are not tracked or staged.
-- Playwright Chromium is installed locally. `npm run test:browser` passes two
-  staging smoke tests: protected boundaries/Web Storage and no microphone
-  request while voice is disabled.
+- Playwright Chromium is installed locally. With the isolated staging database
+  enabled, `npm run test:browser` passes 5/5 tests: protected boundaries and
+  Web Storage, no microphone request, invitation redemption plus verification,
+  password-reset completion with old-session invalidation, and administrator
+  MFA enrollment with one-time recovery-code acknowledgement.
 - The transactional final-administrator integration test passes, including
   concurrent demotion serialization.
 - Production systemd, production environment, and production Caddy routing
@@ -76,8 +78,15 @@ mail, refresh-concurrency, and ACL-aware restore suites are incomplete.
 - Next.js, Nodemailer, and Playwright were upgraded to reviewed patched releases.
   The remaining npm advisories are documented in
   [dependency-security-review.md](dependency-security-review.md).
+- The standalone asset preparation now copies client assets beside the nested
+  server entrypoint; staging browser hydration was previously failing with
+  static-asset 404s.
+- The staging issuer is aligned to `https://staging.localhost:8443`, allowing
+  Origin and CSRF validation to operate correctly through the staging proxy.
+- MFA TOTP generation uses RFC 6238-compatible Base32 encoding, and the setup
+  page requires explicit acknowledgement after displaying recovery codes.
 
-The release is still `STAGING_AUTH_PARTIALLY_ACCEPTED`: full invitation
-redemption, email-verification, password-reset completion, MFA browser flows,
-administrator mutation browser flows, and complete audit-category coverage have
-not been exercised end-to-end.
+The release remains `STAGING_AUTH_PARTIALLY_ACCEPTED`: administrator mutation
+browser flows, all enabled SMTP templates, complete audit-category coverage,
+and final dependency reachability disposition have not been exercised
+end-to-end.
