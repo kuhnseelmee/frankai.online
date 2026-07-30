@@ -14,6 +14,11 @@ This is an evidence ledger, not a claim that production is active. The reviewed 
 - `npm run build` passes and produces the standalone route set.
 - Pinned Gitleaks `v8.24.2` passes working-tree, staged-content, and complete Git-history scans with zero findings.
 - Voice remains disabled in code and configuration templates; the disabled route returns before provider setup.
+- An alternate-port standalone candidate ran at `http://127.0.0.1:4500` against the protected staging database with ephemeral process secrets, secure cookies, PostgreSQL authority, and voice disabled. It was stopped after smoke testing; production port 4300 was not touched.
+- Candidate smoke checks returned: `/` 200, `/login` 200, `/signup` 200, `/admin` 307, `/voice` 200, `/api/auth/me` 401, `/api/voice/capabilities` 401, public signup POST 403, and unauthenticated voice POST 401.
+- Candidate rejected dummy Basic and Bearer administration headers with 401. CSRF bootstrap returned 200.
+- Two controlled administrator identities were created interactively in staging. Duplicate bootstrap for the primary identity was rejected without modification.
+- Runtime-role verification returned zero users and denied `schema_migrations` access after migration 004.
 
 ## Acceptance matrix
 
