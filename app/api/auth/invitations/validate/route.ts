@@ -1,0 +1,6 @@
+import { NextResponse } from 'next/server'
+import { hashToken, normaliseEmail } from '@/lib/auth/store'
+import { authDb } from '@/lib/auth/postgres'
+import { allowRequest } from '@/lib/auth/rate-limit'
+export const runtime = 'nodejs'
+export async function POST(request: Request) { const limit = await allowRequest(request, 'invite_validate'); if (!limit.allowed) return NextResponse.json({ error: 'Too many requests.' }, { status: 429, headers: { 'Retry-After': String(limit.retryAfter) } }); const body = await request.json().catch(() => ({})); const token = typeof body.token === 'string' ? body.token : ''; if (!token || token.length > 200) return NextResponse.json({ valid: false }, { status: 200 }); const result = await authDb().query("SELECT email_normalized,role,expires_at FROM invitations WHERE token_hash=$1 AND used_at IS NULL AND revoked_at IS NULL AND expires_at>now()", [hashToken(token)]); if (!result.rowCount) return NextResponse.json({ valid: false }, { status: 200 }); const email = typeof body.email === 'string' ? normaliseEmail(body.email) : undefined; return NextResponse.json({ valid: !email || email === result.rows[0].email_normalized, email: result.rows[0].email_normalized, role: result.rows[0].role, expiresAt: result.rows[0].expires_at }) }

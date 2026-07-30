@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 import { headers } from 'next/headers'
 import { SectionIntro } from '@/components/SectionIntro'
 import { PlatformAdminClient } from '@/components/platform/PlatformAdminClient'
-import { requirePlatformAdmin } from '@/lib/platform/auth'
+import { requireAdmin } from '@/lib/auth/http'
 import { readPlatformConfig } from '@/lib/platform/store'
 
 export const metadata: Metadata = {
@@ -14,11 +14,7 @@ export const dynamic = 'force-dynamic'
 
 export default async function PlatformAdminPage() {
   const requestHeaders = await headers()
-  const authResponse = requirePlatformAdmin(
-    new Request('https://frankai.online/admin/platform', {
-      headers: requestHeaders
-    })
-  )
+  const authResponse = (await requireAdmin(new Request('https://frankai.online/admin/platform', { headers: requestHeaders }))).response
 
   if (authResponse) {
     return (

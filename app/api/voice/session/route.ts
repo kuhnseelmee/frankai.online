@@ -1,0 +1,7 @@
+import { NextResponse } from 'next/server'
+import { csrfOk, requireUser } from '@/lib/auth/http'
+import { audit } from '@/lib/auth/store'
+import { createRealtimeCall } from '@/lib/voice/realtime'
+import { allowRequest } from '@/lib/auth/rate-limit'
+export const runtime = 'nodejs'
+export async function POST(request: Request) { const auth = await requireUser(request); if (auth.response) { await audit('voice_session', 'rejected_unauthenticated'); return auth.response }; if (process.env.VOICE_ENABLED !== 'true') { await audit('voice_session', 'rejected_disabled', {}, auth.user!.id); return NextResponse.json({ error: 'Voice service is not yet available.' }, { status: 503 }) }; if (!csrfOk(request)) return NextResponse.json({ error: 'CSRF validation failed' }, { status: 403 }); const limit = await allowRequest(request, 'voice', auth.user!.id); if (!limit.allowed) return NextResponse.json({ error: 'Too many voice-session attempts.' }, { status: 429, headers: { 'Retry-After': String(limit.retryAfter) } }); const body = await request.text(); let sdp = body; if (request.headers.get('content-type')?.includes('application/json')) { try { sdp = JSON.parse(body || '{}').sdp || '' } catch { sdp = '' } } try { const result = await createRealtimeCall(auth.user!, typeof sdp === 'string' ? sdp : ''); return NextResponse.json(result, { status: result.status }) } catch { await audit('voice_session', 'rejected_internal', {}, auth.user!.id); return NextResponse.json({ error: 'Realtime voice is unavailable.' }, { status: 503 }) } }

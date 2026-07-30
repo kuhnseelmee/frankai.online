@@ -1,0 +1,14 @@
+[extend]
+useDefault = true
+
+[[rules]]
+id = "hostinger-api-token-assignment"
+description = "Hostinger API token assignment"
+regex = '''(?i)HOSTINGER[-_]API[-_]TOKEN[ \t]*[:=][ \t]*[A-Za-z0-9._-]{20,}'''
+keywords = ["HOSTINGER-API-TOKEN", "HOSTINGER_API_TOKEN"]
+
+[[rules]]
+id = "frankai-jwt-secret-assignment"
+description = "FrankAI signing secret assignment"
+regex = '''(?i)(JWT_ACCESS_SECRET|JWT_REFRESH_SECRET|OPENAI_API_KEY)[ \t]*=[ \t]*[^\s#]{20,}'''
+keywords = ["JWT_ACCESS_SECRET", "JWT_REFRESH_SECRET", "OPENAI_API_KEY"]

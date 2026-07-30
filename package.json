@@ -11,15 +11,21 @@
     "test": "node --test --experimental-strip-types tests/**/*.test.ts",
     "deploy:production": "bash scripts/deploy-production.sh",
     "readiness": "node scripts/readiness-check.mjs",
+    "admin:create": "node scripts/admin-create.mjs",
+    "db:migrate": "node scripts/migrate-db.mjs",
+    "security:benchmark": "node scripts/benchmark-password.mjs",
+    "auth:migrate-file": "node scripts/migrate-file-auth.mjs",
     "memory:rebuild-index": "node scripts/rebuild-memory-index.mjs"
   },
   "dependencies": {
     "next": "16.2.6",
+    "pg": "^8.16.3",
     "react": "18.3.1",
     "react-dom": "18.3.1"
   },
   "devDependencies": {
     "@types/node": "^20.14.2",
+    "@types/pg": "^8.15.5",
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
     "eslint": "9.39.4",

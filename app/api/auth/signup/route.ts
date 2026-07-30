@@ -1,0 +1,8 @@
+import { NextResponse } from 'next/server'
+import { authConfig } from '@/lib/auth/config'
+import { createUser, users, audit } from '@/lib/auth/store'
+import { csrfOk } from '@/lib/auth/http'
+import { issueAuthPair } from '@/lib/auth/service'
+import { allowRequest } from '@/lib/auth/rate-limit'
+export const runtime = 'nodejs'
+export async function POST(request: Request) { try { if (!authConfig().signupEnabled) return NextResponse.json({ error: 'Registration is currently invite-only.' }, { status: 403 }); const limit = await allowRequest(request, 'signup'); if (!limit.allowed) return NextResponse.json({ error: 'Too many registration attempts. Try again later.' }, { status: 429, headers: { 'Retry-After': String(limit.retryAfter) } }); if (!csrfOk(request)) return NextResponse.json({ error: 'CSRF validation failed' }, { status: 403 }); const body = await request.json(); const email = typeof body.email === 'string' ? body.email.trim().toLowerCase() : ''; const password = typeof body.password === 'string' ? body.password : ''; const displayName = typeof body.displayName === 'string' ? body.displayName : ''; if (!/^\S+@\S+\.\S+$/.test(email) || password.length < 12 || password.length > 200 || !displayName.trim()) return NextResponse.json({ error: 'Enter a valid email, display name, and a password of at least 12 characters.' }, { status: 400 }); if ((await users()).some(user => user.email === email)) return NextResponse.json({ error: 'Unable to create this account.' }, { status: 400 }); const user = await createUser(email, displayName, password); await audit('signup', 'success', {}, user.id); return issueAuthPair(user, 201) } catch { return NextResponse.json({ error: 'Unable to create account.' }, { status: 500 }) } }

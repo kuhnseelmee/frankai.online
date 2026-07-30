@@ -1,0 +1,6 @@
+import { NextResponse } from 'next/server'
+import { hashToken, audit } from '@/lib/auth/store'
+import { withAuthTransaction } from '@/lib/auth/postgres'
+import { allowRequest } from '@/lib/auth/rate-limit'
+export const runtime = 'nodejs'
+export async function POST(request: Request) { const limit = await allowRequest(request, 'email_resend'); if (!limit.allowed) return NextResponse.json({ error: 'Too many requests.' }, { status: 429 }); const body = await request.json().catch(() => ({})); const token = typeof body.token === 'string' ? body.token : ''; try { const userId = await withAuthTransaction(async client => { const row = await client.query("SELECT user_id FROM verification_tokens WHERE token_hash=$1 AND used_at IS NULL AND expires_at>now() FOR UPDATE", [hashToken(token)]); if (!row.rowCount) return null; await client.query('UPDATE verification_tokens SET used_at=now() WHERE token_hash=$1', [hashToken(token)]); await client.query("UPDATE users SET email_verified_at=now(),status=CASE WHEN status='PENDING_VERIFICATION' THEN 'ACTIVE' ELSE status END,updated_at=now() WHERE id=$1", [row.rows[0].user_id]); return row.rows[0].user_id as string }); if (userId) await audit('email_verified', 'success', {}, userId); return NextResponse.json({ ok: Boolean(userId) }) } catch { return NextResponse.json({ ok: false }) } }
