@@ -1,0 +1,27 @@
+{
+  "generated": "2026-07-30",
+  "routes": [
+    {"method":"GET","path":"/api/admin/users","authentication":"session","role":"ADMIN","mfa":true,"recentMfa":false,"csrf":false,"origin":false,"rateLimit":"general_api","audit":"read-only","finalAdmin":false},
+    {"method":"GET","path":"/api/admin/users/:id","authentication":"session","role":"ADMIN","mfa":true,"recentMfa":false,"csrf":false,"origin":false,"rateLimit":"general_api","audit":"read-only","finalAdmin":false},
+    {"method":"PATCH","path":"/api/admin/users/:id/status","authentication":"session","role":"ADMIN","mfa":true,"recentMfa":true,"csrf":true,"origin":true,"rateLimit":"admin_sensitive_action","audit":"admin_user_changed","finalAdmin":true},
+    {"method":"PATCH","path":"/api/admin/users/:id/role","authentication":"session","role":"ADMIN","mfa":true,"recentMfa":true,"csrf":true,"origin":true,"rateLimit":"admin_sensitive_action","audit":"admin_user_changed","finalAdmin":true},
+    {"method":"DELETE","path":"/api/admin/users/:id","authentication":"session","role":"ADMIN","mfa":true,"recentMfa":true,"csrf":true,"origin":true,"rateLimit":"admin_sensitive_action","audit":"admin_user_deleted","finalAdmin":true},
+    {"method":"POST","path":"/api/admin/users/:id/unlock","authentication":"session","role":"ADMIN","mfa":true,"recentMfa":true,"csrf":true,"origin":true,"rateLimit":"admin_sensitive_action","audit":"admin_user_unlocked","finalAdmin":true},
+    {"method":"POST","path":"/api/admin/users/:id/revoke-sessions","authentication":"session","role":"ADMIN","mfa":true,"recentMfa":true,"csrf":true,"origin":true,"rateLimit":"admin_sensitive_action","audit":"admin_sessions_revoked","finalAdmin":true},
+    {"method":"POST","path":"/api/admin/users/:id/reset-mfa","authentication":"session","role":"ADMIN","mfa":true,"recentMfa":true,"csrf":true,"origin":true,"rateLimit":"admin_sensitive_action","audit":"admin_mfa_reset","finalAdmin":true},
+    {"method":"GET","path":"/api/admin/users/:id/sessions","authentication":"session","role":"ADMIN","mfa":true,"recentMfa":false,"csrf":false,"origin":false,"rateLimit":"general_api","audit":"read-only","finalAdmin":false},
+    {"method":"GET","path":"/api/admin/users/:id/audit","authentication":"session","role":"ADMIN","mfa":true,"recentMfa":false,"csrf":false,"origin":false,"rateLimit":"general_api","audit":"read-only","finalAdmin":false},
+    {"method":"POST","path":"/api/admin/reauth/challenge","authentication":"session","role":"ADMIN","mfa":false,"recentMfa":false,"csrf":true,"origin":true,"rateLimit":"mfa_challenge","audit":"admin_reauth","finalAdmin":false},
+    {"method":"POST","path":"/api/admin/invitations","authentication":"session","role":"ADMIN","mfa":true,"recentMfa":true,"csrf":true,"origin":true,"rateLimit":"admin_sensitive_action","audit":"invitation_created","finalAdmin":false},
+    {"method":"DELETE","path":"/api/admin/invitations/:id","authentication":"session","role":"ADMIN","mfa":true,"recentMfa":true,"csrf":true,"origin":true,"rateLimit":"admin_sensitive_action","audit":"invitation_revoked","finalAdmin":false},
+    {"method":"POST","path":"/api/admin/invitations/:id/resend","authentication":"session","role":"ADMIN","mfa":true,"recentMfa":true,"csrf":true,"origin":true,"rateLimit":"admin_sensitive_action","audit":"invitation_resent","finalAdmin":false}
+    ,{"method":"GET","path":"/api/admin/platform","authentication":"session","role":"ADMIN","mfa":true,"recentMfa":false,"csrf":false,"origin":false,"rateLimit":"general_api","audit":"read-only","finalAdmin":false}
+    ,{"method":"PUT","path":"/api/admin/platform","authentication":"session","role":"ADMIN","mfa":true,"recentMfa":true,"csrf":true,"origin":true,"rateLimit":"admin_sensitive_action","audit":"platform_draft_changed","finalAdmin":false}
+    ,{"method":"POST","path":"/api/admin/platform","authentication":"session","role":"ADMIN","mfa":true,"recentMfa":true,"csrf":true,"origin":true,"rateLimit":"admin_sensitive_action","audit":"platform_published","finalAdmin":false}
+    ,{"method":"GET","path":"/api/admin/system","authentication":"session","role":"ADMIN","mfa":true,"recentMfa":false,"csrf":false,"origin":false,"rateLimit":"general_api","audit":"read-only","finalAdmin":false}
+    ,{"method":"POST","path":"/api/admin/mfa/challenge","authentication":"session","role":"ADMIN","mfa":false,"recentMfa":false,"csrf":true,"origin":true,"rateLimit":"mfa_challenge","audit":"admin_mfa_challenge","finalAdmin":false}
+    ,{"method":"POST","path":"/api/admin/mfa/recovery","authentication":"session","role":"ADMIN","mfa":false,"recentMfa":false,"csrf":true,"origin":true,"rateLimit":"mfa_recovery","audit":"admin_mfa_recovery_used","finalAdmin":false}
+    ,{"method":"POST","path":"/api/admin/mfa/setup","authentication":"session","role":"ADMIN","mfa":false,"recentMfa":false,"csrf":true,"origin":true,"rateLimit":"mfa_challenge","audit":"admin_mfa_setup","finalAdmin":false}
+    ,{"method":"POST","path":"/api/admin/mfa/confirm","authentication":"session","role":"ADMIN","mfa":false,"recentMfa":false,"csrf":true,"origin":true,"rateLimit":"mfa_challenge","audit":"admin_mfa_enrolled","finalAdmin":false}
+  ]
+}

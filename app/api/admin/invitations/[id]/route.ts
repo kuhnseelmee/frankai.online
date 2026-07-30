@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server'
-import { csrfOk, requireAdmin } from '@/lib/auth/http'
+import { csrfOk, requireRecentAdmin as requireAdmin } from '@/lib/auth/http'
 import { authDb } from '@/lib/auth/postgres'
 import { audit } from '@/lib/auth/store'
 export const runtime = 'nodejs'

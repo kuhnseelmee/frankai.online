@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server'
 import { randomBytes, randomUUID } from 'node:crypto'
-import { csrfOk, requireAdmin } from '@/lib/auth/http'
+import { csrfOk, requireRecentAdmin as requireAdmin } from '@/lib/auth/http'
 import { audit, hashToken, normaliseEmail } from '@/lib/auth/store'
 import { authDb, withAuthTransaction } from '@/lib/auth/postgres'
 import { queueEmail } from '@/lib/auth/email'

@@ -7,3 +7,11 @@ PostgreSQL is now the staged authoritative store when `DATABASE_URL` and `AUTH_D
 State-changing browser requests require the readable `frankai_csrf` cookie to match `X-CSRF-Token`. CORS is same-origin by default; do not add wildcard credentialed origins.
 
 Public signup is disabled by default (`PUBLIC_SIGNUP_ENABLED=false`). Invitation-only signup is the intended production policy. Administrator MFA uses encrypted TOTP secrets and one-time hashed recovery codes; `MFA_ENCRYPTION_KEY` is required before enrollment.
+# Current deployment boundary
+
+The PostgreSQL control plane is implemented and isolated staging is active, but
+production remains file-backed until the documented cutover gates pass.
+Invitation-only registration, secure cookies, CSRF/Origin checks, rotating
+refresh sessions, email workflows, MFA, recent reauthentication, audit logging,
+and PostgreSQL rate-limit buckets are the intended control-plane design. Voice
+is explicitly disabled and is not part of this phase.

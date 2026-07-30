@@ -9,7 +9,7 @@ const pool = new Pool({ connectionString: url, max: 3, ssl: process.env.DATABASE
 const client = await pool.connect()
 try {
   await client.query('CREATE TABLE IF NOT EXISTS schema_migrations (id text PRIMARY KEY, applied_at timestamptz NOT NULL DEFAULT now())')
-  const migrations = ['001_auth', '002_admin_mfa', '003_control_plane', '004_runtime_grants']
+  const migrations = ['001_auth', '002_admin_mfa', '003_control_plane', '004_runtime_grants', '005_admin_controls']
   for (const id of migrations) {
     const existing = await client.query('SELECT id FROM schema_migrations WHERE id = $1', [id])
     if (existing.rowCount === 0) {
