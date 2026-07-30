@@ -25,15 +25,15 @@ export async function queueEmail(recipient: string, templateName: EmailTemplate,
   const provider = process.env.EMAIL_PROVIDER || 'smtp'
   if (!['smtp', 'log', 'capture'].includes(provider)) throw new Error('Unsupported email provider')
   const id = randomUUID()
-  await authDb().query('INSERT INTO email_outbox (id,recipient,template,payload) VALUES ($1,$2,$3,$4)', [id, recipient, templateName, JSON.stringify(payload)])
+  const safePayload = Object.fromEntries(Object.entries(payload).filter(([key]) => !/(token|password|secret|code)/i.test(key)))
   if (provider === 'log') return { queued: true, provider }
   try {
     const message = template(templateName, payload)
     await transport().sendMail({ from: process.env.EMAIL_FROM || 'no-reply@frankai.online', to: recipient, replyTo: process.env.EMAIL_REPLY_TO || undefined, subject: message.subject, text: message.text })
-    await authDb().query("UPDATE email_outbox SET status='SENT',sent_at=now(),attempts=attempts+1 WHERE id=$1", [id])
+    await authDb().query('INSERT INTO email_outbox (id,recipient,template,payload,status,sent_at,attempts) VALUES ($1,$2,$3,$4,\'SENT\',now(),1)', [id, recipient, templateName, JSON.stringify(safePayload)])
     return { queued: true, provider }
   } catch (error) {
-    await authDb().query("UPDATE email_outbox SET status='FAILED',attempts=attempts+1,available_at=now()+interval '5 minutes' WHERE id=$1", [id])
+    await authDb().query("INSERT INTO email_outbox (id,recipient,template,payload,status,attempts,available_at) VALUES ($1,$2,$3,$4,'FAILED',1,now()+interval '5 minutes')", [id, recipient, templateName, JSON.stringify(safePayload)])
     throw error
   }
 }

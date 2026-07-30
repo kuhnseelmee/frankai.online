@@ -51,7 +51,7 @@ Hostinger token rotation remains outstanding.
 | Secret scanning | Yes | Yes | N/A | N/A | History clean; local ignored artifacts reported | PASS | Remove local artifacts before release |
 | Audit completeness | Partial | No | No | No | Audit helpers/routes | PARTIAL | Event-by-event assertions |
 | Voice-disabled boundary | Yes | Yes | Partial | Yes | `VOICE_ENABLED=false`; no mic request | PARTIAL | Provider-invocation test |
-| Operational restore | Partial | No | Partial | No | Schema restore and grants | RESTORE_PARTIAL | ACL-aware app smoke |
+| Operational restore | Yes | No | Yes | No | Disposable candidate, runtime grants, and privilege-denial checks | PASS | Full authenticated restore mutation |
 | Rollback | Partial | No | Partial | No | Protected backups/docs | PARTIAL | Full cutover rehearsal |
 
 ## Release decision
@@ -59,3 +59,25 @@ Hostinger token rotation remains outstanding.
 Staging is isolated and partially accepted. It is not production-ready because
 the credential incident is unresolved and the full authenticated/browser,
 mail, refresh-concurrency, and ACL-aware restore suites are incomplete.
+
+## New acceptance evidence — 2026-07-30
+
+- JWT negative coverage now runs through the TypeScript test loader: eight tests
+  pass when the staging integration flag is enabled.
+- Refresh rotation is transactionally serialized with row locks in PostgreSQL;
+  the disposable staging race produced one success and one rejection.
+- The email outbox no longer stores token/password/secret/code payload fields.
+  A password-reset message was captured by the local Mailpit sink.
+- Two isolated staging processes shared login rate limiting and produced 429
+  after the configured threshold.
+- A disposable standalone candidate successfully ran against a restored
+  database with runtime privilege-denial checks. Restore classification is now
+  `OPERATIONAL_RESTORE_VERIFIED`.
+- Next.js, Nodemailer, and Playwright were upgraded to reviewed patched releases.
+  The remaining npm advisories are documented in
+  [dependency-security-review.md](dependency-security-review.md).
+
+The release is still `STAGING_AUTH_PARTIALLY_ACCEPTED`: full invitation
+redemption, email-verification, password-reset completion, MFA browser flows,
+administrator mutation browser flows, and complete audit-category coverage have
+not been exercised end-to-end.
