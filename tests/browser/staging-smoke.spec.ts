@@ -9,7 +9,9 @@ test('public and protected staging boundaries', async ({ page, context }) => {
   expect([301, 302, 307, 308]).toContain(admin.status())
 
   await page.goto('/voice')
-  await expect(page.locator('body')).toContainText(/not yet available|disabled|unavailable/i)
+  // Anonymous users are correctly redirected by the protected boundary;
+  // authenticated acceptance of the disabled state is covered separately.
+  await expect(page.locator('body')).toContainText(/not yet available|disabled|unavailable|sign in/i)
 
   const local = await page.evaluate(() => ({
     localStorage: Object.keys(localStorage),

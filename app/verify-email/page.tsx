@@ -1,0 +1,3 @@
+'use client'
+import { useEffect, useState } from 'react'
+export default function VerifyEmailPage() { const [message, setMessage] = useState('Verifying your email…'); useEffect(() => { const token = new URLSearchParams(location.search).get('token') || ''; fetch('/api/auth/email/verify', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ token }) }).then(r => r.json()).then(data => setMessage(data.ok ? 'Your email is verified.' : 'This verification link is invalid or expired.')).catch(() => setMessage('This verification link is invalid or expired.')) }, []); return <main className="page-shell"><section className="content-section"><p className="eyebrow">Email verification</p><h1>{message}</h1></section></main> }

@@ -1,0 +1,11 @@
+'use client'
+import { FormEvent, useEffect, useRef, useState } from 'react'
+
+function csrf() { return document.cookie.match(/(?:^|;\s*)frankai_csrf=([^;]+)/)?.[1] || '' }
+
+export default function InviteSignupPage() {
+  const tokenRef = useRef(''); const [email, setEmail] = useState(''); const [role, setRole] = useState(''); const [form, setForm] = useState({ displayName: '', password: '' }); const [message, setMessage] = useState('Checking invitation…'); const [done, setDone] = useState(false)
+  useEffect(() => { const value = new URLSearchParams(location.search).get('token') || ''; tokenRef.current = value; void fetch('/api/auth/csrf', { credentials: 'include' }).then(() => fetch('/api/auth/invitations/validate', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ token: value }) })).then(r => r.json()).then(data => { if (!data.valid) setMessage('This invitation is invalid or expired.'); else { setEmail(data.email); setRole(data.role); setMessage('Complete your invitation to create access.') } }).catch(() => setMessage('This invitation is invalid or expired.')) }, [])
+  async function submit(event: FormEvent) { event.preventDefault(); const response = await fetch('/api/auth/invitations/redeem', { method: 'POST', credentials: 'include', headers: { 'content-type': 'application/json', 'x-csrf-token': csrf() }, body: JSON.stringify({ token: tokenRef.current, email, ...form }) }); if (response.ok) { setDone(true); setMessage('Your account is ready.'); location.href = '/account' } else setMessage((await response.json()).error || 'Invitation cannot be redeemed.') }
+  return <main className="page-shell"><section className="content-section"><p className="eyebrow">Invitation access</p><h1>Complete your invitation.</h1><p>{message}</p>{email && !done && <form onSubmit={submit} className="contact-form"><label>Email<input value={email} readOnly /></label><label>Name<input required value={form.displayName} onChange={e => setForm({ ...form, displayName: e.target.value })} /></label><label>Password<input required minLength={12} type="password" value={form.password} onChange={e => setForm({ ...form, password: e.target.value })} /></label><p>Assigned role: {role === 'ADMIN' ? 'Administrator' : 'User'}</p><button>Create account</button></form>}</section></main>
+}
