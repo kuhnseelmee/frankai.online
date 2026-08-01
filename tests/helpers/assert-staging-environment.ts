@@ -13,6 +13,6 @@ export function assertSafeStagingEnvironment() {
   const databaseName = decodeURIComponent(parsed.pathname.replace(/^\//, ''))
   if (databaseName === 'frankai_auth' || databaseName !== 'frankai_auth_staging') throw new Error('Refusing to run staging tests against a non-staging database')
   if (parsed.pathname !== '/frankai_auth_staging') throw new Error('Refusing to run staging tests against a non-staging database')
-  if (parsed.pathname === '/frankai_auth' || parsed.hostname === 'frankai.online') throw new Error('Refusing to run staging tests against production')
+  if (parsed.hostname === 'frankai.online') throw new Error('Refusing to run staging tests against production')
   if (process.env.STAGING_BASE_URL && !process.env.STAGING_BASE_URL.includes('staging.localhost')) throw new Error('Refusing to run staging tests with a non-staging browser origin')
 }
