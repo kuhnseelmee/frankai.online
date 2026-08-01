@@ -1,0 +1,39 @@
+{
+  "mcpServers": {
+    "hostinger-hosting": {
+      "command": "bash",
+      "args": [
+        "/root/frankai-site/scripts/hostinger-mcp-wrapper.sh",
+        "hosting"
+      ]
+    },
+    "hostinger-domains": {
+      "command": "bash",
+      "args": [
+        "/root/frankai-site/scripts/hostinger-mcp-wrapper.sh",
+        "domains"
+      ]
+    },
+    "hostinger-dns": {
+      "command": "bash",
+      "args": [
+        "/root/frankai-site/scripts/hostinger-mcp-wrapper.sh",
+        "dns"
+      ]
+    },
+    "hostinger-billing": {
+      "command": "bash",
+      "args": [
+        "/root/frankai-site/scripts/hostinger-mcp-wrapper.sh",
+        "billing"
+      ]
+    },
+    "hostinger-vps": {
+      "command": "bash",
+      "args": [
+        "/root/frankai-site/scripts/hostinger-mcp-wrapper.sh",
+        "vps"
+      ]
+    }
+  }
+}
