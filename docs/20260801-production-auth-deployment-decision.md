@@ -25,6 +25,9 @@ authorized by this document.
 - Source: `f55c972c8bec67854d8c5cc715c912cbc47e75ec`; tree
   `a106ed7325dbe61aa262e02ae2c5041b81d3d16d`.
 - Evidence documentation: `ede276f36574d021ff23d0f0fbc0ea92ba2d1950`.
+- Final acceptance evidence commits: `f11c941` and `aa2fbbb`; application
+  candidate remains `f55c972` because these commits contain only tests,
+  staging guard/configuration, and documentation.
 - Package checksum: `f51253d7bdb1fbf994c16522806535ab43f2f1f2babf9d9fe89a7796cc607747`.
 - Lockfile checksum: `4cc3d9c66a91b55e8f8c8c6b426342f29a4335539b043509bff9c2b64a090cac`.
 - Candidate standalone tree checksum: recorded in
@@ -53,8 +56,9 @@ authorized by this document.
   `AUTH_DATABASE_ENABLED=true`, `DATABASE_NAME=frankai_auth_staging`,
   `APP_BASE_URL=https://staging.localhost:8443`, and `VOICE_ENABLED=false`;
   its production-configuration rejection test passes.
-- Lint passed; unit/integration suite passed 8 with 1 intentional skip in the
-  isolated candidate (guarded historical result was 9/9).
+- Lint passed; the guarded unit/integration suite passed `10/10`, including
+  concurrent administrator demotion serialization. The isolated candidate
+  build passed without modifying the production active build path.
 - Staging Caddy validated with the declared `caddyfile` adapter.
 - Database isolation: `DATABASE_ISOLATION_VERIFIED`; production role CONNECT
   to staging is denied and staging role CONNECT to production is denied.
