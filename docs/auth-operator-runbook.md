@@ -12,13 +12,24 @@ This runbook is for the controlled staging-to-production approval step. It conta
 
 ## Administrator bootstrap
 
-Run the approved production environment with the interactive command:
+Load the same protected environment used by the production service before
+running the interactive command. Do not type or paste any secret values into
+the command itself:
 
 ```bash
+set -a
+. /etc/frankai-site.env
+set +a
 npm run admin:create -- --email <administrator-address>
 ```
 
-Enter the password interactively. Do not place it in arguments, shell history, tickets, logs, or chat. Confirm the command creates a new PostgreSQL administrator and refuses duplicate or existing-user modification.
+The command now refuses to select a store implicitly. It must print that the
+administrator was created in PostgreSQL. If it reports the file store, stop;
+the environment was not loaded and the account is not usable by production.
+
+Enter the password interactively. Do not place it in arguments, shell history,
+tickets, logs, or chat. Confirm the command creates a new PostgreSQL
+administrator and refuses duplicate or existing-user modification.
 
 ## MFA
 

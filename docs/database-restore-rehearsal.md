@@ -13,10 +13,11 @@ The runtime role must be able to use application tables but must be denied
 `schema_migrations`, schema `CREATE`, database `CREATE`, and migration DDL.
 The migration role owns the schema and is the only role used for migrations.
 
-The dedicated staging database applies 001–005. A disposable restore recreated
-non-privileged roles, started a standalone candidate, passed health and auth
-boundary checks, and passed runtime privilege-denial checks. The evidence is
-classified `OPERATIONAL_RESTORE_VERIFIED` for staging.
+The dedicated staging database applies 001–005. A historical disposable
+restore recreated non-privileged roles, started a standalone candidate, passed
+health and auth boundary checks, and passed runtime privilege-denial checks.
+Because that rehearsal predates the current reconciliation release, current
+status is `RESTORE_STALE` until the exact release candidate is restored again.
 
 Restore evidence must contain the dump checksum, PostgreSQL version, migration
 IDs, row/table/index/constraint counts, privilege-denial checks, smoke-test

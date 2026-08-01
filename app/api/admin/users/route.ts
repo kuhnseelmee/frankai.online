@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server'
 import { requireAdmin } from '@/lib/auth/http'
 import { authDb } from '@/lib/auth/postgres'
+import { allowRequest } from '@/lib/auth/rate-limit'
 
 export const runtime = 'nodejs'
 
@@ -11,6 +12,8 @@ function safeLimit(value: string | null) { const parsed = Number(value || 25); r
 export async function GET(request: Request) {
   const auth = await requireAdmin(request)
   if (auth.response) return auth.response
+  const limit = await allowRequest(request, 'general_api', auth.user!.id)
+  if (!limit.allowed) return NextResponse.json({ error: 'Too many requests.' }, { status: 429, headers: { 'Retry-After': String(limit.retryAfter) } })
   const url = new URL(request.url)
   const pageSize = safeLimit(url.searchParams.get('pageSize'))
   const page = Math.max(1, Number(url.searchParams.get('page') || 1) || 1)

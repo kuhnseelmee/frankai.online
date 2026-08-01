@@ -18,6 +18,12 @@ if (!existsSync(standaloneDir)) {
   throw new Error('Missing .next/standalone. Run this after a successful Next.js standalone build.')
 }
 
+if (!existsSync(join(standaloneDir, 'server.js'))) {
+  throw new Error(
+    'Missing .next/standalone/server.js. Check next.config.mjs outputFileTracingRoot before deploying.'
+  )
+}
+
 if (!existsSync(staticSource)) {
   throw new Error('Missing .next/static. Next.js static assets were not generated.')
 }

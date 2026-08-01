@@ -12,6 +12,8 @@ const APPROVAL_PHRASE = 'APPROVE FRANKAI PLATFORM CHANGES'
 export async function GET(request: Request) {
   const auth = await requireAdmin(request)
   if (auth.response) return auth.response
+  const limit = await allowRequest(request, 'general_api', auth.user!.id)
+  if (!limit.allowed) return NextResponse.json({ error: 'Too many requests.' }, { status: 429, headers: { 'Retry-After': String(limit.retryAfter) } })
   return NextResponse.json(await readPlatformConfig())
 }
 

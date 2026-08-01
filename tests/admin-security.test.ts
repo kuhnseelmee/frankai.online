@@ -4,10 +4,12 @@ import { randomUUID } from 'node:crypto'
 import pg from 'pg'
 import { assertRecoverableAdministrator, FINAL_ADMINISTRATOR_REQUIRED, lockAdministratorMembership } from '../lib/auth/admin.ts'
 import { withAuthTransaction } from '../lib/auth/postgres.ts'
+import { assertSafeStagingEnvironment } from './helpers/assert-staging-environment.ts'
 
-const enabled = Boolean(process.env.DATABASE_URL && process.env.AUTH_DATABASE_ENABLED === 'true' && process.env.AUTH_SECURITY_INTEGRATION === 'true')
+const enabled = Boolean(process.env.DATABASE_URL && process.env.AUTH_DATABASE_ENABLED === 'true' && process.env.AUTH_SECURITY_INTEGRATION === 'true' && process.env.STAGING_E2E === 'true')
 
 test('concurrent administrator demotions preserve the recoverable-admin invariant', { skip: !enabled }, async () => {
+  assertSafeStagingEnvironment()
   const pool = new pg.Pool({ connectionString: process.env.DATABASE_URL })
   const first = `security-test-${randomUUID()}@invalid.example`
   const second = `security-test-${randomUUID()}@invalid.example`

@@ -12,9 +12,16 @@ Staging is isolated from production and is not a production cutover.
 - Mail: local capture only; no external delivery is configured
 - Voice: `VOICE_ENABLED=false`
 
-The staging hostname is localhost-only. Browser checks use an explicit local DNS
-resolution and ignore the local certificate warning. The production service on
-port 4300 and production Caddy routing are not modified by staging operations.
+The application listener is localhost-only. The current staging proxy listener
+is `*:8443`; verify firewall policy before treating the proxy as externally
+isolated. Browser checks use an explicit local DNS resolution and ignore the
+local certificate warning. The production service on port 4300 and production
+Caddy routing are not modified by staging operations.
+
+The staging service must execute the root standalone server path
+`/root/frankai-site/.next/standalone/server.js`. A restart was verified on
+2026-08-01 after reconciling the stale nested path. The Caddyfile validates with
+the systemd-declared `caddyfile` adapter.
 
 Useful checks:
 

@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server'
 import { csrfOk, requireAdmin, requireRecentAdmin } from '@/lib/auth/http'
 import { authDb, withAuthTransaction } from '@/lib/auth/postgres'
 import { auditInTransaction, FINAL_ADMINISTRATOR_REQUIRED, lockAdministratorMembership, assertRecoverableAdministrator } from '@/lib/auth/admin'
+import { allowRequest } from '@/lib/auth/rate-limit'
 
 export const runtime = 'nodejs'
 const roles = new Set(['USER', 'ADMIN'])
@@ -12,6 +13,8 @@ function publicFields(row: Record<string, unknown>) { return { id: row.id, email
 
 export async function GET(request: Request, context: { params: Promise<{ id: string }> }) {
   const auth = await requireAdmin(request); if (auth.response) return auth.response
+  const limit = await allowRequest(request, 'general_api', auth.user!.id)
+  if (!limit.allowed) return NextResponse.json({ error: 'Too many requests.' }, { status: 429, headers: { 'Retry-After': String(limit.retryAfter) } })
   const { id } = await context.params
   const result = await authDb().query('SELECT id,email,display_name,role,status,email_verified_at,failed_login_count,locked_until,last_login_at,password_changed_at,mfa_required,mfa_enrolled_at,created_at,updated_at FROM users WHERE id=$1', [id])
   return result.rowCount ? NextResponse.json({ user: publicFields(result.rows[0]) }) : NextResponse.json({ error: 'User not found.' }, { status: 404 })

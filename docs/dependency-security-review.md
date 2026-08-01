@@ -1,7 +1,8 @@
 # Dependency security review — staging acceptance
 
-Audit run: 2026-07-30 using the npm advisory service. No `npm audit fix --force`
-was used.
+Audit run: 2026-08-01 using `npm audit --omit=dev`. No `npm audit fix --force`
+was used. The current production-only audit reports 0 critical, 3 high, 0
+moderate, and 0 low findings. Reachability remains under review.
 
 | Package/path | Version | Context | Classification | Action |
 |---|---:|---|---|---|
@@ -12,7 +13,8 @@ was used.
 | `brace-expansion`, `minimatch`, `js-yaml` | transitive | development tooling | DEVELOPMENT_ONLY | No uncontrolled major upgrade |
 | `postcss`, `sharp` | Next.js transitive/native | build/image pipeline | POTENTIALLY_REACHABLE | Current Next.js patch applied; upstream compatibility review remains |
 
-The final audit reports 13 high findings, all either development-only tooling or
-transitive dependencies of the Next.js build/runtime stack. No critical findings
-are reported. Production activation should re-run this review against the final
-release lockfile and resolve any newly reachable advisory before cutover.
+The earlier report of 13 high findings is historical and does not match the
+current production-only result. The current Next.js/PostCSS/sharp findings are
+not dismissed solely because they are transitive; the final release must either
+remediate them or carry a documented formal risk acceptance before production
+remediation.

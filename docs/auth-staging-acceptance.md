@@ -1,8 +1,9 @@
 # FrankAI authentication staging acceptance
 
-This is an evidence ledger, not a production activation record. Production
-remains file-backed on `frankai-site.service` port 4300. Voice remains disabled.
-Hostinger token rotation remains outstanding.
+This is an evidence ledger, not a production approval record. **OBSERVED
+2026-08-01:** production is PostgreSQL-backed on `frankai-site.service` port
+4300 using `frankai_auth`; the earlier file-backed statement is stale. Voice
+remains disabled. Hostinger token rotation remains outstanding.
 
 ## Current staging evidence
 
@@ -18,13 +19,11 @@ Hostinger token rotation remains outstanding.
 - Pinned Gitleaks v8.24.2 finds no leaks in Git history. The raw working-tree
   scan also inspected ignored local `.env` and `.next` files and reported only
   those local/generated artifacts; those files are not tracked or staged.
-- Playwright Chromium is installed locally. With the isolated staging database
-  enabled, `npm run test:browser` passes 5/5 tests: protected boundaries and
-  Web Storage, no microphone request, invitation redemption plus verification,
-  password-reset completion with old-session invalidation, and administrator
-  MFA enrollment with one-time recovery-code acknowledgement.
-- The transactional final-administrator integration test passes, including
-  concurrent demotion serialization.
+- Playwright Chromium is installed locally. The latest default run before the
+  reconciliation suite passed 2 tests and skipped 3 authentication journeys
+  because explicit staging flags were not loaded.
+- A protected staging test gate now rejects the production database and origin.
+  Full authenticated acceptance remains pending the gated rerun.
 - Production systemd, production environment, and production Caddy routing
   were not changed.
 
@@ -58,9 +57,11 @@ Hostinger token rotation remains outstanding.
 
 ## Release decision
 
-Staging is isolated and partially accepted. It is not production-ready because
-the credential incident is unresolved and the full authenticated/browser,
-mail, refresh-concurrency, and ACL-aware restore suites are incomplete.
+Staging is isolated and partially accepted. The service restart path has been
+reconciled to `.next/standalone/server.js` and the Caddyfile validates with its
+declared adapter. It is not production-ready because the credential incident
+is unresolved and the full authenticated/browser, mail, refresh-concurrency,
+and current-release restore suites remain incomplete.
 
 ## New acceptance evidence — 2026-07-30
 

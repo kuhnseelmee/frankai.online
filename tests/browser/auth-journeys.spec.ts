@@ -2,6 +2,7 @@ import { expect, test } from '@playwright/test'
 import { createHmac, randomBytes, randomUUID } from 'node:crypto'
 import pg from 'pg'
 import { hashPassword, hashToken } from '../../lib/auth/store.ts'
+import { assertSafeStagingEnvironment } from '../helpers/assert-staging-environment.ts'
 
 const enabled = process.env.STAGING_E2E === 'true' && process.env.AUTH_DATABASE_ENABLED === 'true' && Boolean(process.env.DATABASE_URL)
 const namespace = `journey-${Date.now()}`
@@ -23,6 +24,7 @@ test.describe('authenticated staging journeys', () => {
   test.skip(!enabled, 'requires explicit isolated staging database')
 
   test.beforeAll(async () => {
+    assertSafeStagingEnvironment()
     pool = new pg.Pool({ connectionString: process.env.DATABASE_URL })
     await pool.query('DELETE FROM rate_limit_buckets')
     adminEmail = `${namespace}-admin@staging.invalid`; adminPassword = randomBytes(18).toString('hex')

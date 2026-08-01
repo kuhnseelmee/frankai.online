@@ -1,6 +1,12 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   output: 'standalone',
+  // Keep the standalone server and its traced dependencies inside this app.
+  // Without an explicit root, Next.js 16 detects /root as the workspace root
+  // and emits .next/standalone/frankai-site, while systemd starts the server
+  // from .next/standalone. That mismatch leaves the running app without the
+  // matching server/static asset tree.
+  outputFileTracingRoot: process.cwd(),
   poweredByHeader: false,
   reactStrictMode: true,
   async headers() {
