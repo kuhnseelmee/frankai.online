@@ -91,3 +91,26 @@ The release remains `STAGING_AUTH_PARTIALLY_ACCEPTED`: administrator mutation
 browser flows, all enabled SMTP templates, complete audit-category coverage,
 and final dependency reachability disposition have not been exercised
 end-to-end.
+
+## Final acceptance-gate rerun — 2026-08-01
+
+- Hostinger provider-side deletion was confirmed by Ray; status is
+  `ROTATION_CONFIRMED`. No token value is retained.
+- The fail-closed staging guard now requires the staging database name,
+  staging origin, and `VOICE_ENABLED=false`, and a production-configuration
+  rejection test passes.
+- The complete serialized Playwright suite passed **8/8**. New coverage
+  includes administrator MFA challenge and recovery-code reuse rejection,
+  recent reauthentication, administrator mutation authorization, MFA reset,
+  final-administrator protection, multi-session revocation/logout-all,
+  cross-user denial, account-lock threshold, and administrator unlock.
+- Database isolation remains verified; production and staging runtime roles are
+  non-superuser, `NOCREATEDB`, and `NOCREATEROLE`. Voice environment flags are
+  false and no active voice session or AI configuration rows exist.
+- SMTP remains `SMTP_STAGING_PARTIAL`: all seven renderer templates and the
+  bounded failure path have Mailpit evidence, but three defined templates have
+  no current application trigger and complete browser/error-policy coverage is
+  not established.
+- Audit acceptance remains partial: tested actions are recorded, but complete
+  registry coverage, rejected final-admin audit events, and recursive value
+  redaction are not yet proven.
