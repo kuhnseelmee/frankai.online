@@ -2,12 +2,17 @@ import assert from 'node:assert/strict'
 import { test } from 'node:test'
 import { AUDIT_EVENT_REGISTRY, auditDefinition } from '../lib/auth/audit-registry.ts'
 import { redactAuditMetadata } from '../lib/auth/redaction.ts'
-import { EMAIL_TEMPLATE_REGISTRY, emailTemplateDefinition } from '../lib/auth/email.ts'
+import { EMAIL_TEMPLATE_REGISTRY, emailTemplateDefinition, queueEmail } from '../lib/auth/email.ts'
 
 test('email registry classifies all defined renderers and reserves dormant templates', () => {
   assert.deepEqual(EMAIL_TEMPLATE_REGISTRY.map(item => item.identifier), ['INVITATION', 'EMAIL_VERIFICATION', 'PASSWORD_RESET', 'PASSWORD_CHANGED', 'MFA_DISABLED', 'ADMIN_SECURITY_ALERT', 'NEW_LOGIN'])
   assert.equal(EMAIL_TEMPLATE_REGISTRY.filter(item => item.classification === 'ACTIVE_TRIGGERED').length, 4)
   for (const name of ['mfa_disabled', 'admin_security_alert', 'new_login']) assert.equal(emailTemplateDefinition(name)?.classification, 'INACTIVE_RESERVED')
+})
+
+test('inactive email templates fail closed before provider dispatch', async () => {
+  await assert.rejects(() => queueEmail('user@example.test', 'new_login', {}), /Inactive email template cannot be dispatched/)
+  await assert.rejects(() => queueEmail('user@example.test', 'mfa_disabled', {}), /Inactive email template cannot be dispatched/)
 })
 
 test('audit registry includes required security categories and rejects unknown actions', () => {

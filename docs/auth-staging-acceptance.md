@@ -103,9 +103,11 @@ end-to-end.
   URLs are restricted to `staging.localhost`.
 - Recursive audit redaction and an audit registry are now unit-tested. The
   sanitized coverage matrix is [audit-coverage-matrix.json](evidence/auth-staging/audit-coverage-matrix.json).
-- Playwright remains 8/8 against isolated staging. SMTP delivery and live audit
-  database observation remain unproven because the expected Mailpit API endpoint
-  returned 404 and staging is still running the prior candidate runtime.
+- Playwright remains 8/8 against isolated staging. SMTP message inspection and
+  SMTP failure-policy proof remain incomplete because the expected Mailpit API
+  endpoint returned 404. Rebuilt staging observed 22 audit action categories,
+  including a rejected final-admin event; complete semantic registry coverage
+  remains partial.
 
 ## Final acceptance-gate rerun — 2026-08-01
 
