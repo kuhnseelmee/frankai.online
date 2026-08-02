@@ -92,6 +92,21 @@ browser flows, all enabled SMTP templates, complete audit-category coverage,
 and final dependency reachability disposition have not been exercised
 end-to-end.
 
+## Final gate reconciliation — 2026-08-02
+
+- Email registry is authoritative in `lib/auth/email.ts`: `INVITATION`,
+  `EMAIL_VERIFICATION`, `PASSWORD_RESET`, and `PASSWORD_CHANGED` are
+  `ACTIVE_TRIGGERED`; `MFA_DISABLED`, `ADMIN_SECURITY_ALERT`, and `NEW_LOGIN`
+  are `INACTIVE_RESERVED` because no approved trigger or recipient policy exists.
+- Inactive templates fail closed at dispatch. Active templates require a
+  recipient and token-bearing templates require an action token; staging action
+  URLs are restricted to `staging.localhost`.
+- Recursive audit redaction and an audit registry are now unit-tested. The
+  sanitized coverage matrix is [audit-coverage-matrix.json](evidence/auth-staging/audit-coverage-matrix.json).
+- Playwright remains 8/8 against isolated staging. SMTP delivery and live audit
+  database observation remain unproven because the expected Mailpit API endpoint
+  returned 404 and staging is still running the prior candidate runtime.
+
 ## Final acceptance-gate rerun — 2026-08-01
 
 - Hostinger provider-side deletion was confirmed by Ray; status is

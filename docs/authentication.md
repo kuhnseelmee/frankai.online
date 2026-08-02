@@ -7,6 +7,13 @@ PostgreSQL is the active production and staging authority when `AUTH_STORE=postg
 State-changing browser requests require the readable `frankai_csrf` cookie to match `X-CSRF-Token`. CORS is same-origin by default; do not add wildcard credentialed origins.
 
 Public signup is disabled by default (`PUBLIC_SIGNUP_ENABLED=false`). Invitation-only signup is the intended production policy. Administrator MFA uses encrypted TOTP secrets and one-time hashed recovery codes; `MFA_ENCRYPTION_KEY` is required before enrollment.
+
+Authentication acceptance uses an explicit email registry. Invitation,
+verification, password-reset, and password-changed notifications are active
+only through their existing application events. MFA-disabled, administrator
+security-alert, and new-login renderers are reserved and fail closed until a
+future policy defines their trigger, recipient, and retry semantics. Audit
+metadata is recursively redacted by key and value pattern before persistence.
 # Current deployment boundary
 
 **OBSERVED 2026-08-01:** production is PostgreSQL-backed and active on

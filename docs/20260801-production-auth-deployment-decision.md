@@ -208,3 +208,15 @@ disabled state, and document session consequences.
 - Provide separate explicit authorization before any production deployment.
 
 Final decision: `NOT_READY_FOR_PRODUCTION`.
+
+## Final reconciliation update — 2026-08-02
+
+The current working-tree change adds a fail-closed email registry and recursive
+audit redaction. Four templates are `ACTIVE_TRIGGERED`; `MFA_DISABLED`,
+`ADMIN_SECURITY_ALERT`, and `NEW_LOGIN` remain `INACTIVE_RESERVED` pending an
+approved policy and trigger. Registry/redaction unit tests pass and the
+isolated staging Playwright suite passes 8/8. SMTP message inspection, active
+workflow delivery proof, live audit-category observation, and final-admin
+rejection observation are not current because staging is still running the
+prior candidate and the expected Mailpit API returned 404. Recommendation
+remains `NOT_READY_FOR_PRODUCTION`; no production action was taken.

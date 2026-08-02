@@ -1,0 +1,14 @@
+{
+  "generatedAt": "2026-08-02",
+  "registrySource": "lib/auth/audit-registry.ts",
+  "registeredCategories": 45,
+  "applicableCategories": 45,
+  "automatedRegistryAndRedactionTested": 45,
+  "browserObservedCategories": 0,
+  "stagingObservedCategories": 0,
+  "redactionVerifiedCategories": 45,
+  "notApplicableCategories": 0,
+  "missingCategories": ["AUTH_REFRESH_ROTATED", "EMAIL_DELIVERY_SUCCEEDED", "EMAIL_DELIVERY_FAILED", "ADMIN_FINAL_ADMIN_ACTION_REJECTED"],
+  "status": "PARTIAL",
+  "note": "The registry and redactor are machine-tested. Live SMTP/audit database observation requires the staging Mailpit API and a staging runtime rebuilt from this candidate."
+}

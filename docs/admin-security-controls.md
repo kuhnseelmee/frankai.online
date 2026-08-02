@@ -6,6 +6,12 @@ the target row is locked and the resulting recoverable-administrator count is
 checked before commit. The stable rejection code is
 `FINAL_ADMINISTRATOR_REQUIRED`.
 
+Final-administrator rejections are recorded after the protecting transaction
+rolls back as `admin_final_admin_action_rejected`, with actor, target, exact
+operation, reason code, and request ID. No success event is emitted for the
+rejected mutation. The implementation is present in the reconciliation
+working tree; live staging observation remains pending a staging rebuild.
+
 A recoverable administrator is active, verified, MFA-enrolled, not permanently
 locked, and has an unused recovery code. This is intentionally stricter than a
 role count. Demotion, disablement, deletion, MFA reset, and administrator
