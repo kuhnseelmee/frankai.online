@@ -3,6 +3,8 @@ import { mkdir, readFile, rename, appendFile, chmod } from 'node:fs/promises'
 import { promisify } from 'node:util'
 import { authConfig } from './config'
 import pg from 'pg'
+import { redactAuditMetadata } from './redaction'
+import { auditDefinition } from './audit-registry'
 
 const scrypt = promisify(scryptCallback)
 export type Role = 'USER' | 'ADMIN'
@@ -29,5 +31,17 @@ export async function saveUsers(value: User[]) { if (databaseEnabled()) { const 
 export async function sessions() { if (databaseEnabled()) { const result = await database().query('SELECT * FROM refresh_sessions'); return result.rows.map(fromSessionRow) } return readJson<Session[]>('sessions.json', []) }
 export async function saveSessions(value: Session[]) { if (databaseEnabled()) { const client = await database().connect(); try { await client.query('BEGIN'); for (const session of value) await client.query(`INSERT INTO refresh_sessions (id,user_id,token_hash,token_family,replaced_by_session_id,expires_at,revoked_at,created_at,last_used_at) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9) ON CONFLICT (id) DO UPDATE SET token_hash=$3,token_family=$4,replaced_by_session_id=$5,expires_at=$6,revoked_at=$7,last_used_at=$9`, [session.id,session.userId,session.tokenHash,session.tokenFamily,session.replacedBySessionId,new Date(session.expiresAt),session.revokedAt ? new Date(session.revokedAt) : null,session.createdAt,session.lastUsedAt ? new Date(session.lastUsedAt) : null]); await client.query('COMMIT') } catch (error) { await client.query('ROLLBACK'); throw error } finally { client.release() } } else return writeJson('sessions.json', value) }
 export async function createUser(email: string, displayName: string, password: string, role: Role = 'USER') { const list = await users(); const now = new Date().toISOString(); const user: User = { id: randomUUID(), email: normaliseEmail(email), displayName: displayName.trim().slice(0, 120), passwordHash: await hashPassword(password), passwordHashVersion: 1, role, roleVersion: 1, securityVersion: 1, status: 'ACTIVE', emailVerifiedAt: null, failedLoginCount: 0, lockedUntil: null, lastLoginAt: null, passwordChangedAt: now, mfaRequired: role === 'ADMIN', mfaEnrolledAt: null, createdAt: now, updatedAt: now }; list.push(user); await saveUsers(list); return user }
-export async function audit(action: string, result: string, metadata: Record<string, unknown> = {}, actorUserId: string | null = null) { if (databaseEnabled()) { await database().query('INSERT INTO audit_events (id,actor_user_id,actor_role,action,result,metadata_json) VALUES ($1,$2,$3,$4,$5,$6)', [randomUUID(), actorUserId, null, action, result, JSON.stringify(metadata)]); return } await ensureDir(); const file = `${authConfig().dataDir}/audit.jsonl`; await appendFile(file, JSON.stringify({ id: randomUUID(), timestamp: new Date().toISOString(), actorUserId, action, result, metadata }) + '\n'); await chmod(file, 0o600).catch(() => undefined) }
+export async function audit(action: string, result: string, metadata: Record<string, unknown> = {}, actorUserId: string | null = null) {
+  if (!auditDefinition(action)) throw new Error(`Unregistered audit action: ${action}`)
+  const requestId = typeof metadata.requestId === 'string' ? metadata.requestId : randomUUID()
+  const safeMetadata = redactAuditMetadata({ ...metadata, requestId })
+  if (databaseEnabled()) {
+    await database().query('INSERT INTO audit_events (id,actor_user_id,actor_role,action,result,request_id,metadata_json) VALUES ($1,$2,$3,$4,$5,$6,$7)', [randomUUID(), actorUserId, null, action, result, requestId, JSON.stringify(safeMetadata)])
+    return
+  }
+  await ensureDir()
+  const file = `${authConfig().dataDir}/audit.jsonl`
+  await appendFile(file, JSON.stringify({ id: randomUUID(), timestamp: new Date().toISOString(), actorUserId, action, result, requestId, metadata: safeMetadata }) + '\n')
+  await chmod(file, 0o600).catch(() => undefined)
+}
 export function publicUser(user: User): Omit<User, 'passwordHash'> { const { passwordHash, ...safe } = user; void passwordHash; return safe }

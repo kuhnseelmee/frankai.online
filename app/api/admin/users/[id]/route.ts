@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server'
 import { csrfOk, requireAdmin, requireRecentAdmin } from '@/lib/auth/http'
 import { authDb, withAuthTransaction } from '@/lib/auth/postgres'
 import { auditInTransaction, FINAL_ADMINISTRATOR_REQUIRED, lockAdministratorMembership, assertRecoverableAdministrator } from '@/lib/auth/admin'
+import { audit } from '@/lib/auth/store'
 import { allowRequest } from '@/lib/auth/rate-limit'
 
 export const runtime = 'nodejs'
@@ -45,7 +46,7 @@ export async function PATCH(request: Request, context: { params: Promise<{ id: s
     })
     return NextResponse.json({ user: publicFields(user) })
   } catch (error) {
-    if (isFinalAdminError(error)) return NextResponse.json({ error: FINAL_ADMINISTRATOR_REQUIRED }, { status: 409 })
+    if (isFinalAdminError(error)) { await audit('admin_final_admin_action_rejected', 'rejected', { targetType: 'user', targetId: id, operation: requestedRole !== undefined ? 'role_change' : 'status_change', requestedRole, requestedStatus, reasonCode: FINAL_ADMINISTRATOR_REQUIRED, requestId: request.headers.get('x-request-id') || undefined }, auth.user!.id); return NextResponse.json({ error: FINAL_ADMINISTRATOR_REQUIRED }, { status: 409 }) }
     if (error instanceof Error && error.message === 'USER_NOT_FOUND') return NextResponse.json({ error: 'User not found.' }, { status: 404 })
     return NextResponse.json({ error: 'Unable to update user.' }, { status: 500 })
   }
@@ -66,7 +67,7 @@ export async function DELETE(request: Request, context: { params: Promise<{ id: 
     })
     return NextResponse.json({ ok: true })
   } catch (error) {
-    if (isFinalAdminError(error)) return NextResponse.json({ error: FINAL_ADMINISTRATOR_REQUIRED }, { status: 409 })
+    if (isFinalAdminError(error)) { await audit('admin_final_admin_action_rejected', 'rejected', { targetType: 'user', targetId: id, operation: 'deletion', reasonCode: FINAL_ADMINISTRATOR_REQUIRED, requestId: request.headers.get('x-request-id') || undefined }, auth.user!.id); return NextResponse.json({ error: FINAL_ADMINISTRATOR_REQUIRED }, { status: 409 }) }
     if (error instanceof Error && error.message === 'USER_NOT_FOUND') return NextResponse.json({ error: 'User not found.' }, { status: 404 })
     return NextResponse.json({ error: 'Unable to delete user.' }, { status: 500 })
   }
