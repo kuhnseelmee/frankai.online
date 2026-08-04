@@ -6,7 +6,7 @@ export function SiteFooter() {
     <footer className="site-footer">
       <div className="container footer-grid">
         <div>
-          <Image className="footer-logo" src="/images/logo_frankai.png" alt="FrankAI" width={150} height={64} />
+          <Image className="footer-logo" src="/images/logo_frankai.png" alt="FrankAI" width={225} height={96} />
           <p className="footer-copy">Intelligence that moves work forward.</p>
         </div>
         <div className="footer-links">

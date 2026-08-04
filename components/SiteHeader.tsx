@@ -6,7 +6,7 @@ export function SiteHeader() {
     <header className="site-header">
       <div className="container nav-row">
         <Link className="brand" href="/" aria-label="FrankAI home">
-          <Image className="brand-logo" src="/images/logo_frankai.png" alt="FrankAI" width={150} height={64} priority />
+          <Image className="brand-logo" src="/images/logo_frankai.png" alt="FrankAI" width={225} height={96} priority />
         </Link>
         <nav className="nav-links" aria-label="Main navigation">
           <Link href="/solutions">Solutions</Link>
