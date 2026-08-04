@@ -6,15 +6,17 @@ export function SiteHeader() {
     <header className="site-header">
       <div className="container nav-row">
         <Link className="brand" href="/" aria-label="FrankAI home">
-          <Image src="/frank-mark.svg" alt="" width={42} height={42} />
-          <span>FrankAI</span>
+          <Image className="brand-logo" src="/images/logo_frankai.png" alt="FrankAI" width={150} height={64} priority />
         </Link>
         <nav className="nav-links" aria-label="Main navigation">
           <Link href="/solutions">Solutions</Link>
+          <Link href="/proof">Proof</Link>
           <Link href="/platform">Platform</Link>
           <Link href="/governance">Governance</Link>
           <Link href="/trust">Trust</Link>
           <Link href="/contact">Contact</Link>
+          <Link href="/login">Sign in</Link>
+          <Link href="/admin/login">Admin</Link>
         </nav>
         <Link className="button button-small" href="/start">
           Start with Frank

@@ -103,11 +103,16 @@ h1, h2, h3 {
 
 .brand {
   display: flex;
-  gap: 12px;
   align-items: center;
-  font-size: 23px;
-  font-weight: 680;
-  letter-spacing: -0.045em;
+  height: 64px;
+  width: 150px;
+}
+
+.brand-logo {
+  display: block;
+  height: 64px;
+  object-fit: contain;
+  width: 150px;
 }
 
 .nav-links {
@@ -264,6 +269,10 @@ h1, h2, h3 {
 .proof,
 .trust {
   padding: 88px 0;
+}
+
+.proof-button {
+  margin-top: 30px;
 }
 
 .section-intro {
@@ -751,6 +760,126 @@ h1, h2, h3 {
   color: var(--muted);
 }
 
+.contact-form {
+  background: rgba(16, 38, 43, 0.7);
+  border: 1px solid var(--line);
+  border-radius: 22px;
+  display: grid;
+  gap: 18px;
+  margin-top: 28px;
+  padding: 28px;
+}
+
+.form-grid {
+  display: grid;
+  gap: 16px;
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.contact-form label {
+  display: grid;
+  gap: 8px;
+}
+
+.contact-form label > span {
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.contact-form input,
+.contact-form select,
+.contact-form textarea {
+  background: rgba(7, 18, 23, 0.92);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  color: var(--text);
+  font: inherit;
+  outline: none;
+  padding: 13px 14px;
+  width: 100%;
+}
+
+.contact-form textarea {
+  resize: vertical;
+}
+
+.consent-row {
+  align-items: start;
+  display: grid !important;
+  gap: 12px !important;
+  grid-template-columns: 18px 1fr;
+}
+
+.consent-row input {
+  margin-top: 4px;
+  width: auto;
+}
+
+.consent-row span {
+  letter-spacing: 0 !important;
+  line-height: 1.5;
+  text-transform: none !important;
+}
+
+.trap-field {
+  display: none !important;
+}
+
+.form-alert {
+  border-radius: 14px;
+  padding: 14px 16px;
+}
+
+.form-alert-ok {
+  background: rgba(85, 231, 196, 0.1);
+  border: 1px solid rgba(85, 231, 196, 0.28);
+  color: #cbfff0;
+}
+
+.form-alert-error {
+  background: rgba(255, 88, 88, 0.1);
+  border: 1px solid rgba(255, 88, 88, 0.28);
+  color: #ffd0d0;
+}
+
+.proof-directory {
+  display: grid;
+  gap: 20px;
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.proof-directory .proof-card h2 {
+  font-size: 27px;
+}
+
+.proof-workflow {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 28px;
+  display: grid;
+  gap: 44px;
+  grid-template-columns: 0.82fr 1fr;
+  margin-top: 56px;
+  padding: 42px;
+}
+
+.proof-workflow h2 {
+  font-size: clamp(29px, 3.2vw, 38px);
+}
+
+.proof-workflow p {
+  color: var(--muted);
+}
+
+.timeline-item.compact {
+  align-items: center;
+  grid-template-columns: 58px 1fr;
+  padding: 20px;
+}
+
 .notice {
   background: rgba(244, 188, 92, 0.08);
   border: 1px solid rgba(244, 188, 92, 0.22);
@@ -910,11 +1039,13 @@ h1, h2, h3 {
   justify-content: space-between;
 }
 
-.footer-brand {
-  font-size: 24px;
-  font-weight: 680;
-  letter-spacing: -0.04em;
+.footer-logo {
+  display: block;
+  height: 64px;
   margin-bottom: 7px;
+  object-fit: contain;
+  object-position: left center;
+  width: 150px;
 }
 
 .footer-copy,
@@ -945,6 +1076,7 @@ h1, h2, h3 {
   .trust-evidence,
   .operating-levels,
   .memory-boundary,
+  .proof-workflow,
   .admin-meta {
     grid-template-columns: 1fr;
   }
@@ -952,8 +1084,10 @@ h1, h2, h3 {
   .card-grid.three,
   .pillar-grid,
   .contact-grid,
+  .proof-directory,
   .trust-principles,
   .loop-grid,
+  .form-grid,
   .admin-summary {
     grid-template-columns: repeat(2, 1fr);
   }
@@ -973,8 +1107,10 @@ h1, h2, h3 {
     height: 70px;
   }
 
-  .brand span {
-    font-size: 21px;
+  .brand,
+  .brand-logo {
+    height: 58px;
+    width: 136px;
   }
 
   .nav-links {
@@ -999,6 +1135,8 @@ h1, h2, h3 {
   .feature-grid,
   .platform-directory,
   .docs-grid,
+  .proof-directory,
+  .form-grid,
   .pillar-grid,
   .timeline-item,
   .priority-row,
@@ -1039,7 +1177,8 @@ h1, h2, h3 {
   }
 
   .operating-levels,
-  .memory-boundary {
+  .memory-boundary,
+  .proof-workflow {
     padding: 28px 23px;
   }
 }

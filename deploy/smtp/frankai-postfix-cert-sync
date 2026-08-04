@@ -1,0 +1,12 @@
+#!/bin/sh
+set -eu
+
+src=/var/lib/caddy/.local/share/caddy/certificates/acme-v02.api.letsencrypt.org-directory/mail.frankai.online
+dst=/etc/postfix/tls
+
+test -r "$src/mail.frankai.online.crt"
+test -r "$src/mail.frankai.online.key"
+install -o root -g root -m 0644 "$src/mail.frankai.online.crt" "$dst/mail.frankai.online.crt"
+install -o root -g root -m 0600 "$src/mail.frankai.online.key" "$dst/mail.frankai.online.key"
+postfix check
+postfix reload

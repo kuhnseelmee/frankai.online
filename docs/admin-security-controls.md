@@ -9,8 +9,10 @@ checked before commit. The stable rejection code is
 Final-administrator rejections are recorded after the protecting transaction
 rolls back as `admin_final_admin_action_rejected`, with actor, target, exact
 operation, reason code, and request ID. No success event is emitted for the
-rejected mutation. The implementation is present in the reconciliation
-working tree; live staging observation remains pending a staging rebuild.
+rejected mutation. The implementation is present in the reconciliation working
+tree and was observed after the staging-only rebuild: the rejection returns
+`FINAL_ADMINISTRATOR_REQUIRED`, rolls back state, and produces the rejected
+audit event with a request ID.
 
 A recoverable administrator is active, verified, MFA-enrolled, not permanently
 locked, and has an unused recovery code. This is intentionally stricter than a

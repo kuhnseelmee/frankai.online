@@ -131,3 +131,19 @@ end-to-end.
 - Audit acceptance remains partial: tested actions are recorded, but complete
   registry coverage, rejected final-admin audit events, and recursive value
   redaction are not yet proven.
+
+## Current closure evidence — 2026-08-02
+
+Four templates are `ACTIVE_TRIGGERED`: `INVITATION`, `EMAIL_VERIFICATION`,
+`PASSWORD_RESET`, and `PASSWORD_CHANGED`. `MFA_DISABLED`,
+`ADMIN_SECURITY_ALERT`, and `NEW_LOGIN` are `INACTIVE_RESERVED` and fail
+closed because no approved trigger, recipient, or retry policy exists.
+Registry and recursive-redaction tests pass. The final-admin rejection is now
+observed through the staging audit endpoint, and serialized Playwright passes
+8/8 after a staging-only rebuild/restart. Production remains HTTP 200 and was
+restored from the protected active-build archive without a restart.
+
+Protected Mailpit evidence covers active renderer delivery and the bounded
+failure path. Privileged outbox reinspection was not repeated because no
+separate staging inspection credential is available; the runtime role correctly
+cannot read or delete `email_outbox`. SMTP remains `SMTP_STAGING_PARTIAL`.

@@ -99,6 +99,7 @@ test.describe('final staging authentication acceptance', () => {
     response = await api(page, `/api/admin/users/${secondary.id}`, 'PATCH', { role: 'USER' }); expect(response.status).toBe(200)
     response = await api(page, `/api/admin/users/${primary.id}`, 'PATCH', { role: 'USER' }); expect(response.status).toBe(409); expect(response.body.error).toBe('FINAL_ADMINISTRATOR_REQUIRED')
     const primaryState = await pool.query('SELECT role,status FROM users WHERE id=$1', [primary.id]); expect(primaryState.rows[0]).toEqual({ role: 'ADMIN', status: 'ACTIVE' })
+    const rejectedAudit = await api(page, `/api/admin/users/${primary.id}/audit`); expect(rejectedAudit.status).toBe(200); expect(rejectedAudit.body.audit.some((row: { action: string; result: string }) => row.action === 'admin_final_admin_action_rejected' && row.result === 'rejected')).toBe(true)
     const audit = await pool.query("SELECT action,result FROM audit_events WHERE actor_user_id=$1 AND action IN ('admin_mfa_reset','admin_user_changed','admin_reauth') ORDER BY occurred_at", [primary.id]); expect(audit.rows.some(row => row.action === 'admin_mfa_reset' && row.result === 'success')).toBe(true); expect(audit.rows.some(row => row.action === 'admin_reauth' && row.result === 'success')).toBe(true)
   })
 

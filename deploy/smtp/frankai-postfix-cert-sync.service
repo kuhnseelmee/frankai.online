@@ -1,0 +1,15 @@
+[Unit]
+Description=Sync Caddy ACME certificate to Postfix
+After=caddy.service postfix.service
+Requires=postfix.service
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/sbin/frankai-postfix-cert-sync
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/etc/postfix/tls /var/lib/postfix
+CapabilityBoundingSet=CAP_CHOWN CAP_DAC_READ_SEARCH CAP_FOWNER CAP_SETUID CAP_SETGID
+RestrictAddressFamilies=AF_UNIX

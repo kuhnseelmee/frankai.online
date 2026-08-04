@@ -2,6 +2,18 @@
 
 First-party website replacement for `frankai.online`.
 
+The canonical repository for this project is:
+
+```text
+https://github.com/kuhnseelmee/frankai.online
+```
+
+## Repository safety
+
+Production secrets, local environment files, generated Next.js output, dependency
+directories, and operational host state are intentionally excluded from version control.
+Use the example environment files under `.env.example` and `deploy/` as templates only.
+
 ## Purpose
 
 This application replaces the generated Base44 landing page with an owned FrankAI site:

@@ -22,5 +22,7 @@ formal cutover approval; the approval record remains unresolved. Staging is
 PostgreSQL-backed on port 4500 with a separate database and Mailpit capture.
 Invitation-only registration, secure cookies, CSRF/Origin checks, rotating
 refresh sessions, email workflows, MFA, recent reauthentication, audit logging,
-and PostgreSQL rate-limit buckets are implemented with partial current
-acceptance. Voice is explicitly disabled and is not part of this phase.
+and PostgreSQL rate-limit buckets are implemented. Current staging acceptance
+remains partial only for privileged SMTP outbox inspection and complete
+semantic audit-category observation. Voice is explicitly disabled and is not
+part of this phase.

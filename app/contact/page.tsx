@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import { ContactForm } from '@/components/ContactForm'
 
 export const metadata: Metadata = {
   title: 'Contact',
@@ -10,10 +11,11 @@ export default function ContactPage() {
     <section className="page-section narrow">
       <div className="container">
         <p className="eyebrow">Contact</p>
-        <h1 className="page-title">A direct conversation begins with the right context.</h1>
+        <h1 className="page-title">Start with context, consent and a controlled path.</h1>
         <p className="page-lead">
-          The first-party enquiry channel is being commissioned alongside this site. For now,
-          identify your interest through the person or channel that introduced you to FrankAI.
+          Use this first-party enquiry route for personal access, operational workflows,
+          partnerships or investment discussions. The form is deliberately narrow: enough context
+          to route the request, not a place to disclose secrets.
         </p>
         <div className="contact-grid">
           <article>
@@ -30,8 +32,10 @@ export default function ContactPage() {
           </article>
         </div>
         <p className="notice">
-          No contact form has been exposed until its privacy handling and delivery path are fully controlled.
+          Do not include passwords, banking details, private keys or confidential customer records.
+          Enquiries are stored in a protected local operations log for review.
         </p>
+        <ContactForm />
       </div>
     </section>
   )

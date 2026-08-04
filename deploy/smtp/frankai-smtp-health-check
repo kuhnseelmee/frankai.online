@@ -1,0 +1,91 @@
+#!/bin/sh
+set -eu
+
+failures=0
+fail() { printf 'FAIL %s\n' "$1"; failures=$((failures + 1)); }
+pass() { printf 'PASS %s\n' "$1"; }
+tmpdir=$(mktemp -d)
+trap 'rm -rf "$tmpdir"' EXIT HUP INT TERM
+
+for unit in postfix rspamd redis-server; do
+  if systemctl is-active --quiet "$unit"; then pass "$unit active"; else fail "$unit inactive"; fi
+done
+if systemctl is-active --quiet caddy; then pass 'caddy active'; else fail 'caddy inactive'; fi
+if [ "$(stat -c '%U:%G %a' /etc/caddy)" = 'root:caddy 750' ] && [ "$(stat -c '%U:%G %a' /etc/caddy/Caddyfile)" = 'root:caddy 640' ] && runuser -u caddy -- test -r /etc/caddy/Caddyfile; then
+  pass 'Caddyfile readable with restricted mode'
+else
+  fail 'Caddyfile permissions/readability'
+fi
+if caddy validate --config /etc/caddy/Caddyfile --adapter caddyfile >/dev/null 2>&1; then pass 'Caddy configuration valid'; else fail 'Caddy configuration invalid'; fi
+
+listeners=$(ss -lntH 2>/dev/null || true)
+for port in 25 587; do
+  printf '%s\n' "$listeners" | awk -v p=":$port" '$4 ~ p"$" {print $4}' | grep -q '^127\.0\.0\.1:' && pass "Postfix $port loopback" || fail "Postfix $port not loopback-only"
+  if printf '%s\n' "$listeners" | grep -Eq "(^|[[:space:]])(0\.0\.0\.0|\[::\]|\*):$port([[:space:]]|$)"; then fail "public listener $port"; fi
+done
+for port in 11332 11333 11334; do
+  if printf '%s\n' "$listeners" | grep -Eq "(^|[[:space:]])(0\.0\.0\.0|\[::\]|\*):$port([[:space:]]|$)"; then fail "public Rspamd listener $port"; else pass "Rspamd $port not public"; fi
+done
+for port in 8025 1025; do
+  if printf '%s\n' "$listeners" | grep -Eq "(^|[[:space:]])(0\.0\.0\.0|\[::\]|\*):$port([[:space:]]|$)"; then fail "public Mailpit listener $port"; fi
+done
+for port in 25 465 587 11332 11333 11334 8025 1025; do
+  if printf '%s\n' "$listeners" | grep -Eq "(^|[[:space:]])(0\.0\.0\.0|\[::\]|\*):$port([[:space:]]|$)"; then fail "public listener $port"; else pass "no public listener $port"; fi
+done
+
+queue_listing=$(postqueue -p 2>/dev/null || true)
+queue_count=$(printf '%s\n' "$queue_listing" | awk '/^[A-F0-9]+[*!]?[[:space:]]/ {n++} END {print n+0}')
+pass "queue count=$queue_count"
+if [ "$queue_count" -gt 0 ]; then
+  oldest=$(find /var/spool/postfix -type f \( -path '*/incoming/*' -o -path '*/active/*' -o -path '*/deferred/*' \) -printf '%T@\n' 2>/dev/null | sort -n | head -1)
+  [ -z "$oldest" ] || printf 'INFO oldest_queue_epoch=%s\n' "${oldest%.*}"
+fi
+
+key=/var/lib/rspamd/dkim/frankai.online.mail.key
+if [ -f "$key" ] && [ "$(stat -c '%U:%G %a' "$key")" = '_rspamd:_rspamd 600' ]; then pass 'DKIM key ownership/mode'; else fail 'DKIM key ownership/mode'; fi
+
+public_ipv4=${PUBLIC_IPV4:-76.13.180.125}
+dns_server=${DNS_SERVER:-1.1.1.1}
+if [ -n "${public_ipv4:-}" ] && [ "$(dig +short @"$dns_server" A mail.frankai.online | tail -1)" = "$public_ipv4" ]; then pass 'DNS A'; else fail 'DNS A'; fi
+ptr=$(dig +short @"$dns_server" -x "$public_ipv4" | head -1 | sed 's/\.$//')
+[ "$ptr" = 'mail.frankai.online' ] && pass 'DNS PTR' || fail 'DNS PTR'
+[ "$ptr" = 'mail.frankai.online' ] && [ "$(dig +short @"$dns_server" A "$ptr" | head -1)" = "$public_ipv4" ] && pass 'DNS FCrDNS' || fail 'DNS FCrDNS'
+if dig +short @"$dns_server" TXT frankai.online | grep -q 'v=spf1' && dig +short @"$dns_server" TXT frankai.online | grep -Eq 'a:mail\.frankai\.online|ip4:76\.13\.180\.125'; then pass 'DNS SPF authorizes VPS'; else fail 'DNS SPF authorizes VPS'; fi
+dkim=$(dig +short @"$dns_server" TXT mail._domainkey.frankai.online | tr -d '"[:space:]')
+printf '%s' "$dkim" | grep -q '^v=DKIM1;k=rsa;p=' && pass 'DNS DKIM syntax' || fail 'DNS DKIM syntax'
+if printf '%s' "$dkim" | sed 's/.*p=//' | base64 -d 2>/dev/null >"$tmpdir/dns.key" && openssl rsa -RSAPublicKey_out -outform DER -in /var/lib/rspamd/dkim/frankai.online.mail.key 2>/dev/null >"$tmpdir/local.key" && cmp -s "$tmpdir/dns.key" "$tmpdir/local.key"; then pass 'DNS DKIM matches local key'; else fail 'DNS DKIM does not match local key'; fi
+dmarc=$(dig +short @"$dns_server" TXT _dmarc.frankai.online | tr -d '"[:space:]')
+if printf '%s' "$dmarc" | grep -q 'v=DMARC1' && printf '%s' "$dmarc" | grep -q 'p=none' && printf '%s' "$dmarc" | grep -q 'adkim=s' && printf '%s' "$dmarc" | grep -q 'aspf=s' && printf '%s' "$dmarc" | grep -q 'rua=mailto:'; then pass 'DNS DMARC'; else fail 'DNS DMARC or rua'; fi
+if [ "${BOUNCE_ROUTING_READY:-}" = true ]; then pass 'bounce routing ready'; else fail 'bounce routing not proven'; fi
+mx=$(dig +short @"$dns_server" MX frankai.online | sort)
+if printf '%s\n' "$mx" | grep -q 'mx1.hostinger.com' && printf '%s\n' "$mx" | grep -q 'mx2.hostinger.com'; then
+  printf '%s\n' 'WARN Hostinger inbound is suspended; provider migration is pending'
+else
+  [ -n "$mx" ] && pass 'inbound MX has a provider' || fail 'inbound MX missing'
+fi
+if [ "${INBOUND_PROVIDER_APPROVED:-}" = true ]; then pass 'inbound provider approved'; else fail 'inbound provider approval not recorded'; fi
+if [ "${INBOUND_DELIVERY_VERIFIED:-}" = true ]; then pass 'inbound delivery verified'; else fail 'inbound delivery not verified'; fi
+
+cert=$(postconf -h smtpd_tls_cert_file)
+smtp_helo=$(postconf -h smtp_helo_name)
+smtp_origin=$(postconf -h myorigin)
+if [ "$(postconf -h myhostname)" = 'mail.frankai.online' ] && { [ "$smtp_helo" = 'mail.frankai.online' ] || [ "$smtp_helo" = '$myhostname' ]; } && { [ "$smtp_origin" = 'frankai.online' ] || [ "$smtp_origin" = '$mydomain' ]; }; then pass 'SMTP identity/HELO'; else fail 'SMTP identity/HELO'; fi
+if [ -r "$cert" ] && openssl x509 -in "$cert" -checkend "${TLS_MIN_REMAINING_SECONDS:-2592000}" -noout >/dev/null 2>&1 && openssl x509 -in "$cert" -checkhost mail.frankai.online -noout >/dev/null 2>&1; then pass 'Trusted TLS certificate hostname/expiry'; else fail 'Trusted TLS certificate'; fi
+if systemctl is-enabled --quiet frankai-postfix-cert-sync.path && systemctl is-active --quiet frankai-postfix-cert-sync.path && [ -x /usr/local/sbin/frankai-postfix-cert-sync ]; then pass 'Postfix certificate sync hook'; else fail 'Postfix certificate sync hook'; fi
+if curl -fsS -o /dev/null --max-time 15 https://frankai.online/; then pass 'public HTTPS'; else fail 'public HTTPS'; fi
+if [ "${ACME_RENEWAL_PROVEN:-}" = true ]; then pass 'ACME renewal proven'; else fail 'ACME renewal proof not recorded'; fi
+
+if [ -n "${EXPECTED_PRODUCTION_PID:-}" ]; then
+  actual_production_pid=$(systemctl show -p MainPID --value frankai-site.service 2>/dev/null || true)
+  [ "$actual_production_pid" = "$EXPECTED_PRODUCTION_PID" ] && pass 'production PID unchanged' || fail 'production PID changed'
+else
+  fail 'production PID baseline not configured'
+fi
+curl -fsS -o /dev/null --max-time 10 http://127.0.0.1:4300/ && pass 'production health' || fail 'production health'
+curl -kfsS -o /dev/null --max-time 10 https://staging.localhost:8443/ && pass 'staging health' || fail 'staging health'
+production_voice=$(awk -F= '$1=="VOICE_ENABLED" {print $2}' /etc/frankai-site.env 2>/dev/null || true)
+staging_voice=$(awk -F= '$1=="VOICE_ENABLED" {print $2}' /etc/frankai-site-staging.env 2>/dev/null || true)
+if [ -z "$production_voice" ] || [ "$production_voice" = false ]; then pass 'production voice unchanged/disabled'; else fail 'production voice enabled'; fi
+[ "$staging_voice" = false ] && pass 'staging voice disabled' || fail 'staging voice state'
+
+[ "$failures" -eq 0 ]

@@ -1,6 +1,7 @@
 import type pg from 'pg'
 import { randomUUID } from 'node:crypto'
 import { redactAuditMetadata } from './redaction'
+import { auditDefinition } from './audit-registry'
 
 export const FINAL_ADMINISTRATOR_REQUIRED = 'FINAL_ADMINISTRATOR_REQUIRED'
 
@@ -28,6 +29,9 @@ export async function assertRecoverableAdministrator(client: pg.PoolClient) {
 }
 
 export async function auditInTransaction(client: pg.PoolClient, actorUserId: string, action: string, result: string, targetType: string | null, targetId: string | null, metadata: Record<string, unknown> = {}) {
+  const definition = auditDefinition(action)
+  if (!definition) throw new Error(`Unregistered audit action: ${action}`)
+  if (!definition.successFailure.includes(result)) throw new Error(`Unsupported audit result for ${action}: ${result}`)
   const requestId = typeof metadata.requestId === 'string' ? metadata.requestId : randomUUID()
   await client.query('INSERT INTO audit_events (id,actor_user_id,action,result,target_type,target_id,request_id,metadata_json) VALUES ($1,$2,$3,$4,$5,$6,$7,$8)', [randomUUID(), actorUserId, action, result, targetType, targetId, requestId, JSON.stringify(redactAuditMetadata({ ...metadata, requestId }))])
 }

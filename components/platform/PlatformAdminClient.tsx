@@ -22,6 +22,10 @@ function parseArrayJson(value: string, fieldName: string) {
   return parsed
 }
 
+function csrfToken() {
+  return document.cookie.match(/(?:^|;\s*)frankai_csrf=([^;]+)/)?.[1] || ''
+}
+
 export function PlatformAdminClient({ initialConfig }: PlatformAdminClientProps) {
   const [stagesJson, setStagesJson] = useState(pretty(initialConfig.stages))
   const [capabilitiesJson, setCapabilitiesJson] = useState(pretty(initialConfig.capabilities))
@@ -62,7 +66,7 @@ export function PlatformAdminClient({ initialConfig }: PlatformAdminClientProps)
 
       const response = await fetch('/api/admin/platform', {
         method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', 'X-CSRF-Token': csrfToken() },
         body: JSON.stringify(payload)
       })
       const result = await response.json().catch(() => null)
@@ -94,7 +98,7 @@ export function PlatformAdminClient({ initialConfig }: PlatformAdminClientProps)
     try {
       const response = await fetch('/api/admin/platform', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', 'X-CSRF-Token': csrfToken() },
         body: JSON.stringify({
           approvalPhrase,
           approvalNote,

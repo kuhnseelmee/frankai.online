@@ -1,5 +1,7 @@
 .next/
 node_modules/
+test-results/
+coverage/
 .env*
 !.env.example
 .next/standalone/**/.env
@@ -7,6 +9,7 @@ backups/
 *.secret
 *.credentials
 npm-debug.log*
+.DS_Store
 .openclaw/
 AGENTS.md
 HEARTBEAT.md

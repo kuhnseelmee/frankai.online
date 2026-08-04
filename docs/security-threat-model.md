@@ -13,5 +13,7 @@ the trust boundary while `VOICE_ENABLED=false`.
 The authentication control plane now rejects unregistered or inactive email
 templates and redacts nested audit secrets, token-bearing URLs, credentials,
 headers, provisioning URIs, recovery codes, JWT-shaped values, and private-key
-blocks. Live SMTP and complete staging audit observation remain acceptance
-evidence gates, not assumed properties of renderer or unit tests.
+blocks. Final-administrator rejection auditing is observed in staging. Live
+SMTP privileged outbox inspection and complete staging audit-category
+observation remain acceptance evidence gates, not assumed properties of
+renderer or unit tests.

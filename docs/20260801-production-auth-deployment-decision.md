@@ -209,6 +209,26 @@ disabled state, and document session consequences.
 
 Final decision: `NOT_READY_FOR_PRODUCTION`.
 
+## Final closure attempt — 2026-08-02
+
+- `ROTATION_CONFIRMED`; production remains active and unchanged.
+- Four active email templates are registry-controlled. Three renderer-only
+  templates are explicitly `INACTIVE_RESERVED` and fail closed.
+- Lint, registry/redaction tests, and the staging Playwright suite passed 8/8.
+- The staging build was rebuilt and restarted only on staging. Protected
+  production build identity, health, isolation, and voice-disabled checks
+  remain verified.
+- The final-admin rejection was observed as a rejected
+  `admin_final_admin_action_rejected` audit event.
+- SMTP remains `SMTP_STAGING_PARTIAL`: protected Mailpit evidence covers active
+  renderer delivery and the bounded failure path, but privileged outbox
+  reinspection and complete browser-trigger/error-policy proof are not current.
+- Audit redaction is `AUDIT_REDACTION_VERIFIED` by recursive key/value tests;
+  semantic staging category coverage remains partial.
+
+Final closure status: `RECONCILIATION_RELEASE_CANDIDATE_PARTIAL`.
+Deployment decision: `NOT_READY_FOR_PRODUCTION`.
+
 ## Final reconciliation update — 2026-08-02
 
 The current working-tree change adds a fail-closed email registry and recursive
@@ -220,3 +240,38 @@ workflow delivery proof, live audit-category observation, and final-admin
 rejection observation are not current because staging is still running the
 prior candidate and the expected Mailpit API returned 404. Recommendation
 remains `NOT_READY_FOR_PRODUCTION`; no production action was taken.
+
+## SMTP phase status — 2026-08-02
+
+The VPS outbound-only Postfix/Rspamd stack is installed for staging preparation.
+Local submission is loopback-only, approved envelope senders are enforced, and
+a sanitized queue test verified Rspamd DKIM signing. Production remains
+unchanged and no production SMTP switch was performed.
+
+Direct-delivery readiness is pending manual DNS/PTR alignment
+(`mail.frankai.online` A, Hostinger PTR, merged SPF, DKIM TXT, and aligned
+DMARC) and a trusted ACME certificate. See `docs/smtp-dns-required.md` and
+`docs/smtp-staging-acceptance.md`.
+
+## SMTP DNS/TLS acceptance phase — 2026-08-03
+
+The authoritative and public A record now resolve `mail.frankai.online` to
+`76.13.180.125`. A temporary validated Caddy ACME route obtained a Let’s
+Encrypt certificate without stopping Caddy or changing the production
+application; the original production Caddyfile was restored. Postfix TLS
+verification succeeds with TLS 1.3 and OpenSSL verify code 0. Renewal issuance
+is not yet authorized/proven.
+
+PTR still resolves to `srv1661521.hstgr.cloud`; SPF remains Hostinger-only;
+DKIM TXT is absent; DMARC remains the previous `p=none` record; and no
+controlled Gmail/Outlook/Yahoo recipients were provided. Status remains
+`VPS_SMTP_PARTIALLY_READY`; production remains `PRODUCTION_ACTIVE_UNCHANGED`.
+
+## 2026-08-04 SMTP acceptance decision
+
+The final-phase audit confirms public A/PTR/FCrDNS, merged SPF, and corrected
+DKIM, but DMARC has no monitored `rua`, Caddy is failed
+on a file-permission error, and no controlled provider recipients were
+available. The decision remains `NOT_READY_FOR_PRODUCTION_SMTP`; see
+`docs/20260804-smtp-acceptance-report.md` and
+`docs/20260804-production-smtp-activation.md`.

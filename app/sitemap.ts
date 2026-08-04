@@ -4,6 +4,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const pages = [
     '',
     '/solutions',
+    '/proof',
     '/platform',
     '/admin/platform',
     '/governance',

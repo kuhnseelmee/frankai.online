@@ -21,6 +21,18 @@ test('audit registry includes required security categories and rejects unknown a
   assert.equal(auditDefinition('not_registered'), undefined)
 })
 
+test('every registered audit event has explicit semantics and a resolvable source action', () => {
+  for (const definition of AUDIT_EVENT_REGISTRY) {
+    assert.ok(definition.id)
+    assert.ok(definition.sourceAction)
+    assert.ok(definition.successFailure.includes('success'))
+    assert.ok(definition.successFailure.includes('failure'))
+    assert.ok(definition.successFailure.includes('rejected'))
+    assert.ok(auditDefinition(definition.sourceAction))
+    assert.equal(definition.requestId, 'required')
+  }
+})
+
 test('recursive redaction removes key and value secrets while retaining benign metadata', () => {
   const value = redactAuditMetadata({ requestId: 'req-123', userId: 'user-123', nested: [{ innocent: 'Bearer abcdefghijklmnopqrstuvwxyz' }, { password: 'do-not-log' }], cause: new Error('otpauth://totp/test?secret=hidden'), rowId: 42, email: 'user@example.test', uuid: '550e8400-e29b-41d4-a716-446655440000' })
   const serialized = JSON.stringify(value)
@@ -28,4 +40,28 @@ test('recursive redaction removes key and value secrets while retaining benign m
   assert.match(serialized, /user@example.test/)
   assert.doesNotMatch(serialized, /Bearer abcdefgh|do-not-log|otpauth:\/\//)
   assert.equal((value.nested as Array<Record<string, unknown>>)[1].password, '[REDACTED]')
+})
+
+test('redaction removes secret patterns from nested values without removing benign identifiers', () => {
+  const value = redactAuditMetadata({
+    innocentJwt: 'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIn0.signature',
+    authHeader: 'Bearer abcdefghijklmnopqrstuvwxyz',
+    invitationUrl: 'https://staging.localhost:8443/signup/invite?token=secret-value',
+    verificationUrl: 'https://staging.localhost:8443/verify-email?token=secret-value',
+    resetUrl: 'https://staging.localhost:8443/reset-password?token=secret-value',
+    uri: 'otpauth://totp/FrankAI:test?secret=ABCDEF',
+    pem: '-----BEGIN PRIVATE KEY-----\\nsecret\\n-----END PRIVATE KEY-----',
+    databaseUrl: 'postgresql://user:password@127.0.0.1:5432/db',
+    nested: [{ smtpPassword: 'mail-secret' }, ['sk-proj-abcdefghijklmnopqrstuvwxyz', '1234-5678-9012']],
+    requestId: 'req-123',
+    benignUuid: '550e8400-e29b-41d4-a716-446655440000',
+    benignEmail: 'user@example.test',
+    benignRowId: 42
+  })
+  const serialized = JSON.stringify(value)
+  for (const secret of ['eyJhbGci', 'Bearer abc', 'token=secret', 'otpauth://', 'BEGIN PRIVATE KEY', 'postgresql://user:password', 'mail-secret', 'sk-proj-']) assert.doesNotMatch(serialized, new RegExp(secret.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')))
+  assert.match(serialized, /req-123/)
+  assert.match(serialized, /550e8400-e29b-41d4-a716-446655440000/)
+  assert.match(serialized, /user@example.test/)
+  assert.match(serialized, /1234-5678-9012/)
 })
