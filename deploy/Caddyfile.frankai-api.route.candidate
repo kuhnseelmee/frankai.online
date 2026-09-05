@@ -1,0 +1,14 @@
+# Candidate health-only insertion inside the existing frankai.online,
+# www.frankai.online site block. Chat is intentionally not exposed.
+# handle_path strips only /api:
+# /api/health/live -> http://127.0.0.1:8081/health/live
+frankai.online, www.frankai.online {
+	encode gzip zstd
+	handle_path /api/* {
+		@health path /health/live /health/ready
+		handle @health {
+			reverse_proxy 127.0.0.1:8081
+		}
+		respond 404
+	}
+}

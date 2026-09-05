@@ -1,0 +1,5 @@
+# Mail hostname ACME ownership only. This must not proxy SMTP or expose an
+# internal mail service; it exists solely for Caddy HTTPS certificate renewal.
+mail.frankai.online {
+	respond "FrankAI mail service" 200
+}

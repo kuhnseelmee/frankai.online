@@ -1,8 +1,14 @@
 # FrankAI SMTP DNS checklist
 
+Current acceptance refresh: 2026-08-06. Authoritative and public resolver
+queries agree. Hostinger MX, VPS A/PTR/FCrDNS, SPF, VPS DKIM, Hostinger DKIM
+CNAMEs, and autodiscover/autoconfig are present. The current DMARC record still
+has no `rua`; do not claim reporting until the monitored mailbox exists.
+
 Reviewed 2026-08-03. DNS was not modified automatically. Authoritative nameservers are `ns1.dns-parking.com` and `ns2.dns-parking.com`; both now publish the same records.
 
-Current observed records:
+Historical observations below are retained for audit context. Current records
+are summarized in `docs/20260806-hostinger-mail-activation-result.md`.
 
 - `frankai.online A`: `76.13.180.125`.
 - `mail.frankai.online A`: `76.13.180.125`, TTL 300, PRESENT.

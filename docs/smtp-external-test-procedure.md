@@ -3,6 +3,10 @@
 Preparation only. No external message is sent until Ray supplies controlled
 recipient accounts. Do not use customer addresses or fabricate recipients.
 
+Current status (2026-08-06): `CONTROLLED_RECIPIENTS_READY` with
+`YAHOO_TEST_UNAVAILABLE`. Gmail, Outlook, and the independent Other provider
+are mandatory and distinct; Yahoo absence is an approved operator exception.
+
 ## Protected inputs
 
 Create the file only when controlled accounts are supplied:
@@ -14,9 +18,14 @@ Create the file only when controlled accounts are supplied:
 ```dotenv
 SMTP_TEST_GMAIL=<controlled-address>
 SMTP_TEST_OUTLOOK=<controlled-address>
-SMTP_TEST_YAHOO=<controlled-address>
-SMTP_TEST_OTHER=<controlled-address>
+SMTP_TEST_OTHER=<independent-controlled-address>
+SMTP_TEST_YAHOO=
 ```
+
+Yahoo is optional under the approved 2026-08-06 exception. Missing or empty
+Yahoo is recorded as `YAHOO_TEST_UNAVAILABLE`; it is never treated as a pass.
+Gmail, Outlook, and the independent `SMTP_TEST_OTHER` provider remain
+mandatory and must be distinct.
 
 Protect it with root ownership, directory mode 0700, and file mode 0600. Do
 not commit it, print it, or retain it in browser artifacts.

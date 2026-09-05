@@ -27,6 +27,8 @@ const capability = [
   ['Live', 'Frank ServiceDesk operational workflow environment.'],
   ['Live', 'Signed messaging integration bridge for controlled assistant events.'],
   ['Live', 'Public deployment proof for MultiStream streaming automation.'],
+  ['Active', 'DroidSMS local SMS execution control plane with approval, audit and outcome-boundary semantics.'],
+  ['Active', 'AndroidLab control room for local hotspot provisioning, ADB device setup and run evidence.'],
   ['Staged', 'SignalLedger evidence and audit platform in active build.'],
   ['Staged', 'TraderBot secure dashboard platform prototype.'],
   ['Staged', 'Frank Dispatch mission, approval and action receipt workflow using safe fixture intake.'],

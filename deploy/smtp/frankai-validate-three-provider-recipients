@@ -1,0 +1,28 @@
+#!/bin/sh
+set -eu
+
+file=${1:-/root/.config/frankai-smtp-test-recipients.env}
+fail() { printf 'CONTROLLED_RECIPIENTS_INVALID\n'; exit 1; }
+[ -f "$file" ] || fail
+[ "$(stat -c '%U:%G %a' "$file" 2>/dev/null || true)" = 'root:root 600' ] || fail
+
+tmp=$(mktemp)
+trap 'rm -f "$tmp"' EXIT HUP INT TERM
+awk -F= '
+function clean(v) { gsub(/^[[:space:]]+|[[:space:]]+$/, "", v); if (v ~ /^".*"$/ || v ~ /^'"'"'.*'"'"'$/) v=substr(v,2,length(v)-2); return tolower(v) }
+function provider(v, d) { split(v,a,"@"); d=a[2]; if (d=="gmail.com" || d=="googlemail.com") return "GMAIL"; if (d=="outlook.com" || d=="hotmail.com" || d=="live.com" || d=="msn.com" || d=="outlook.com.au" || d=="hotmail.co.uk" || d=="live.com.au") return "MICROSOFT_OUTLOOK"; if (d=="yahoo.com" || d=="yahoo.com.au" || d=="ymail.com" || d=="rocketmail.com") return "YAHOO"; return "INDEPENDENT_OTHER" }
+BEGIN { good=1 }
+/^[[:space:]]*#/ || /^[[:space:]]*$/ { next }
+!($1 ~ /^SMTP_TEST_(GMAIL|OUTLOOK|OTHER|YAHOO)$/) { good=0; next }
+{ v=clean($2); if (v=="" || v !~ /^[^@[:space:]]+@[^@[:space:]]+\.[^@[:space:]]+$/) { good=0; next } if (seen[v]++) good=0; value[$1]=v; class[$1]=provider(v) }
+END {
+  for (k in value) print k "=" class[k]
+  if (!value["SMTP_TEST_GMAIL"] || class["SMTP_TEST_GMAIL"]!="GMAIL") good=0
+  if (!value["SMTP_TEST_OUTLOOK"] || class["SMTP_TEST_OUTLOOK"]!="MICROSOFT_OUTLOOK") good=0
+  if (!value["SMTP_TEST_OTHER"] || class["SMTP_TEST_OTHER"]!="INDEPENDENT_OTHER") good=0
+  if (value["SMTP_TEST_YAHOO"] && class["SMTP_TEST_YAHOO"]!="YAHOO") good=0
+  if (!good) exit 1
+}' "$file" > "$tmp" || fail
+sort "$tmp"
+if grep -q '^SMTP_TEST_YAHOO=YAHOO$' "$tmp"; then printf 'YAHOO_TEST_AVAILABLE\n'; else printf 'YAHOO_TEST_UNAVAILABLE\n'; fi
+printf 'CONTROLLED_RECIPIENTS_READY\n'

@@ -1,0 +1,14 @@
+.git
+.next
+node_modules
+dist
+data
+logs
+backups
+run
+secrets/*
+!secrets/*.example
+test-results
+coverage
+*.env
+*.log

@@ -16,16 +16,23 @@
     "db:migrate": "node scripts/migrate-db.mjs",
     "security:benchmark": "node scripts/benchmark-password.mjs",
     "auth:migrate-file": "node scripts/migrate-file-auth.mjs",
-    "memory:rebuild-index": "node scripts/rebuild-memory-index.mjs"
+    "memory:rebuild-index": "node scripts/rebuild-memory-index.mjs",
+    "build:services": "tsc -p tsconfig.services.json",
+    "test:vertical-slice": "node --import tsx --test tests/vertical-slice/**/*.test.ts",
+    "dev:api": "tsx services/api/src/server.ts",
+    "dev:orchestrator": "tsx services/orchestrator/src/server.ts"
   },
   "dependencies": {
     "@types/qrcode": "^1.5.6",
-    "next": "^16.2.12",
+    "fastify": "^5.12.3",
+    "next": "^16.3.0",
     "nodemailer": "^9.0.3",
+    "openai": "^7.4.0",
     "pg": "^8.16.3",
     "qrcode": "^1.5.4",
     "react": "18.3.1",
-    "react-dom": "18.3.1"
+    "react-dom": "18.3.1",
+    "zod": "^4.4.3"
   },
   "devDependencies": {
     "@playwright/test": "^1.62.0",
@@ -35,11 +42,11 @@
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
     "eslint": "9.39.4",
-    "eslint-config-next": "16.2.6",
+    "eslint-config-next": "^16.3.0",
     "tsx": "^4.20.3",
     "typescript": "^5.4.5"
   },
   "overrides": {
-    "postcss": "8.5.10"
+    "postcss": "8.5.23"
   }
 }

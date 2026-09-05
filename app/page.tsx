@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import { SectionIntro } from '@/components/SectionIntro'
+import { currentWork } from '@/lib/current-work'
 import { deploymentProofs } from '@/lib/deployment-proofs'
 
 const pathways = [
@@ -36,6 +37,12 @@ const proof = [
     text: 'A signed messaging bridge supporting controlled assistant events and operational integration.',
     href: 'https://openwa.frankai.online'
   },
+  ...currentWork.map((item) => ({
+    title: item.name,
+    status: item.status,
+    text: item.summary,
+    href: '/proof'
+  })),
   ...deploymentProofs.map((item) => ({
     title: item.name,
     status: item.status,

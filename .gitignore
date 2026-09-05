@@ -1,11 +1,17 @@
 .next/
+dist/
 node_modules/
 test-results/
 coverage/
 .env*
 !.env.example
+secrets/*
+!secrets/.gitkeep
+!secrets/*.example
 .next/standalone/**/.env
 backups/
+.deploy-backups/
+*.bak-*
 *.secret
 *.credentials
 npm-debug.log*

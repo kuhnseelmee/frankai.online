@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { SectionIntro } from '@/components/SectionIntro'
+import { currentWork } from '@/lib/current-work'
 import { deploymentProofs, type DeploymentProof } from '@/lib/deployment-proofs'
 import styles from './proof.module.css'
 
@@ -28,6 +29,16 @@ const proofPoints = [
     text: 'The first-party platform surface includes health, memory, governance and approval concepts that turn capability into something reviewable.'
   },
   {
+    title: 'DroidSMS',
+    status: 'Local prototype',
+    text: 'A governed Android SMS execution control plane now separates API acceptance, ADB execution and delivery outcome, with inbound review and retention controls kept behind operator boundaries.'
+  },
+  {
+    title: 'AndroidLab Control Room',
+    status: 'Local control room',
+    text: 'A browser-based lab dashboard now wraps hotspot creation, Android Wi-Fi provisioning, state inspection, live logs, presets and run-bundle evidence.'
+  },
+  {
     title: 'Inspect Pro',
     status: 'Staged',
     text: 'A property inspection and operations application has been staged on the VPS, pending DNS completion and further production hardening.'
@@ -43,6 +54,7 @@ const workflow = [
 
 const readiness = [
   ['Live', 'First-party public site, governance pages, ServiceDesk MVP and messaging bridge.'],
+  ['Active', 'DroidSMS execution-safety work and AndroidLab control room are now represented as local operational proof.'],
   ['Staged', 'Frank Dispatch approval flow, Inspect Pro deployment, memory search and platform console.'],
   ['Locked', 'Broad autonomous action, unreviewed outbound communication and unrestricted mailbox ingestion.'],
   ['Planned', 'Case-study screenshots, public roadmap, production database migration and incident response policy.']
@@ -119,6 +131,28 @@ export default function ProofPage() {
             </article>
           ))}
         </div>
+        <section className={styles.deploymentProofSection}>
+          <SectionIntro
+            eyebrow="Current local builds"
+            title="Latest Android and messaging control work."
+            text="These projects are not being represented as public hosted services. They are local control surfaces that show the direction of FrankAI: practical tools, explicit boundaries and evidence-first execution."
+          />
+          <div className={styles.currentWorkGrid}>
+            {currentWork.map((item) => (
+              <article className={styles.currentWorkCard} key={item.name}>
+                <div className={styles.deploymentProofTop}>
+                  <div>
+                    <p className={styles.proofCategory}>{item.category}</p>
+                    <h3>{item.name}</h3>
+                  </div>
+                  <span>{item.status}</span>
+                </div>
+                <p>{item.summary}</p>
+                <p>{item.proof}</p>
+              </article>
+            ))}
+          </div>
+        </section>
         <section className={styles.deploymentProofSection}>
           <SectionIntro
             eyebrow="Deployment proof"

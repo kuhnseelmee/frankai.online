@@ -1,5 +1,10 @@
 # SMTP operations
 
+Current acceptance status (2026-08-06): production SMTP remains inactive.
+Use `docs/20260806-hostinger-mail-activation-result.md` for the current gate
+results. The health check is fail-closed for missing Hostinger, inbound,
+DMARC, bounce, ACME, recipient, and production-baseline evidence.
+
 All commands below are operator-sensitive. `postcat` can expose message bodies; never use it casually on authentication mail.
 
 ```bash

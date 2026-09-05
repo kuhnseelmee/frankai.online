@@ -56,12 +56,24 @@ printf '%s' "$dkim" | grep -q '^v=DKIM1;k=rsa;p=' && pass 'DNS DKIM syntax' || f
 if printf '%s' "$dkim" | sed 's/.*p=//' | base64 -d 2>/dev/null >"$tmpdir/dns.key" && openssl rsa -RSAPublicKey_out -outform DER -in /var/lib/rspamd/dkim/frankai.online.mail.key 2>/dev/null >"$tmpdir/local.key" && cmp -s "$tmpdir/dns.key" "$tmpdir/local.key"; then pass 'DNS DKIM matches local key'; else fail 'DNS DKIM does not match local key'; fi
 dmarc=$(dig +short @"$dns_server" TXT _dmarc.frankai.online | tr -d '"[:space:]')
 if printf '%s' "$dmarc" | grep -q 'v=DMARC1' && printf '%s' "$dmarc" | grep -q 'p=none' && printf '%s' "$dmarc" | grep -q 'adkim=s' && printf '%s' "$dmarc" | grep -q 'aspf=s' && printf '%s' "$dmarc" | grep -q 'rua=mailto:'; then pass 'DNS DMARC'; else fail 'DNS DMARC or rua'; fi
+if [ "${HOSTINGER_INBOUND_ACTIVE:-}" = true ]; then pass 'Hostinger inbound active'; else fail 'Hostinger inbound active not proven'; fi
+if [ "${INBOUND_ADDRESSES_VERIFIED:-}" = true ]; then pass 'operational inbound addresses verified'; else fail 'operational inbound addresses not verified'; fi
+if [ "${DMARC_MAILBOX_VERIFIED:-}" = true ]; then pass 'DMARC mailbox verified'; else fail 'DMARC mailbox not verified'; fi
+if [ "${DMARC_REPORTING_MONITORED:-}" = true ]; then pass 'DMARC aggregate reporting monitored'; else fail 'DMARC aggregate reporting not monitored'; fi
 if [ "${BOUNCE_ROUTING_READY:-}" = true ]; then pass 'bounce routing ready'; else fail 'bounce routing not proven'; fi
+if [ "${BOUNCE_PROCESSING_MONITORED:-}" = true ]; then pass 'bounce receipt monitored'; else fail 'bounce receipt not monitored'; fi
+recipient_validator=/usr/local/sbin/frankai-validate-three-provider-recipients
+if [ -x "$recipient_validator" ] && recipient_result=$($recipient_validator 2>/dev/null); then
+  pass 'controlled recipients ready'
+  printf '%s\n' "$recipient_result" | grep -q '^YAHOO_TEST_UNAVAILABLE$' && pass 'Yahoo exception recorded' || true
+else
+  fail 'controlled recipients invalid'
+fi
 mx=$(dig +short @"$dns_server" MX frankai.online | sort)
 if printf '%s\n' "$mx" | grep -q 'mx1.hostinger.com' && printf '%s\n' "$mx" | grep -q 'mx2.hostinger.com'; then
-  printf '%s\n' 'WARN Hostinger inbound is suspended; provider migration is pending'
+  pass 'Hostinger MX'
 else
-  [ -n "$mx" ] && pass 'inbound MX has a provider' || fail 'inbound MX missing'
+  fail 'Hostinger MX incorrect'
 fi
 if [ "${INBOUND_PROVIDER_APPROVED:-}" = true ]; then pass 'inbound provider approved'; else fail 'inbound provider approval not recorded'; fi
 if [ "${INBOUND_DELIVERY_VERIFIED:-}" = true ]; then pass 'inbound delivery verified'; else fail 'inbound delivery not verified'; fi
@@ -73,7 +85,17 @@ if [ "$(postconf -h myhostname)" = 'mail.frankai.online' ] && { [ "$smtp_helo" =
 if [ -r "$cert" ] && openssl x509 -in "$cert" -checkend "${TLS_MIN_REMAINING_SECONDS:-2592000}" -noout >/dev/null 2>&1 && openssl x509 -in "$cert" -checkhost mail.frankai.online -noout >/dev/null 2>&1; then pass 'Trusted TLS certificate hostname/expiry'; else fail 'Trusted TLS certificate'; fi
 if systemctl is-enabled --quiet frankai-postfix-cert-sync.path && systemctl is-active --quiet frankai-postfix-cert-sync.path && [ -x /usr/local/sbin/frankai-postfix-cert-sync ]; then pass 'Postfix certificate sync hook'; else fail 'Postfix certificate sync hook'; fi
 if curl -fsS -o /dev/null --max-time 15 https://frankai.online/; then pass 'public HTTPS'; else fail 'public HTTPS'; fi
+if curl -fsS -o /dev/null --max-time 15 --resolve mail.frankai.online:443:76.13.180.125 https://mail.frankai.online/; then pass 'mail public HTTPS'; else fail 'mail public HTTPS'; fi
 if [ "${ACME_RENEWAL_PROVEN:-}" = true ]; then pass 'ACME renewal proven'; else fail 'ACME renewal proof not recorded'; fi
+if [ "${GITLEAKS_VERIFIED_NO_LIVE_LEAKS:-}" = true ] || [ "${GITLEAKS_VERIFIED_NO_LEAKS:-}" = true ]; then pass 'Gitleaks clean'; else fail 'Gitleaks clean result not recorded'; fi
+if [ "${THREE_PROVIDER_AUTHENTICATION_VERIFIED:-}" = true ]; then pass 'three-provider authentication verified'; else fail 'three-provider authentication not verified'; fi
+if [ "${REPOSITORY_VALIDATION_PASS:-}" = true ]; then pass 'repository validation passed'; else fail 'repository validation not passed'; fi
+if [ "${STAGING_INSPECTION_READY:-}" = true ]; then pass 'staging inspection ready'; else fail 'staging inspection not ready'; fi
+if [ "${SMTP_STAGING_ACCEPTED:-}" = true ]; then pass 'staging SMTP accepted'; else fail 'staging SMTP acceptance not recorded'; fi
+if [ "${GMAIL_DELIVERY_PASS:-}" = true ]; then pass 'Gmail delivery passed'; else fail 'Gmail delivery not passed'; fi
+if [ "${OUTLOOK_DELIVERY_PASS:-}" = true ]; then pass 'Outlook delivery passed'; else fail 'Outlook delivery not passed'; fi
+if [ "${OTHER_CONTROLLED_DELIVERY_PASS:-}" = true ]; then pass 'independent provider delivery passed'; else fail 'independent provider delivery not passed'; fi
+if [ "${YAHOO_DELIVERY_PASS:-}" = true ]; then pass 'Yahoo delivery passed'; elif [ "${YAHOO_TEST_UNAVAILABLE:-}" = true ] && [ "${YAHOO_TEST_EXCEPTION_APPROVED:-}" = true ] && [ "${OTHER_CONTROLLED_DELIVERY_PASS:-}" = true ]; then pass 'approved Yahoo exception with independent-provider substitute'; else fail 'Yahoo condition not satisfied'; fi
 
 if [ -n "${EXPECTED_PRODUCTION_PID:-}" ]; then
   actual_production_pid=$(systemctl show -p MainPID --value frankai-site.service 2>/dev/null || true)
