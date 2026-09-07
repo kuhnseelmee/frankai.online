@@ -120,7 +120,7 @@ h1, h2, h3 {
 .nav-links {
   display: flex;
   flex: 1 1 auto;
-  gap: clamp(14px, 1.7vw, 25px);
+  gap: clamp(12px, 1.3vw, 18px);
   justify-content: flex-end;
   margin-left: auto;
   color: var(--muted);

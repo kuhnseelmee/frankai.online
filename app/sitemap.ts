@@ -4,6 +4,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const pages = [
     '',
     '/solutions',
+    '/services/ai-consulting',
     '/proof',
     '/platform',
     '/admin/platform',
@@ -20,7 +21,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   ]
   return pages.map((path) => ({
     url: `https://frankai.online${path}`,
-    lastModified: new Date('2026-05-29'),
+    lastModified: new Date(['', '/solutions', '/services/ai-consulting'].includes(path) ? '2026-09-08' : '2026-05-29'),
     changeFrequency: path === '' ? 'weekly' : 'monthly',
     priority: path === '' ? 1 : 0.7
   }))

@@ -9,6 +9,7 @@ export function SiteHeader() {
           <Image className="brand-logo" src="/images/logo_frankai.png" alt="FrankAI" width={225} height={96} priority />
         </Link>
         <nav className="nav-links" aria-label="Main navigation">
+          <Link href="/services/ai-consulting">Services</Link>
           <Link href="/solutions">Solutions</Link>
           <Link href="/proof">Proof</Link>
           <Link href="/platform">Platform</Link>

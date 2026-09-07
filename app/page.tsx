@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import { AIConsultingTeaser } from '@/components/AIConsultingTeaser'
 import { SectionIntro } from '@/components/SectionIntro'
 import { currentWork } from '@/lib/current-work'
 import { deploymentProofs } from '@/lib/deployment-proofs'
@@ -127,6 +128,7 @@ export default function Home() {
 
       <section className="proof">
         <div className="container">
+          <AIConsultingTeaser />
           <SectionIntro
             eyebrow="Already real"
             title="Proof before promises."

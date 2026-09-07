@@ -1,23 +1,25 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
+import { AIConsultingTeaser } from '@/components/AIConsultingTeaser'
 import { SectionIntro } from '@/components/SectionIntro'
 import { currentWork } from '@/lib/current-work'
 import { deploymentProofs } from '@/lib/deployment-proofs'
 
 export const metadata: Metadata = {
   title: 'Solutions',
-  description: 'Operational products and AI-enabled workflows from FrankAI.'
+  description: 'AI Consulting & Agentic Systems, operational products and AI-enabled workflows from FrankAI.'
 }
 
 export default function SolutionsPage() {
   return (
     <section className="page-section">
       <div className="container">
-        <SectionIntro
-          eyebrow="Solutions"
-          title="AI that belongs inside real operations."
-          text="FrankAI solutions focus on structured work: intake, coordination, service delivery and controlled automation."
-        />
+        <div className="section-intro">
+          <p className="eyebrow">Solutions</p>
+          <h1 className="page-title">AI that belongs inside real operations.</h1>
+          <p className="section-lead">FrankAI solutions focus on structured work: intake, coordination, service delivery and controlled automation.</p>
+        </div>
+        <AIConsultingTeaser />
         <div className="feature-grid">
           <article className="feature-card featured">
             <p className="status">Live product</p>

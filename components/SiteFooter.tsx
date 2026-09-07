@@ -10,6 +10,7 @@ export function SiteFooter() {
           <p className="footer-copy">Intelligence that moves work forward.</p>
         </div>
         <div className="footer-links">
+          <Link href="/services/ai-consulting">AI Consulting &amp; Agentic Systems</Link>
           <Link href="/solutions">Solutions</Link>
           <Link href="/proof">Proof</Link>
           <Link href="/platform">Platform</Link>

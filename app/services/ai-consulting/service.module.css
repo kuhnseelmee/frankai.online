@@ -1,0 +1,9 @@
+.section {
+  margin-top: 64px;
+}
+
+.list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
