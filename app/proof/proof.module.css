@@ -5,16 +5,35 @@
 .deploymentProofGrid {
   display: grid;
   gap: 20px;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.currentWorkGrid {
+  display: grid;
+  gap: 20px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  margin-bottom: 56px;
 }
 
 .deploymentProofCard {
   background: rgba(16, 38, 43, 0.7);
   border: 1px solid var(--line);
-  border-radius: 22px;
+  border-radius: 8px;
   display: flex;
   flex-direction: column;
   gap: 18px;
+  min-width: 0;
+  padding: 30px;
+}
+
+.currentWorkCard {
+  background: rgba(16, 38, 43, 0.7);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  min-width: 0;
   padding: 30px;
 }
 
@@ -23,24 +42,29 @@
   display: flex;
   gap: 12px;
   justify-content: space-between;
+  min-width: 0;
 }
 
 .deploymentProofTop h3 {
   font-size: 24px;
   margin-top: 10px;
+  min-width: 0;
 }
 
 .deploymentProofTop span {
   background: var(--mint-dark);
   border: 1px solid rgba(85, 231, 196, 0.2);
-  border-radius: 99px;
+  border-radius: 8px;
   color: var(--mint);
   font-size: 11px;
   font-weight: 700;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.06em;
+  line-height: 1.25;
+  max-width: min(100%, 210px);
+  overflow-wrap: anywhere;
   padding: 6px 10px;
+  text-align: center;
   text-transform: uppercase;
-  white-space: nowrap;
 }
 
 .proofCategory {
@@ -52,7 +76,8 @@
 }
 
 .deploymentProofDescription,
-.deploymentProofDetails p {
+.deploymentProofDetails p,
+.currentWorkCard p {
   color: var(--muted);
 }
 
@@ -76,6 +101,10 @@
 @media (max-width: 940px) {
   .deploymentProofGrid {
     grid-template-columns: repeat(2, 1fr);
+  }
+
+  .currentWorkGrid {
+    grid-template-columns: 1fr;
   }
 }
 

@@ -1,9 +1,8 @@
 # SMTP security controls
 
-Hostinger inbound is suspended. Fastmail MX-only is the prepared recommendation
-for monitored `dmarc`, `bounce`, `security`, and `support` addresses, with
-Forward Email as fallback. No provider activation, MX change, or VPS inbound
-service has been performed.
+Hostinger MX is published, but active account access, monitored operational
+addresses, inbound delivery, DMARC reporting, and bounce receipt are not yet
+proven. No VPS inbound mailbox service or catch-all was added.
 
 | Control | Result |
 | --- | --- |
@@ -19,7 +18,7 @@ service has been performed.
 | TLS | Let’s Encrypt certificate verified for `mail.frankai.online`; Postfix sync hook is installed, but renewal issuance is not yet authorized/proven |
 | Credentials | No SMTP credentials configured; localhost is the trust boundary |
 | Logging | No application bodies/tokens intentionally logged; metadata retention target 14–30 days |
-| Inbound handling | No MX/mailbox service added; bounce processing is not implemented |
+| Inbound handling | Hostinger MX present; mailbox/alias delivery and bounce monitoring not yet proven |
 | Production | `PRODUCTION_ACTIVE_UNCHANGED` |
 | Voice | `VOICE_DISABLED_PENDING_SEPARATE_ACTIVATION` |
 

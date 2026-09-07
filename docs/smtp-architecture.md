@@ -1,10 +1,14 @@
 # FrankAI outbound SMTP architecture
 
-Inbound provider decision update (2026-08-04): Fastmail MX-only is the
-prepared recommendation and Forward Email is the fallback. No provider was
-purchased or activated and no MX record was changed.
+Inbound provider update (2026-08-06): Hostinger MX is currently published.
+Account, mailbox, alias, and delivery evidence remains incomplete, so this is
+not yet an accepted inbound configuration.
 
-Status: staging-only preparation; production SMTP is not active. A-record propagation is complete; SPF/DKIM/PTR and external recipient acceptance remain pending.
+Status: staging-only preparation; production SMTP is not active. A-record
+propagation, SPF/DKIM/PTR and FCrDNS are verified. The approved three-provider
+recipient policy is configured with Yahoo unavailable; external authentication,
+inbound-mailbox, DMARC-reporting, bounce, staging, and renewal acceptance
+remain pending.
 
 Postfix runs as an outbound-only MTA. It binds SMTP on `127.0.0.1:25` for the local MTA and submission on `127.0.0.1:587` for FrankAI. `inet_protocols=ipv4`, `mydestination=` and empty `relay_domains` prevent mailbox hosting. `mynetworks` is loopback only and sender access permits only `no-reply@frankai.online`, `security@frankai.online`, and `support@frankai.online`.
 
@@ -16,7 +20,11 @@ Staging uses `/etc/frankai-site-staging.env` with `SMTP_HOST=mail.frankai.online
 
 ## Current readiness boundary
 
-Local relay restriction, DKIM queue signing, A-record propagation, and trusted TLS are verified. PTR/FCRDNS, SPF authorization, DKIM publication, DMARC alignment, controlled-recipient delivery, bounce/reporting decisions, and an authorized renewal workflow remain pending. Production switch is prohibited until those items and Ray approval are complete.
+Local relay restriction, DKIM queue signing, A-record propagation,
+PTR/FCRDNS, SPF authorization, DKIM publication, and trusted TLS are verified.
+Controlled-recipient delivery, inbound mailbox delivery, DMARC reporting,
+bounce monitoring, and completed ACME renewal proof remain pending. Production
+switch is prohibited until those items are complete.
 
 ## 2026-08-04 acceptance update
 

@@ -1,0 +1,106 @@
+name: frankai
+
+services:
+  api:
+    build:
+      context: .
+      dockerfile: infrastructure/docker/vertical-slice.Dockerfile
+      args:
+        SERVICE: api
+    restart: unless-stopped
+    init: true
+    stop_grace_period: 20s
+    read_only: true
+    tmpfs:
+      - /tmp:rw,noexec,nosuid,size=16m
+    security_opt:
+      - no-new-privileges:true
+    cap_drop: [ALL]
+    cap_add: [SETUID, SETGID, SETPCAP]
+    environment:
+      NODE_ENV: production
+      LOG_LEVEL: ${LOG_LEVEL:-info}
+      FRANKAI_API_BIND_HOST: 0.0.0.0
+      FRANKAI_API_PORT: 8080
+      API_ORCHESTRATOR_URL: http://orchestrator:8080
+      API_BEARER_TOKEN_FILE: /run/secrets/api_bearer_token
+      API_ORCHESTRATOR_TIMEOUT_MS: ${API_ORCHESTRATOR_TIMEOUT_MS:-16000}
+    ports:
+      - "127.0.0.1:${FRANKAI_API_PORT:-8081}:8080"
+    secrets:
+      - api_bearer_token
+    depends_on:
+      orchestrator:
+        condition: service_healthy
+    networks: [edge, internal]
+    mem_limit: ${API_MEMORY_LIMIT:-256m}
+    cpus: ${API_CPU_LIMIT:-0.50}
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:8080/health/live').then(r => process.exit(r.ok ? 0 : 1)).catch(() => process.exit(1))"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+      start_period: 10s
+
+  orchestrator:
+    build:
+      context: .
+      dockerfile: infrastructure/docker/vertical-slice.Dockerfile
+      args:
+        SERVICE: orchestrator
+    restart: unless-stopped
+    init: true
+    stop_grace_period: 20s
+    read_only: true
+    tmpfs:
+      - /tmp:rw,noexec,nosuid,size=16m
+    security_opt:
+      - no-new-privileges:true
+    cap_drop: [ALL]
+    cap_add: [SETUID, SETGID, SETPCAP]
+    environment:
+      NODE_ENV: production
+      LOG_LEVEL: ${LOG_LEVEL:-info}
+      ORCHESTRATOR_BIND_HOST: 0.0.0.0
+      ORCHESTRATOR_PORT: 8080
+      ORCHESTRATOR_MODEL: ${ORCHESTRATOR_MODEL:-gpt-5.6-luna}
+      ORCHESTRATOR_MODEL_MODE: ${ORCHESTRATOR_MODEL_MODE:-openai}
+      ORCHESTRATOR_OPENAI_KEY_FILE: /run/secrets/openai_api_key
+      ORCHESTRATOR_BEARER_TOKEN_FILE: /run/secrets/api_bearer_token
+      ORCHESTRATOR_TIMEOUT_MS: ${ORCHESTRATOR_TIMEOUT_MS:-15000}
+      ORCHESTRATOR_MAX_OUTPUT_TOKENS: ${ORCHESTRATOR_MAX_OUTPUT_TOKENS:-300}
+      FRANK_CORE_PROMPT_FILE: /app/agents/frank-core/prompt.md
+    secrets:
+      - openai_api_key
+      - api_bearer_token
+    expose: ["8080"]
+    networks: [internal]
+    mem_limit: ${ORCHESTRATOR_MEMORY_LIMIT:-512m}
+    cpus: ${ORCHESTRATOR_CPU_LIMIT:-1.00}
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:8080/health/live').then(r => process.exit(r.ok ? 0 : 1)).catch(() => process.exit(1))"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+      start_period: 10s
+
+networks:
+  edge: {}
+  internal:
+    internal: true
+
+secrets:
+  api_bearer_token:
+    file: ./secrets/api_bearer_token
+  openai_api_key:
+    file: ./secrets/openai_api_key

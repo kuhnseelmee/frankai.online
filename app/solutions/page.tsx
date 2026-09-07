@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { SectionIntro } from '@/components/SectionIntro'
+import { currentWork } from '@/lib/current-work'
 import { deploymentProofs } from '@/lib/deployment-proofs'
 
 export const metadata: Metadata = {
@@ -33,13 +34,37 @@ export default function SolutionsPage() {
           </article>
           <article className="feature-card">
             <h2>Messaging automation</h2>
-            <p>Connect assistant capability to messaging channels while preserving control over events and replies.</p>
+            <p>Connect assistant capability to messaging channels while preserving control over events, replies, execution state and operator review.</p>
+          </article>
+          <article className="feature-card">
+            <h2>Android operations labs</h2>
+            <p>Build local control rooms for Android provisioning, ADB-assisted workflows, network-state inspection and evidence capture.</p>
           </article>
           <article className="feature-card">
             <h2>Applied AI systems</h2>
             <p>Build purpose-fit tools where AI augments judgement rather than replacing accountability.</p>
           </article>
         </div>
+        <section className="proof-section">
+          <SectionIntro
+            eyebrow="Latest work"
+            title="Android and SMS control surfaces."
+            text="The newest builds expand FrankAI's proof portfolio into device-side operations and governed messaging execution."
+          />
+          <div className="proof-directory">
+            {currentWork.map((item) => (
+              <article className="proof-card" key={item.name}>
+                <div className="proof-head">
+                  <h3>{item.name}</h3>
+                  <span>{item.status}</span>
+                </div>
+                <p>{item.category}</p>
+                <p>{item.summary}</p>
+                <p>{item.proof}</p>
+              </article>
+            ))}
+          </div>
+        </section>
         <section className="proof-section">
           <SectionIntro
             eyebrow="Operational proof portfolio"

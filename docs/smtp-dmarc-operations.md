@@ -1,7 +1,8 @@
 # FrankAI DMARC operations
 
-Status: `DMARC_REPORTING_READY_FOR_ACTIVATION`. The mailbox is not active and
-the DNS record has not been changed.
+Status: `DMARC_DNS_VERIFIED` and `DMARC_REPORTING_PARTIAL`. The strict
+alignment record now has `rua=mailto:dmarc@frankai.online`, but mailbox receipt
+and real aggregate-report receipt are not proven.
 
 ## Record to publish after receipt proof
 
@@ -22,4 +23,3 @@ failures before any future policy change.
 
 Retain reports according to the approved mailbox retention policy, restrict
 access, and avoid committing report attachments or recipient identifiers.
-

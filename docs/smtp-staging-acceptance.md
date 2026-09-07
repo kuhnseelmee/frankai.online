@@ -1,5 +1,11 @@
 # Staging SMTP acceptance
 
+The 2026-08-06 live refresh is `SMTP_STAGING_PARTIAL`: the staging endpoint is
+healthy, the three-provider recipient file is valid, and Yahoo is explicitly
+unavailable under the approved exception, but protected inspection inputs were
+absent. The previous local/Mailpit evidence below is
+historical and does not prove current external provider delivery.
+
 Staging only uses `/etc/frankai-site-staging.env` with `EMAIL_PROVIDER=smtp`, `SMTP_HOST=mail.frankai.online`, `SMTP_PORT=587`, `SMTP_SECURE=false`, and `EMAIL_FROM=no-reply@frankai.online`. The hostname resolves to `127.0.0.1` through the protected local hosts mapping, so submission remains local-only while TLS hostname validation uses `mail.frankai.online`. The protected file remains mode `0600`. Staging no longer uses the interim `NODE_EXTRA_CA_CERTS` override; it now validates the trusted Let’s Encrypt certificate through the normal Node trust store. Production was not restarted or reconfigured.
 
 The authoritative registry contains four `ACTIVE_TRIGGERED` templates: `INVITATION`, `EMAIL_VERIFICATION`, `PASSWORD_RESET`, and `PASSWORD_CHANGED`. `MFA_DISABLED`, `ADMIN_SECURITY_ALERT`, and `NEW_LOGIN` remain `INACTIVE_RESERVED` and were not activated.

@@ -1,6 +1,7 @@
 # FrankAI bounce operations
 
-Status: `BOUNCE_ROUTING_READY_FOR_ACTIVATION`. Receipt is not proven.
+Status: `BOUNCE_PROCESSING_PARTIAL`. The proposed monitored address is
+`bounce@frankai.online`, but receipt and NDR correlation are not proven.
 
 The proposed monitored address is `bounce@frankai.online`. Current application
 submission sets the message `From` address but does not explicitly set a
@@ -18,4 +19,3 @@ and by handling null reverse paths correctly.
 
 Required proof after provider activation: controlled invalid-recipient test,
 provider NDR receipt, no loop, no token-bearing content, and safe correlation.
-

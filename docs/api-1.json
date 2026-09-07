@@ -13918,7 +13918,7 @@
           "auth_key": {
             "description": "Authentication token to pass as the `X-Auth` header in TUS upload requests",
             "type": "string",
-            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoxfX0.O-x6KeHMkNqnbYvbRcdDEQXOSLcqyE7xNrnKvftbG3A"
+            "example": "SYNTHETIC_TUS_AUTH_KEY"
           },
           "rest_auth_key": {
             "description": "Authentication token to pass as the `X-Auth-Rest` header in TUS upload requests",
