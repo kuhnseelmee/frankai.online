@@ -30,7 +30,7 @@ export default function PlatformPage() {
         <SectionIntro
           eyebrow="Platform direction"
           title="A practical intelligence layer for action."
-          text="FrankAI is evolving from a public assistant presence into an enterprise AI-agent platform: memory, governance, execution, device control rooms, release control and a growing proof portfolio held together as one operating layer."
+          text="FrankAI is evolving into a coherent applied engineering platform: agents, memory, governance, execution boundaries, integrations and a growing portfolio of systems held together by evidence and release discipline."
         />
         <div className="pillar-grid">
           {pillars.map(([title, text], index) => (

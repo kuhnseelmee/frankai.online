@@ -14,12 +14,12 @@ export default function StartPage() {
         <h1 className="page-title">The first-party experience is being prepared.</h1>
         <p className="page-lead">
           FrankAI is moving to an owned platform with clear controls and no dependency on the
-          previous hosted app builder. Until direct access is ready, choose the path that fits your purpose and review the live deployment proof portfolio.
+          previous hosted app builder. Until direct access is ready, choose the path that fits your purpose and review the public portfolio register.
         </p>
         <div className="start-grid">
           <article className="path-card">
             <h2>Explore operational solutions</h2>
-            <p>See what is live today, including Frank ServiceDesk, messaging infrastructure and the deployment proof portfolio.</p>
+            <p>See the current portfolio, including operational foundations, active builds, private systems and research labs.</p>
             <Link className="button" href="/solutions">View solutions</Link>
           </article>
           <article className="path-card">
@@ -29,7 +29,7 @@ export default function StartPage() {
           </article>
           <article className="path-card">
             <h2>Review proof</h2>
-            <p>Inspect the public deployment footprint across streaming automation, compliance infrastructure and secure trading dashboards.</p>
+            <p>Inspect how FrankAI distinguishes operational systems, active development, private work and research.</p>
             <Link className="button button-secondary" href="/proof">Open proof page</Link>
           </article>
         </div>

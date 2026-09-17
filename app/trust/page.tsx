@@ -23,16 +23,11 @@ const principles = [
 ]
 
 const capability = [
-  ['Live', 'First-party frankai.online presence and controlled public information routes.'],
-  ['Live', 'Frank ServiceDesk operational workflow environment.'],
-  ['Live', 'Signed messaging integration bridge for controlled assistant events.'],
-  ['Live', 'Public deployment proof for MultiStream streaming automation.'],
-  ['Active', 'DroidSMS local SMS execution control plane with approval, audit and outcome-boundary semantics.'],
-  ['Active', 'AndroidLab control room for local hotspot provisioning, ADB device setup and run evidence.'],
-  ['Staged', 'SignalLedger evidence and audit platform in active build.'],
-  ['Staged', 'TraderBot secure dashboard platform prototype.'],
-  ['Staged', 'Frank Dispatch mission, approval and action receipt workflow using safe fixture intake.'],
-  ['Locked', 'Inbound email ingestion pending webhook credential activation and operational hardening.']
+  ['Operational', 'FrankAI Core Platform and the reusable Context Engineering Method.'],
+  ['Active', 'Agent Prompt Hub, Job Tracker, Care Operations & Compliance Platform and DroidSMS.'],
+  ['Pilot', 'OpenWA, ServiceDesk and LangGraph orchestration research.'],
+  ['Research', 'Local / Private AI and Reticulum resilient communications research.'],
+  ['Private', 'Private Advocacy Intelligence Platform, described publicly at architecture level only.']
 ]
 
 export default function TrustPage() {
