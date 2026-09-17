@@ -9,6 +9,12 @@ const nextConfig = {
   outputFileTracingRoot: process.cwd(),
   poweredByHeader: false,
   reactStrictMode: true,
+  // Keep Next's type checking on the compiler API path. The CLI bridge in
+  // Next 16.3 can emit an empty --showConfig stream with this Node/TypeScript
+  // toolchain even though `tsc --noEmit` succeeds.
+  experimental: {
+    useTypeScriptCli: false
+  },
   async headers() {
     return [
       {

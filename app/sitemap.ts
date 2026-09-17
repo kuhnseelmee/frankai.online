@@ -4,6 +4,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const pages = [
     '',
     '/solutions',
+    '/portfolio',
+    '/agents',
+    '/methods',
+    '/labs',
+    '/now',
+    '/about',
     '/services/ai-consulting',
     '/proof',
     '/platform',

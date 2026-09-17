@@ -6,30 +6,28 @@ import './globals.css'
 export const metadata: Metadata = {
   metadataBase: new URL('https://frankai.online'),
   title: {
-    default: 'FrankAI | Intelligence that moves work forward',
+    default: 'FrankAI — Applied AI Engineering, Governed Systems & Consulting',
     template: '%s | FrankAI'
   },
   description:
-    'FrankAI builds governed AI systems that turn conversations into controlled workflows, approvals, records, deployment proofs and operational action.',
+    'FrankAI is an independent applied AI engineering and consulting initiative building practical, governed and production-oriented systems.',
   keywords: [
     'FrankAI',
     'governed AI',
-    'workflow automation',
-    'AI operations',
-    'ServiceDesk',
-    'controlled automation',
-    'deployment proof',
-    'broadcast infrastructure',
-    'audit infrastructure',
-    'trading automation'
+    'applied AI engineering',
+    'AI consulting',
+    'governed systems',
+    'context engineering',
+    'sovereign systems',
+    'workflow automation'
   ],
   alternates: {
     canonical: 'https://frankai.online'
   },
   openGraph: {
-    title: 'FrankAI | Intelligence that moves work forward',
+    title: 'FrankAI — Applied AI Engineering, Governed Systems & Consulting',
     description:
-      'Governed AI systems that turn conversations into controlled workflows, approvals, records, deployment proofs and operational action.',
+      'Independent applied AI engineering and consulting for practical, governed systems.',
     url: 'https://frankai.online',
     siteName: 'FrankAI',
     images: [{ url: '/images/logo_frankai.png', width: 1536, height: 1024 }],
