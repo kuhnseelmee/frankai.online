@@ -8,9 +8,10 @@ retrieval. The public website is served at [frankai.online](https://frankai.onli
 The canonical repository is
 [`kuhnseelmee/frankai.online`](https://github.com/kuhnseelmee/frankai.online).
 
-Public pages describe the platform and its release, governance, trust, memory, and proof
-surfaces. Account and operator functions are private. The application does not treat the
-public pages as an authentication boundary.
+Public pages describe the portfolio, consulting service, methods, research, governance and
+current development. `lib/portfolio.ts` is the canonical public-safe project registry.
+Account and operator functions are private. The application does not treat the public pages
+as an authentication boundary.
 
 ## Current capabilities
 
@@ -33,17 +34,14 @@ and migration compatibility. Production configuration rejects that mode.
 
 ## Architecture
 
-The application uses Next.js `16.2.12`, React `18.3.1`, TypeScript/TSX scripts, Node.js,
+The application uses Next.js `16.3.5`, React `18.3.1`, TypeScript/TSX scripts, Node.js,
 `pg` for PostgreSQL, Nodemailer for optional SMTP delivery, and Playwright for browser
 tests. The package lockfile is authoritative for dependency installation.
 
-Production is built with Next.js standalone output. The systemd service runs
-`.next/standalone/server.js` on `127.0.0.1:4300`; Caddy terminates public HTTPS and
-reverse-proxies the public domain to that loopback service. The service is
-`frankai-site.service`, its working directory is `/root/frankai-site`, and its production
-environment file is `/etc/frankai-site.env`. The service runs with `NODE_ENV=production`,
-`NoNewPrivileges=true`, `PrivateTmp=true`, and a restricted filesystem policy that permits
-writes only to the required application build and `/var/lib/frankai-site` paths.
+Production is built with Next.js standalone output and served behind a reverse proxy. The
+runtime uses a loopback-only application listener, service-level hardening and separately
+managed environment configuration. Deployment-specific paths and operational values belong
+in the controlled runbook rather than the public positioning layer.
 
 The standalone build hook copies `public` and `.next/static` into the standalone layout and
 removes nested environment files. Runtime secrets are supplied by systemd, not bundled into
@@ -312,15 +310,10 @@ development paths.
 
 ## Production status
 
-During this documentation review, read-only host checks found `frankai-site.service` active,
-the application bound on `127.0.0.1:4300`, Caddy listening on public HTTP/HTTPS ports, and
-the active Caddy configuration syntactically valid. The production service environment file
-exists with restrictive ownership and mode. No secret values were read.
-
-This README does not claim that every optional integration is active. In particular, the
-Hostinger mail webhook's provider-side registration and inbound delivery are not proven by
-the repository, and voice remains an explicit feature gate. Production readiness must be
-established by the current deployment and acceptance evidence, not by this document alone.
+Repository contents and historical reports do not prove current production status. Release
+readiness must be established from a clean commit, reproducible build, current acceptance
+evidence, deployment provenance and rollback material. Optional integrations remain inactive
+unless their own operational gates have been completed.
 
 ## Documentation index
 
@@ -331,6 +324,7 @@ established by the current deployment and acceptance evidence, not by this docum
 - [Administrator operations](docs/admin-operations.md)
 - [Admin security controls](docs/admin-security-controls.md)
 - [Browser acceptance](docs/browser-acceptance.md)
+- [Public portfolio reconciliation](docs/portfolio-reconciliation.md)
 - [Memory and security threat model](docs/security-threat-model.md)
 - [Realtime voice security](docs/realtime-voice-security.md)
 - [Hostinger and SMTP operations](docs/hostinger.md)

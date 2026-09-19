@@ -2,35 +2,41 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 
 export const metadata: Metadata = {
-  title: 'Start With Frank',
-  description: 'Choose how you want to begin with FrankAI.'
+  title: 'Start With FrankAI',
+  description: 'Choose the clearest path into FrankAI consulting, portfolio evidence or collaboration.',
+  alternates: { canonical: '/start' }
 }
 
 export default function StartPage() {
   return (
     <section className="page-section narrow">
       <div className="container">
-        <p className="eyebrow">Start with Frank</p>
-        <h1 className="page-title">The first-party experience is being prepared.</h1>
-        <p className="page-lead">
-          FrankAI is moving to an owned platform with clear controls and no dependency on the
-          previous hosted app builder. Until direct access is ready, choose the path that fits your purpose and review the live deployment proof portfolio.
-        </p>
+        <header className="page-header">
+          <p className="eyebrow">Start with FrankAI</p>
+          <h1 className="page-title">Begin with the problem, not the performance of AI.</h1>
+          <p className="page-lead">
+            The strongest starting point is a real workflow, decision or information problem. Choose
+            the path that matches what you need to understand or change.
+          </p>
+        </header>
         <div className="start-grid">
           <article className="path-card">
-            <h2>Explore operational solutions</h2>
-            <p>See what is live today, including Frank ServiceDesk, messaging infrastructure and the deployment proof portfolio.</p>
-            <Link className="button" href="/solutions">View solutions</Link>
+            <p className="eyebrow">Organisations</p>
+            <h2>Discuss an AI or workflow problem</h2>
+            <p>Describe the current work, constraints, risks and outcome. FrankAI will help frame a practical engagement.</p>
+            <Link className="button" href="/contact">Start an enquiry</Link>
           </article>
           <article className="path-card">
-            <h2>Register interest</h2>
-            <p>Describe whether you are seeking personal access, a client solution or a partnership discussion.</p>
-            <Link className="button button-secondary" href="/contact">Contact FrankAI</Link>
+            <p className="eyebrow">Evidence</p>
+            <h2>Inspect the portfolio</h2>
+            <p>Review working platforms, active development, pilots, research and anonymised case-study architecture.</p>
+            <Link className="button button-secondary" href="/portfolio">Open the portfolio</Link>
           </article>
           <article className="path-card">
-            <h2>Review proof</h2>
-            <p>Inspect the public deployment footprint across streaming automation, compliance infrastructure and secure trading dashboards.</p>
-            <Link className="button button-secondary" href="/proof">Open proof page</Link>
+            <p className="eyebrow">Approach</p>
+            <h2>Understand how FrankAI works</h2>
+            <p>See the human-directed operating model, context method and concrete governance controls.</p>
+            <Link className="button button-secondary" href="/methods">Review the methods</Link>
           </article>
         </div>
       </div>

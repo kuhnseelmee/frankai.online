@@ -5,28 +5,28 @@ export function SiteFooter() {
   return (
     <footer className="site-footer">
       <div className="container footer-grid">
-        <div>
+        <div className="footer-identity">
           <Image className="footer-logo" src="/images/logo_frankai.png" alt="FrankAI" width={225} height={96} />
-          <p className="footer-copy">Intelligence that moves work forward.</p>
+          <p className="footer-copy">Applied AI engineering, governed systems and consulting.</p>
+          <p className="footer-principal">Founded and directed by Raymond Wooler.</p>
         </div>
-        <div className="footer-links">
-          <Link href="/services/ai-consulting">AI Consulting &amp; Agentic Systems</Link>
-          <Link href="/solutions">Solutions</Link>
-          <Link href="/proof">Proof</Link>
-          <Link href="/platform">Platform</Link>
+        <nav className="footer-links" aria-label="Footer navigation">
+          <Link href="/portfolio">Portfolio</Link>
+          <Link href="/services/ai-consulting">AI Consulting</Link>
+          <Link href="/agents">Agents</Link>
+          <Link href="/methods">Methods</Link>
+          <Link href="/labs">Labs</Link>
+          <Link href="/now">Current Development</Link>
+          <Link href="/about">About</Link>
           <Link href="/governance">Governance</Link>
-          <Link href="/rollout">Rollout</Link>
-          <Link href="/memory">Memory</Link>
-          <Link href="/docs">Docs</Link>
-          <Link href="/trust">Trust</Link>
+          <Link href="/proof">Evidence</Link>
           <Link href="/contact">Contact</Link>
           <Link href="/login">Sign in</Link>
-          <Link href="/admin/login">Admin</Link>
           <Link href="/privacy">Privacy</Link>
           <Link href="/terms">Terms</Link>
-        </div>
+        </nav>
       </div>
-      <p className="copyright">&copy; {new Date().getFullYear()} FrankAI. Built with control, clarity and accountability.</p>
+      <p className="copyright">&copy; {new Date().getFullYear()} FrankAI. Human-directed. Evidence-led. Built to remain accountable.</p>
     </footer>
   )
 }

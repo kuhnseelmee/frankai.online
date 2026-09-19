@@ -6,34 +6,36 @@ import './globals.css'
 export const metadata: Metadata = {
   metadataBase: new URL('https://frankai.online'),
   title: {
-    default: 'FrankAI | Intelligence that moves work forward',
+    default: 'FrankAI | Applied AI Engineering & Consulting',
     template: '%s | FrankAI'
   },
   description:
-    'FrankAI builds governed AI systems that turn conversations into controlled workflows, approvals, records, deployment proofs and operational action.',
+    'FrankAI is Raymond Wooler\'s applied AI engineering, governed systems and consulting practice.',
   keywords: [
     'FrankAI',
+    'applied AI engineering',
+    'AI consulting',
+    'agentic systems',
     'governed AI',
     'workflow automation',
-    'AI operations',
-    'ServiceDesk',
-    'controlled automation',
-    'deployment proof',
-    'broadcast infrastructure',
-    'audit infrastructure',
-    'trading automation'
+    'AI governance',
+    'private AI',
+    'context engineering'
   ],
-  alternates: {
-    canonical: 'https://frankai.online'
-  },
   openGraph: {
-    title: 'FrankAI | Intelligence that moves work forward',
+    title: 'FrankAI | Applied AI Engineering & Consulting',
     description:
-      'Governed AI systems that turn conversations into controlled workflows, approvals, records, deployment proofs and operational action.',
+      'Human-directed, AI-augmented systems built around evidence, authority and recoverable operations.',
     url: 'https://frankai.online',
     siteName: 'FrankAI',
-    images: [{ url: '/images/logo_frankai.png', width: 1536, height: 1024 }],
+    images: [{ url: '/og-card.svg', width: 1200, height: 630 }],
     type: 'website'
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'FrankAI | Applied AI Engineering & Consulting',
+    description: 'Human-directed, AI-augmented systems built around evidence, authority and recoverable operations.',
+    images: ['/og-card.svg']
   },
   icons: {
     icon: '/images/logo_frankai.png',
@@ -45,8 +47,9 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
   return (
     <html lang="en">
       <body>
+        <a className="skip-link" href="#main-content">Skip to content</a>
         <SiteHeader />
-        <main>{children}</main>
+        <main id="main-content" tabIndex={-1}>{children}</main>
         <SiteFooter />
       </body>
     </html>

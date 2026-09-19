@@ -1,28 +1,32 @@
 import type { MetadataRoute } from 'next'
+import { portfolioEntries, profileHref } from '@/lib/portfolio'
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const pages = [
     '',
-    '/solutions',
+    '/portfolio',
     '/services/ai-consulting',
-    '/proof',
+    '/solutions',
+    '/agents',
+    '/methods',
+    '/labs',
+    '/now',
+    '/about',
     '/platform',
-    '/admin/platform',
     '/governance',
-    '/rollout',
-    '/release-cycle',
-    '/memory',
-    '/docs',
+    '/proof',
     '/trust',
     '/start',
     '/contact',
     '/privacy',
     '/terms'
   ]
-  return pages.map((path) => ({
+  const profilePages = portfolioEntries.map(profileHref)
+
+  return [...pages, ...profilePages].map((path) => ({
     url: `https://frankai.online${path}`,
-    lastModified: new Date(['', '/solutions', '/services/ai-consulting'].includes(path) ? '2026-09-08' : '2026-05-29'),
-    changeFrequency: path === '' ? 'weekly' : 'monthly',
-    priority: path === '' ? 1 : 0.7
+    lastModified: new Date('2026-09-17'),
+    changeFrequency: path === '' || path === '/now' ? 'weekly' : 'monthly',
+    priority: path === '' ? 1 : path === '/portfolio' || path === '/services/ai-consulting' ? 0.9 : 0.7
   }))
 }

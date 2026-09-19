@@ -1,76 +1,52 @@
+import type { Metadata } from 'next'
 import Link from 'next/link'
 import { AIConsultingTeaser } from '@/components/AIConsultingTeaser'
+import { CurrentDevelopment } from '@/components/CurrentDevelopment'
+import { PortfolioCard } from '@/components/PortfolioCard'
 import { SectionIntro } from '@/components/SectionIntro'
-import { currentWork } from '@/lib/current-work'
-import { deploymentProofs } from '@/lib/deployment-proofs'
+import { featuredPortfolioEntries } from '@/lib/portfolio'
+
+export const metadata: Metadata = {
+  alternates: { canonical: '/' }
+}
 
 const pathways = [
   {
-    title: 'Use FrankAI',
-    text: 'A strategic assistant for clear thinking, planning and practical execution support.',
-    href: '/start',
-    label: 'Start a conversation'
+    title: 'Engage FrankAI',
+    text: 'Advisory, implementation and platform engineering grounded in your real operating constraints.',
+    href: '/services/ai-consulting',
+    label: 'Explore AI consulting'
   },
   {
-    title: 'Deploy Solutions',
-    text: 'AI-enabled workflows for service delivery, operations and controlled automation.',
-    href: '/solutions',
-    label: 'Explore solutions'
+    title: 'Inspect the work',
+    text: 'Review evidence-backed platforms, services, methods and research at their stated maturity.',
+    href: '/portfolio',
+    label: 'Open the portfolio'
   },
   {
-    title: 'Partner With Us',
-    text: 'Understand the platform direction, integrations and commercial opportunity.',
-    href: '/platform',
-    label: 'View platform'
-  }
-]
-
-const proof = [
-  {
-    title: 'Frank ServiceDesk',
-    status: 'Live',
-    text: 'A service workflow product covering intake, booking, job handling, quotes and customer tracking.',
-    href: 'https://servicedesk.frankai.online'
-  },
-  {
-    title: 'Messaging integration',
-    status: 'Operating',
-    text: 'A signed messaging bridge supporting controlled assistant events and operational integration.',
-    href: 'https://openwa.frankai.online'
-  },
-  ...currentWork.map((item) => ({
-    title: item.name,
-    status: item.status,
-    text: item.summary,
-    href: '/proof'
-  })),
-  ...deploymentProofs.map((item) => ({
-    title: item.name,
-    status: item.status,
-    text: item.description,
-    href: item.url
-  })),
-  {
-    title: 'Governed assistance',
-    status: 'Core principle',
-    text: 'External actions remain deliberate: approvals, boundaries and auditability matter more than spectacle.',
-    href: '/platform'
+    title: 'Understand the method',
+    text: 'See how context, evidence, authority and validation shape the work before automation begins.',
+    href: '/methods',
+    label: 'Review the methods'
   }
 ]
 
 const structuredData = {
   '@context': 'https://schema.org',
-  '@type': 'Organization',
+  '@type': 'ProfessionalService',
   name: 'FrankAI',
   url: 'https://frankai.online',
-  description:
-    'FrankAI builds governed AI systems that turn conversations into controlled workflows, approvals, records, deployment proofs and operational action.',
+  description: 'Applied AI engineering, governed systems and consulting led by Raymond Wooler.',
+  founder: {
+    '@type': 'Person',
+    name: 'Raymond Wooler'
+  },
   sameAs: [
+    'https://raywooler.online',
+    'https://jobs.frankai.online',
     'https://servicedesk.frankai.online',
     'https://openwa.frankai.online',
-    'https://multistream.hnrhardhouse.online',
-    'https://signalledger.frankai.online',
-    'https://traderbot.frankai.online'
+    'https://multistream.hnrhardhouse.online'
   ]
 }
 
@@ -84,25 +60,25 @@ export default function Home() {
       <section className="hero">
         <div className="container hero-grid">
           <div>
-            <p className="eyebrow">Strategic AI and operational systems</p>
+            <p className="eyebrow">Applied AI engineering, governed systems &amp; consulting</p>
             <h1>
-              Intelligence that <span>moves work forward.</span>
+              Intelligence built for <span>accountable action.</span>
             </h1>
             <p className="hero-lead">
-              FrankAI builds governed AI systems that turn conversations into controlled workflows,
-              approvals, records and operational action.
+              FrankAI is Raymond Wooler&apos;s applied engineering practice: designing AI-enabled
+              platforms, workflows and methods that preserve human authority, evidence and control.
             </p>
             <div className="hero-actions">
-              <Link className="button" href="/start">Talk to Frank</Link>
-              <Link className="button button-secondary" href="/proof">See proof</Link>
+              <Link className="button" href="/services/ai-consulting">Discuss a real workflow</Link>
+              <Link className="button button-secondary" href="/portfolio">Inspect the portfolio</Link>
             </div>
           </div>
-          <div className="control-panel" aria-label="FrankAI operating principles">
-            <p className="panel-label">Operating model</p>
-            <div className="flow-row"><span>01</span><div><strong>Understand</strong><p>Clarify intent, context and constraints.</p></div></div>
-            <div className="flow-row"><span>02</span><div><strong>Plan</strong><p>Shape the strongest practical path.</p></div></div>
-            <div className="flow-row"><span>03</span><div><strong>Act with control</strong><p>Execute carefully, keeping consequential actions governed.</p></div></div>
-            <p className="panel-note">Privacy, accountability and human judgment are design requirements.</p>
+          <div className="control-panel" aria-label="FrankAI operating model">
+            <p className="panel-label">Human-directed, AI-augmented</p>
+            <div className="flow-row"><span>01</span><div><strong>Raymond sets intent</strong><p>Purpose, authority, constraints and accountability remain human-owned.</p></div></div>
+            <div className="flow-row"><span>02</span><div><strong>Frank augments the work</strong><p>AI supports research, analysis, architecture, implementation and challenge.</p></div></div>
+            <div className="flow-row"><span>03</span><div><strong>Evidence governs release</strong><p>Claims and deployments advance only when their controls and results can be inspected.</p></div></div>
+            <p className="panel-note">The objective is dependable capability—not simulated autonomy.</p>
           </div>
         </div>
       </section>
@@ -111,8 +87,8 @@ export default function Home() {
         <div className="container">
           <SectionIntro
             eyebrow="Choose your path"
-            title="One platform, three ways in."
-            text="FrankAI serves individuals, operating teams and strategic partners without collapsing their needs into one vague promise."
+            title="One coherent engineering practice."
+            text="Start with the professional service, inspect what has been built, or examine the methods that hold the work together."
           />
           <div className="card-grid three">
             {pathways.map((path) => (
@@ -130,38 +106,43 @@ export default function Home() {
         <div className="container">
           <AIConsultingTeaser />
           <SectionIntro
-            eyebrow="Already real"
-            title="Proof before promises."
-            text="FrankAI is being built through working systems and controlled integrations, not a fictional product demonstration."
+            eyebrow="Selected work"
+            title="Maturity is part of the evidence."
+            text="Every entry is classified as operational, available, active development, pilot or research. Private case studies remain anonymised."
           />
-          <div className="card-grid three">
-            {proof.map((item) => (
-              <article className="proof-card" key={item.title}>
-                <div className="proof-head">
-                  <h3>{item.title}</h3>
-                  <span>{item.status}</span>
-                </div>
-                <p>{item.text}</p>
-                <Link className="text-link" href={item.href}>Learn more <span aria-hidden="true">-&gt;</span></Link>
-              </article>
+          <div className="portfolio-grid">
+            {featuredPortfolioEntries.map((entry) => (
+              <PortfolioCard entry={entry} headingLevel="h3" key={entry.slug} />
             ))}
           </div>
-          <Link className="button button-secondary proof-button" href="/proof">View the proof layer</Link>
+          <Link className="button button-secondary proof-button" href="/portfolio">View the complete portfolio</Link>
+        </div>
+      </section>
+
+      <section className="band audience">
+        <div className="container">
+          <SectionIntro
+            eyebrow="Current development"
+            title="What FrankAI is actively working on now."
+            text="This view is derived from the same canonical portfolio registry, so public status does not drift between pages."
+          />
+          <CurrentDevelopment />
+          <Link className="text-link" href="/now">Open Current Development <span aria-hidden="true">-&gt;</span></Link>
         </div>
       </section>
 
       <section className="trust">
         <div className="container trust-grid">
           <SectionIntro
-            eyebrow="Built on trust"
-            title="Control is not a feature added later."
-            text="Useful intelligence must respect the person or organisation relying on it. FrankAI is designed around boundaries that make action trustworthy."
+            eyebrow="Governed by design"
+            title="Control is an engineering property."
+            text="FrankAI turns governance into concrete boundaries: named authority, least-privilege access, evidence lineage, staged releases and recoverable operations."
           />
           <div className="trust-list">
-            <div><h3>Your data remains entrusted territory.</h3><p>Privacy and ownership are treated as obligations, not marketing decoration.</p></div>
-            <div><h3>Consequential actions stay deliberate.</h3><p>External communication, access and irreversible steps require appropriate control.</p></div>
-            <div><h3>Systems should leave evidence.</h3><p>Operational workflows are built to be inspectable, accountable and maintainable.</p></div>
-            <Link className="text-link" href="/trust">See the governance model <span aria-hidden="true">-&gt;</span></Link>
+            <div><h3>Claims follow evidence.</h3><p>Research is not labelled operational, and a deployed page is not mistaken for a complete product.</p></div>
+            <div><h3>Consequential actions stay deliberate.</h3><p>Access, communication and irreversible change require appropriate human authority.</p></div>
+            <div><h3>Ownership includes recovery.</h3><p>Export, rollback, preservation and provider dependence are considered before they become crises.</p></div>
+            <Link className="text-link" href="/governance">See the governance model <span aria-hidden="true">-&gt;</span></Link>
           </div>
         </div>
       </section>
@@ -169,12 +150,12 @@ export default function Home() {
       <section className="final-cta">
         <div className="container cta-panel">
           <div>
-            <p className="eyebrow">Begin deliberately</p>
-            <h2>Find the right path into FrankAI.</h2>
+            <p className="eyebrow">Begin with the real problem</p>
+            <h2>What work needs to become clearer, safer or more reliable?</h2>
           </div>
           <div className="hero-actions">
-            <Link className="button" href="/start">Start with Frank</Link>
-            <Link className="button button-secondary" href="/contact">Discuss a workflow</Link>
+            <Link className="button" href="/contact">Discuss the work</Link>
+            <Link className="button button-secondary" href="/about">About Raymond</Link>
           </div>
         </div>
       </section>

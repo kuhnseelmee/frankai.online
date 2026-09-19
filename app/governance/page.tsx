@@ -4,7 +4,8 @@ import { SectionIntro } from '@/components/SectionIntro'
 
 export const metadata: Metadata = {
   title: 'Governance',
-  description: 'FrankAI governance controls for staged AI-agent execution.'
+  description: 'Concrete FrankAI controls for authority, approval, evidence, data restraint and staged AI-agent execution.',
+  alternates: { canonical: '/governance' }
 }
 
 const controls = [
@@ -23,6 +24,10 @@ const controls = [
   {
     title: 'Data restraint',
     text: 'Memory and retrieval should store what helps continuity while keeping secrets, raw payloads and high-risk data out of ordinary context.'
+  },
+  {
+    title: 'Release and recovery',
+    text: 'Build provenance, validation evidence, rollback material and operational ownership must be established before production activation.'
   }
 ]
 
@@ -40,7 +45,7 @@ export default function GovernancePage() {
         <SectionIntro
           eyebrow="Governance controls"
           title="FrankAI earns execution by proving control."
-          text="The platform model is simple: no agent receives broad trust by default. Capability is staged through scope, approval, evidence and review."
+          text="No agent receives broad trust by default. Capability is staged through scope, least privilege, approval, evidence, recovery and review."
         />
         <div className="feature-grid">
           {controls.map((control) => (

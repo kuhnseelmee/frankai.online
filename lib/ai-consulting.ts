@@ -1,8 +1,8 @@
 export const aiConsulting = {
   title: 'AI Consulting & Agentic Systems',
-  subtitle: 'Industry-specific AI implementation, intelligent workflow automation, and agentic AI platform development.',
-  classification: 'Specialised / Enterprise',
-  proposition: 'We engineer AI into real operational systems.',
+  subtitle: 'Evidence-led AI advisory, workflow implementation and governed agentic platform engineering.',
+  classification: 'Professional service',
+  proposition: 'We engineer AI into real operational systems without hiding the authority, evidence or risk boundaries.',
   href: '/services/ai-consulting',
   stages: [
     {

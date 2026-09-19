@@ -1,6 +1,16 @@
 import Image from 'next/image'
 import Link from 'next/link'
 
+const navigation = [
+  ['/portfolio', 'Portfolio'],
+  ['/services/ai-consulting', 'Consulting'],
+  ['/agents', 'Agents'],
+  ['/methods', 'Methods'],
+  ['/labs', 'Labs'],
+  ['/now', 'Now'],
+  ['/about', 'About']
+] as const
+
 export function SiteHeader() {
   return (
     <header className="site-header">
@@ -8,20 +18,19 @@ export function SiteHeader() {
         <Link className="brand" href="/" aria-label="FrankAI home">
           <Image className="brand-logo" src="/images/logo_frankai.png" alt="FrankAI" width={225} height={96} priority />
         </Link>
-        <nav className="nav-links" aria-label="Main navigation">
-          <Link href="/services/ai-consulting">Services</Link>
-          <Link href="/solutions">Solutions</Link>
-          <Link href="/proof">Proof</Link>
-          <Link href="/platform">Platform</Link>
-          <Link href="/governance">Governance</Link>
-          <Link href="/trust">Trust</Link>
-          <Link href="/contact">Contact</Link>
-          <Link href="/login">Sign in</Link>
-          <Link href="/admin/login">Admin</Link>
+        <nav className="nav-links desktop-nav" aria-label="Main navigation">
+          {navigation.map(([href, label]) => <Link href={href} key={href}>{label}</Link>)}
         </nav>
-        <Link className="button button-small" href="/start">
-          Start with Frank
-        </Link>
+        <Link className="button button-small header-cta" href="/contact">Discuss a project</Link>
+        <details className="mobile-nav">
+          <summary>Menu</summary>
+          <nav className="mobile-nav-panel" aria-label="Mobile navigation">
+            {navigation.map(([href, label]) => <Link href={href} key={href}>{label}</Link>)}
+            <Link href="/governance">Governance</Link>
+            <Link href="/contact">Contact</Link>
+            <Link href="/login">Sign in</Link>
+          </nav>
+        </details>
       </div>
     </header>
   )

@@ -1,102 +1,70 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { AIConsultingTeaser } from '@/components/AIConsultingTeaser'
-import { SectionIntro } from '@/components/SectionIntro'
-import { currentWork } from '@/lib/current-work'
-import { deploymentProofs } from '@/lib/deployment-proofs'
+import { PortfolioCard } from '@/components/PortfolioCard'
+import { getEntriesByCategory } from '@/lib/portfolio'
 
 export const metadata: Metadata = {
   title: 'Solutions',
-  description: 'AI Consulting & Agentic Systems, operational products and AI-enabled workflows from FrankAI.'
+  description:
+    'FrankAI consulting and governed operational platforms for workflow, evidence, service delivery and controlled automation.',
+  alternates: { canonical: '/solutions' }
 }
+
+const platformEntries = getEntriesByCategory('Platform')
+
+const solutionAreas = [
+  ['Operational workflow design', 'Turn fragmented intake, decisions, approvals and follow-up into a visible, owned process.'],
+  ['Evidence and knowledge systems', 'Preserve source lineage, retrieval context and reviewable records without flattening uncertainty.'],
+  ['Agentic integration', 'Connect AI to tools and systems through bounded roles, explicit permissions and observable outcomes.'],
+  ['Private and hybrid AI', 'Choose local, cloud or hybrid architecture according to privacy, quality, latency and operating cost.']
+]
 
 export default function SolutionsPage() {
   return (
     <section className="page-section">
       <div className="container">
-        <div className="section-intro">
+        <header className="page-header">
           <p className="eyebrow">Solutions</p>
-          <h1 className="page-title">AI that belongs inside real operations.</h1>
-          <p className="section-lead">FrankAI solutions focus on structured work: intake, coordination, service delivery and controlled automation.</p>
-        </div>
+          <h1 className="page-title">AI engineering that starts with the operating problem.</h1>
+          <p className="page-lead">
+            FrankAI designs the workflow, evidence and authority model before choosing the automation.
+            The result can be a focused implementation, a reusable platform or a staged pilot.
+          </p>
+        </header>
         <AIConsultingTeaser />
-        <div className="feature-grid">
-          <article className="feature-card featured">
-            <p className="status">Live product</p>
-            <h2>Frank ServiceDesk</h2>
-            <p>
-              Structured service intake, bookings, operational job handling, quotes, approvals and
-              customer tracking in one practical workflow.
-            </p>
-            <a className="button" href="https://servicedesk.frankai.online">View ServiceDesk</a>
-          </article>
-          <article className="feature-card">
-            <h2>Workflow design</h2>
-            <p>Map repetitive operational work into systems that can be assisted, reviewed and governed.</p>
-          </article>
-          <article className="feature-card">
-            <h2>Messaging automation</h2>
-            <p>Connect assistant capability to messaging channels while preserving control over events, replies, execution state and operator review.</p>
-          </article>
-          <article className="feature-card">
-            <h2>Android operations labs</h2>
-            <p>Build local control rooms for Android provisioning, ADB-assisted workflows, network-state inspection and evidence capture.</p>
-          </article>
-          <article className="feature-card">
-            <h2>Applied AI systems</h2>
-            <p>Build purpose-fit tools where AI augments judgement rather than replacing accountability.</p>
-          </article>
-        </div>
-        <section className="proof-section">
-          <SectionIntro
-            eyebrow="Latest work"
-            title="Android and SMS control surfaces."
-            text="The newest builds expand FrankAI's proof portfolio into device-side operations and governed messaging execution."
-          />
-          <div className="proof-directory">
-            {currentWork.map((item) => (
-              <article className="proof-card" key={item.name}>
-                <div className="proof-head">
-                  <h3>{item.name}</h3>
-                  <span>{item.status}</span>
-                </div>
-                <p>{item.category}</p>
-                <p>{item.summary}</p>
-                <p>{item.proof}</p>
+        <section aria-labelledby="solution-areas">
+          <div className="section-intro">
+            <p className="eyebrow">Where we apply it</p>
+            <h2 id="solution-areas">Practical systems around real work</h2>
+          </div>
+          <div className="feature-grid">
+            {solutionAreas.map(([title, text]) => (
+              <article className="feature-card" key={title}>
+                <h3>{title}</h3>
+                <p>{text}</p>
               </article>
             ))}
           </div>
         </section>
-        <section className="proof-section">
-          <SectionIntro
-            eyebrow="Operational proof portfolio"
-            title="Live and emerging deployments."
-            text="These public deployments show the current execution footprint across broadcast infrastructure, evidence systems and secure trading automation."
-          />
-          <div className="proof-directory">
-            {deploymentProofs.map((proof) => (
-              <article className="proof-card" key={proof.name}>
-                <div className="proof-head">
-                  <h3>{proof.name}</h3>
-                  <span>{proof.status}</span>
-                </div>
-                <p>{proof.category}</p>
-                <p>{proof.description}</p>
-                <a
-                  className="text-link"
-                  href={proof.url}
-                  rel="noopener noreferrer"
-                  target="_blank"
-                >
-                  Visit live deployment <span aria-hidden="true">-&gt;</span>
-                </a>
-              </article>
+        <section className="content-block" aria-labelledby="platform-work">
+          <div className="section-intro">
+            <p className="eyebrow">Platform work</p>
+            <h2 id="platform-work">Implemented, active and pilot systems</h2>
+            <p className="section-lead">
+              Status comes from the canonical portfolio registry. An operational system and an active
+              build are not presented as the same thing.
+            </p>
+          </div>
+          <div className="portfolio-grid">
+            {platformEntries.map((entry) => (
+              <PortfolioCard entry={entry} headingLevel="h3" key={entry.slug} />
             ))}
           </div>
         </section>
         <div className="inline-cta">
-          <p>Have a process that is slow, fragmented or hard to control?</p>
-          <Link className="text-link" href="/contact">Discuss a workflow <span aria-hidden="true">-&gt;</span></Link>
+          <p>Have a process that is slow, fragmented or difficult to govern?</p>
+          <Link className="text-link" href="/contact">Discuss the workflow <span aria-hidden="true">-&gt;</span></Link>
         </div>
       </div>
     </section>

@@ -15,6 +15,7 @@ backups/
 *.secret
 *.credentials
 npm-debug.log*
+*.tsbuildinfo
 .DS_Store
 .openclaw/
 AGENTS.md
