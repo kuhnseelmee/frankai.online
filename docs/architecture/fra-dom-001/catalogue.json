@@ -1,0 +1,431 @@
+{
+  "specification": "FRA-DOM-001",
+  "state": "PROPOSED",
+  "domains": [
+    {
+      "id": "DOM-0001",
+      "name": "Identity & Authentication",
+      "group": "Foundation",
+      "priority": "P0"
+    },
+    {
+      "id": "DOM-0002",
+      "name": "Tenancy & Organisations",
+      "group": "Foundation",
+      "priority": "P0"
+    },
+    {
+      "id": "DOM-0003",
+      "name": "Authorisation & Entitlements",
+      "group": "Foundation",
+      "priority": "P0"
+    },
+    {
+      "id": "DOM-0004",
+      "name": "Governance & Policy",
+      "group": "Foundation",
+      "priority": "P0"
+    },
+    {
+      "id": "DOM-0005",
+      "name": "Platform Configuration",
+      "group": "Foundation",
+      "priority": "P0"
+    },
+    {
+      "id": "DOM-0006",
+      "name": "Agent Management",
+      "group": "Agents",
+      "priority": "P0"
+    },
+    {
+      "id": "DOM-0007",
+      "name": "Capability Management",
+      "group": "Agents",
+      "priority": "P0"
+    },
+    {
+      "id": "DOM-0008",
+      "name": "Orchestration",
+      "group": "Agents",
+      "priority": "P1"
+    },
+    {
+      "id": "DOM-0009",
+      "name": "Workflow Execution",
+      "group": "Agents",
+      "priority": "P1"
+    },
+    {
+      "id": "DOM-0010",
+      "name": "Invocation Management",
+      "group": "Agents",
+      "priority": "P0"
+    },
+    {
+      "id": "DOM-0011",
+      "name": "Human Oversight",
+      "group": "Agents",
+      "priority": "P0"
+    },
+    {
+      "id": "DOM-0012",
+      "name": "Memory",
+      "group": "Intelligence",
+      "priority": "P1"
+    },
+    {
+      "id": "DOM-0013",
+      "name": "Knowledge",
+      "group": "Intelligence",
+      "priority": "P1"
+    },
+    {
+      "id": "DOM-0014",
+      "name": "Research & Intelligence",
+      "group": "Intelligence",
+      "priority": "P2"
+    },
+    {
+      "id": "DOM-0015",
+      "name": "Context Management",
+      "group": "Intelligence",
+      "priority": "P1"
+    },
+    {
+      "id": "DOM-0016",
+      "name": "Provenance",
+      "group": "Trust",
+      "priority": "P0"
+    },
+    {
+      "id": "DOM-0017",
+      "name": "Audit & Evidence",
+      "group": "Trust",
+      "priority": "P0"
+    },
+    {
+      "id": "DOM-0018",
+      "name": "Contracts & Schemas",
+      "group": "Trust",
+      "priority": "P0"
+    },
+    {
+      "id": "DOM-0019",
+      "name": "Risk & Compliance",
+      "group": "Trust",
+      "priority": "P2"
+    },
+    {
+      "id": "DOM-0020",
+      "name": "Integrations",
+      "group": "Infrastructure",
+      "priority": "P1"
+    },
+    {
+      "id": "DOM-0021",
+      "name": "Infrastructure & Environments",
+      "group": "Infrastructure",
+      "priority": "P0"
+    },
+    {
+      "id": "DOM-0022",
+      "name": "Secrets & Key Management",
+      "group": "Infrastructure",
+      "priority": "P0"
+    },
+    {
+      "id": "DOM-0023",
+      "name": "Event & Messaging",
+      "group": "Infrastructure",
+      "priority": "P1"
+    },
+    {
+      "id": "DOM-0024",
+      "name": "Observability",
+      "group": "Infrastructure",
+      "priority": "P0"
+    },
+    {
+      "id": "DOM-0025",
+      "name": "Operations & Incidents",
+      "group": "Operations",
+      "priority": "P1"
+    },
+    {
+      "id": "DOM-0026",
+      "name": "Assignments & Scheduling",
+      "group": "Operations",
+      "priority": "P1"
+    },
+    {
+      "id": "DOM-0027",
+      "name": "Verification & Evaluation",
+      "group": "Operations",
+      "priority": "P0"
+    },
+    {
+      "id": "DOM-0028",
+      "name": "Release & Distribution",
+      "group": "Operations",
+      "priority": "P2"
+    },
+    {
+      "id": "DOM-0029",
+      "name": "Workspace & Applications",
+      "group": "Experience",
+      "priority": "P1"
+    },
+    {
+      "id": "DOM-0030",
+      "name": "Notifications & Communications",
+      "group": "Experience",
+      "priority": "P1"
+    },
+    {
+      "id": "DOM-0031",
+      "name": "Metering & Billing",
+      "group": "Experience",
+      "priority": "P2"
+    },
+    {
+      "id": "DOM-0032",
+      "name": "Backup & Disaster Recovery",
+      "group": "Continuity",
+      "priority": "P0"
+    }
+  ],
+  "hostnames": [
+    {
+      "hostname": "frankai.online",
+      "domain_id": "DOM-0029",
+      "exposure": "UNPUBLISHED",
+      "verification_status": "UNVERIFIED",
+      "environment": "PROPOSED"
+    },
+    {
+      "hostname": "app.frankai.online",
+      "domain_id": "DOM-0029",
+      "exposure": "UNPUBLISHED",
+      "verification_status": "UNVERIFIED",
+      "environment": "PROPOSED"
+    },
+    {
+      "hostname": "control.frankai.online",
+      "domain_id": "DOM-0004",
+      "exposure": "UNPUBLISHED",
+      "verification_status": "UNVERIFIED",
+      "environment": "PROPOSED"
+    },
+    {
+      "hostname": "api.frankai.online",
+      "domain_id": "DOM-0020",
+      "exposure": "UNPUBLISHED",
+      "verification_status": "UNVERIFIED",
+      "environment": "PROPOSED"
+    },
+    {
+      "hostname": "auth.frankai.online",
+      "domain_id": "DOM-0001",
+      "exposure": "UNPUBLISHED",
+      "verification_status": "UNVERIFIED",
+      "environment": "PROPOSED"
+    },
+    {
+      "hostname": "docs.frankai.online",
+      "domain_id": "DOM-0013",
+      "exposure": "UNPUBLISHED",
+      "verification_status": "UNVERIFIED",
+      "environment": "PROPOSED"
+    },
+    {
+      "hostname": "status.frankai.online",
+      "domain_id": "DOM-0025",
+      "exposure": "UNPUBLISHED",
+      "verification_status": "UNVERIFIED",
+      "environment": "PROPOSED"
+    },
+    {
+      "hostname": "agents.frankai.online",
+      "domain_id": "DOM-0006",
+      "exposure": "UNPUBLISHED",
+      "verification_status": "UNVERIFIED",
+      "environment": "PROPOSED"
+    },
+    {
+      "hostname": "orchestrator.frankai.online",
+      "domain_id": "DOM-0008",
+      "exposure": "UNPUBLISHED",
+      "verification_status": "UNVERIFIED",
+      "environment": "PROPOSED"
+    },
+    {
+      "hostname": "workflows.frankai.online",
+      "domain_id": "DOM-0009",
+      "exposure": "UNPUBLISHED",
+      "verification_status": "UNVERIFIED",
+      "environment": "PROPOSED"
+    },
+    {
+      "hostname": "tools.frankai.online",
+      "domain_id": "DOM-0007",
+      "exposure": "UNPUBLISHED",
+      "verification_status": "UNVERIFIED",
+      "environment": "PROPOSED"
+    },
+    {
+      "hostname": "skills.frankai.online",
+      "domain_id": "DOM-0007",
+      "exposure": "UNPUBLISHED",
+      "verification_status": "UNVERIFIED",
+      "environment": "PROPOSED"
+    },
+    {
+      "hostname": "models.frankai.online",
+      "domain_id": "DOM-0007",
+      "exposure": "UNPUBLISHED",
+      "verification_status": "UNVERIFIED",
+      "environment": "PROPOSED"
+    },
+    {
+      "hostname": "evaluations.frankai.online",
+      "domain_id": "DOM-0027",
+      "exposure": "UNPUBLISHED",
+      "verification_status": "UNVERIFIED",
+      "environment": "PROPOSED"
+    },
+    {
+      "hostname": "memory.frankai.online",
+      "domain_id": "DOM-0012",
+      "exposure": "UNPUBLISHED",
+      "verification_status": "UNVERIFIED",
+      "environment": "PROPOSED"
+    },
+    {
+      "hostname": "knowledge.frankai.online",
+      "domain_id": "DOM-0013",
+      "exposure": "UNPUBLISHED",
+      "verification_status": "UNVERIFIED",
+      "environment": "PROPOSED"
+    },
+    {
+      "hostname": "research.frankai.online",
+      "domain_id": "DOM-0014",
+      "exposure": "UNPUBLISHED",
+      "verification_status": "UNVERIFIED",
+      "environment": "PROPOSED"
+    },
+    {
+      "hostname": "governance.frankai.online",
+      "domain_id": "DOM-0004",
+      "exposure": "UNPUBLISHED",
+      "verification_status": "UNVERIFIED",
+      "environment": "PROPOSED"
+    },
+    {
+      "hostname": "audit.frankai.online",
+      "domain_id": "DOM-0017",
+      "exposure": "UNPUBLISHED",
+      "verification_status": "UNVERIFIED",
+      "environment": "PROPOSED"
+    },
+    {
+      "hostname": "provenance.frankai.online",
+      "domain_id": "DOM-0016",
+      "exposure": "UNPUBLISHED",
+      "verification_status": "UNVERIFIED",
+      "environment": "PROPOSED"
+    },
+    {
+      "hostname": "policies.frankai.online",
+      "domain_id": "DOM-0004",
+      "exposure": "UNPUBLISHED",
+      "verification_status": "UNVERIFIED",
+      "environment": "PROPOSED"
+    },
+    {
+      "hostname": "contracts.frankai.online",
+      "domain_id": "DOM-0018",
+      "exposure": "UNPUBLISHED",
+      "verification_status": "UNVERIFIED",
+      "environment": "PROPOSED"
+    },
+    {
+      "hostname": "ops.frankai.online",
+      "domain_id": "DOM-0025",
+      "exposure": "UNPUBLISHED",
+      "verification_status": "UNVERIFIED",
+      "environment": "PROPOSED"
+    },
+    {
+      "hostname": "monitor.frankai.online",
+      "domain_id": "DOM-0024",
+      "exposure": "UNPUBLISHED",
+      "verification_status": "UNVERIFIED",
+      "environment": "PROPOSED"
+    },
+    {
+      "hostname": "deploy.frankai.online",
+      "domain_id": "DOM-0028",
+      "exposure": "UNPUBLISHED",
+      "verification_status": "UNVERIFIED",
+      "environment": "PROPOSED"
+    },
+    {
+      "hostname": "registry.frankai.online",
+      "domain_id": "DOM-0006",
+      "exposure": "UNPUBLISHED",
+      "verification_status": "UNVERIFIED",
+      "environment": "PROPOSED"
+    },
+    {
+      "hostname": "dev.frankai.online",
+      "domain_id": "DOM-0021",
+      "exposure": "UNPUBLISHED",
+      "verification_status": "UNVERIFIED",
+      "environment": "PROPOSED"
+    },
+    {
+      "hostname": "staging.frankai.online",
+      "domain_id": "DOM-0021",
+      "exposure": "UNPUBLISHED",
+      "verification_status": "UNVERIFIED",
+      "environment": "PROPOSED"
+    },
+    {
+      "hostname": "foundry.frankai.online",
+      "domain_id": "DOM-0028",
+      "exposure": "UNPUBLISHED",
+      "verification_status": "UNVERIFIED",
+      "environment": "PROPOSED"
+    },
+    {
+      "hostname": "jobs.frankai.online",
+      "domain_id": "DOM-0029",
+      "exposure": "UNPUBLISHED",
+      "verification_status": "UNVERIFIED",
+      "environment": "PROPOSED"
+    },
+    {
+      "hostname": "multistream.frankai.online",
+      "domain_id": "DOM-0029",
+      "exposure": "UNPUBLISHED",
+      "verification_status": "UNVERIFIED",
+      "environment": "PROPOSED"
+    },
+    {
+      "hostname": "labs.frankai.online",
+      "domain_id": "DOM-0014",
+      "exposure": "UNPUBLISHED",
+      "verification_status": "UNVERIFIED",
+      "environment": "PROPOSED"
+    },
+    {
+      "hostname": "developer.frankai.online",
+      "domain_id": "DOM-0029",
+      "exposure": "UNPUBLISHED",
+      "verification_status": "UNVERIFIED",
+      "environment": "PROPOSED"
+    }
+  ]
+}
